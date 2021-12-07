@@ -1,0 +1,28 @@
+#include <windows.h>
+//Icons
+0 ICON "icon.ico"
+
+#include "programinfo.h"
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     PROGRAMVERSION_NUMBER
+PRODUCTVERSION  PROGRAMVERSION_NUMBER
+FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+FILEOS          VOS__WINDOWS32
+FILETYPE        VFT_APP
+FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "FileDescription",    "AndroidDrive"
+            VALUE "ProductName",        "AndroidDrive"
+            VALUE "FileVersion",        PROGRAMVERSION
+            VALUE "ProductVersion",     PROGRAMVERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1252
+    END
+END
