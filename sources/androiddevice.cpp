@@ -297,7 +297,7 @@ QList<AndroidDevice> AndroidDevice::allDevices(){
     const QStringList &allDeviceStrings = QString::fromUtf8(adb.readAllStandardOutput()).split(QRegularExpression("[^\\S\r\n]*[\r\n]+[^\\S\r\n]*"));
     QList<AndroidDevice> toReturn;
     for(const QString &deviceString: allDeviceStrings){
-        const QRegularExpressionMatch &match = QRegularExpression("^([0-9A-Z]+)\t").match(deviceString);
+        const QRegularExpressionMatch &match = QRegularExpression("^([0-9A-Za-z]+)\t").match(deviceString);
         if(match.hasMatch()){
             toReturn.append(AndroidDevice(match.captured(1)));
         }
