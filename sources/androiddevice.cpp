@@ -59,6 +59,9 @@ QString AndroidDevice::id() const{
 }
 
 QString AndroidDevice::name() const{
+    if(this->_name[this->id()].isEmpty()){
+        return this->id();
+    }
     return this->_name[this->id()];
 }
 
@@ -101,7 +104,7 @@ void AndroidDevice::connectDrive(const std::function<void(const QString &)> &cal
     QObject::connect(adb, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), [adb, callback, self=*this](int exitCode, QProcess::ExitStatus){    //We need to capture this by value because sometimes the this object will be deleted before the lambda is run. We use self=*this because just capturing *this gives weird compiler errors.
         //Check ADB exit status
         if(exitCode != 0){
-            callback(QObject::tr("An error occurred when reading device %1: %2").arg(self.name(), adb->readAllStandardError()));
+            callback(QObject::tr("An error occurred when reading device %1: %2").arg(self.name(), adb->readAllStandardError().isEmpty() ? adb->readAllStandardOutput() : adb->readAllStandardError()));
             adb->deleteLater();
             return;
         }
