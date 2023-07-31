@@ -2,26 +2,25 @@ QT += widgets
 
 CONFIG += c++17
 
-LIBS *= -luser32
-
-!*-msvc{
-    CONFIG += warn_off
-    QMAKE_CXXFLAGS += -Wall -Wno-switch-enum -Wno-switch
-}
-
 SOURCES += main.cpp \
     androiddevice.cpp \
-    devicelistwindow.cpp
-
-RESOURCES += \
-    resource.qrc
+    devicelistwindow.cpp \
+    dokanoperations.cpp \
+    settingswindow.cpp
 
 HEADERS += \
     androiddevice.h \
     devicelistwindow.h \
-    programinfo.h
+    dokanoperations.h \
+    programinfo.h \
+    settingswindow.h
+
+INCLUDEPATH += "C:/Program Files/Dokan/Dokan Library-2.0.6/include"
+LIBS += \
+    -L"C:/Program Files/Dokan/Dokan Library-2.0.6/lib" -ldokan2 \
+    -L"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22000.0/um/x64" -lAdvAPI32 -luser32
 
 win32:RC_FILE = resource.rc
 
-DISTFILES += \
-    resource.rc
+RESOURCES += \
+    resource.qrc

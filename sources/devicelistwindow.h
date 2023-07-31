@@ -1,33 +1,46 @@
 #ifndef DEVICELISTWINDOW_H
 #define DEVICELISTWINDOW_H
 
-#include <QtWidgets>
+#include <QDialog>
+#include <QGridLayout>
+#include <QListView>
+#include <QProcess>
+#include <QPushButton>
+#include <QStringListModel>
 #include "androiddevice.h"
+#include "settingswindow.h"
 
 class DeviceListWindow : public QDialog{
     Q_OBJECT
 
 public:
-    DeviceListWindow(QWidget *parent = nullptr);
+    DeviceListWindow();
+    virtual ~DeviceListWindow();
 
     AndroidDevice *selectedDevice();
-    void selectDriveLetter(AndroidDevice *device);
 
-    void setDeviceIsConnecting(bool connecting);
-    bool deviceIsConnecting() const;
+signals:
+    void encounteredFatalError();
 
-public slots:
-    void updateDevices();
+private slots:
+    void updateButtons();
+    void updateDevices(int exitCode, QProcess::ExitStatus exitStatus);
+    void handleDokanError(AndroidDevice *device, int status);
+    void handleAdbError(QProcess::ProcessError error);
 
 private:
-    QStringListModel _model;
-    QList<AndroidDevice> _devices;
+    QProcess _adb;
+    bool _adbFailed;
+    bool _dokanInstalling;
 
+    QMap<QString, AndroidDevice*> _devices;
+    QMap<AndroidDevice*, SettingsWindow*> _settingsWindows;
+
+    QStringListModel _model;
     QListView _view;
     QGridLayout _layout;
 
-    QPushButton _connectButton, _driveLetterButton, _refreshButton;
-    QCheckBox _openInExplorer;
+    QPushButton _connectButton, _settingsButton;
 };
 
 #endif // DEVICELISTWINDOW_H

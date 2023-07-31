@@ -1,50 +1,68 @@
 #ifndef ANDROIDDEVICE_H
 #define ANDROIDDEVICE_H
 
-#include <QString>
 #include <QList>
-#include <QTemporaryDir>
-#include <QFileSystemWatcher>
-#include <QTimer>
+#include <QMap>
+#include <QString>
+#include <QThread>
 #include <functional>
+#include <dokan/dokan.h>
 
-class AndroidDevice{
+class AndroidDevice: public QObject{
+    Q_OBJECT
+
 public:
-    AndroidDevice(const QString &id);
+    AndroidDevice(const AndroidDevice&) = delete;
+    void operator=(const AndroidDevice&) = delete;
 
-    bool operator==(const AndroidDevice &other) const;
-    bool operator!=(const AndroidDevice &other) const;
+    AndroidDevice(const QString &serialNumber);
+    void shutdown();
+    static void shutdownAllDevices(const std::function<void()> &callback);
 
-    QString id() const;
-    QString name() const;
-    QString storageLocation() const;
-    bool isValid() const;
+    static AndroidDevice *fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo);
 
-    void setDriveLetter(char letter);
-    char driveLetter() const;
-
-    void connectDrive(const std::function<void(const QString&)> &callback);
-    void autoconnectDrive();
-    void disconnectDrive(bool disconnectInSettings = false) const;
+    void connectDrive(char driveLetter);
+    void disconnectDrive();
     bool isConnected() const;
 
-    static QList<AndroidDevice> allDevices();
+    QString runAdbCommand(const QString &command, bool *ok = nullptr, bool useCache = true) const;
+    bool pullFromAdb(const QString &remoteFile, const QString &localFile) const;
+    bool pushToAdb(const QString &localFile, const QString &remoteFile) const;
+
+    QString model() const;
+    QString fileSystem() const;
+    QString serialNumber() const;
+
+signals:
+    void driveConnected();                 //Emitted when the Dokan main loop starts
+    void driveMounted(char driveLetter);   //Emitted when the drive appears in the This PC folder
+    void driveUnmounted();                 //Emitted when the drive is removed from the This PC folder
+    void driveDisconnected(int status);    //Emitted when the Dokan main loop finishes
 
 private:
-    const QString _id;
-    char _driveLetter;
+    virtual ~AndroidDevice();    //Make the destructor private because the object should never be deleted directly, instead, shutdown() should be called. This is to give Dokan the time to shut down, otherwise invalid pointers will be passed to it.
 
-    //These need to be static for performance reasons (otherwise ADB would be called each time the AndroidDevice constructor is called which would be bad for performance)
-    static QMap<QString, QString> _name;
-    static QMap<QString, QString> _storageLocation;
+    static QList<AndroidDevice*> _instances;
+    static std::function<void()> _callbackOnLastShutdown;
+    bool _willBeDeleted;
 
-    //These need to be static so that they can be saved across multiple AndroidDevice instances representing the same device
-    static QTemporaryDir _temp;
-    static QMap<QString, QFileSystemWatcher*> _fileSystemWatchers;
-    static QMap<QString, QTimer*> _pullTimers;
+    const QString _serialNumber;
 
-    QDir temporaryDir() const;
-    void checkDriveLetter();
+    QThread *_thread;
+    bool _mounted;
+    bool _shouldBeDisconnected;
+    bool _mountPointRemoved;
+
+    DOKAN_OPERATIONS _dokanOperations;
+    DOKAN_OPTIONS _dokanOptions;
+    wchar_t _mountPoint[4];
+
+    //Cache for specific methods (it would be easier to declare these as static in their respective methods, but that would use the same cache accross instances, see https://stackoverflow.com/a/6223371/4284627)
+    //These are mutable because the cache can be updated in const methods that don't really change the state of the object
+    mutable QMap<QString, QPair<QString, qint64>> _adbCache;
+    mutable QString _cachedModel;
+    mutable QString _cachedFileSystem;
+    mutable bool _fileSystemCached;
 };
 
 #endif // ANDROIDDEVICE_H
