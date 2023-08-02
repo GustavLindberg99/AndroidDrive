@@ -3,83 +3,8 @@
 #include <QRegularExpression>
 #include "androiddevice.h"
 #include "dokanoperations.h"
+#include "helperfunctions.h"
 #include "settingswindow.h"
-
-enum Attribute{
-    ReadOnly         = 0x0001,
-    Hidden           = 0x0002,
-    System           = 0x0004,
-    VolumeLabel      = 0x0008,
-    Directory        = 0x0010,
-    Archive          = 0x0020,
-    NtfsEfs          = 0x0040,
-    Normal           = 0x0080,
-    Temporary        = 0x0100,
-    Sparse           = 0x0200,
-    ReparsePointData = 0x0400,
-    Compressed       = 0x0800,
-    Offline          = 0x1000
-};
-
-inline QString escapeSpecialCharactersForBash(QString filePath){
-    //List of characters that need to be escaped from https://stackoverflow.com/a/27817504/4284627
-    const char specialCharacters[] = {'\\', ' ', '!', '"', '#', '$', '&', '\'', '(', ')', '*', ',', ';', '<', '>', '?', '[', ']', '^', '`', '{', '|', '}', '~'};    //It's important for the backslash to be first otherwise it will be escaped when already part of an escape sequence
-    for(const char character: specialCharacters){
-        filePath.replace(character, QString("\\") + character);
-    }
-    return filePath;
-}
-
-inline QString windowsPathToAndroidPath(LPCWSTR windowsPath){
-    QString androidPath = "/sdcard" + QString::fromWCharArray(windowsPath).replace("\\", "/");
-    //Use the same trick as WSL for characters that are allowed on Android but not on Windows (this trick consists in replacing a special character with a Unicode version by adding 0xf000 to its char code)
-    const char specialCharacters[] = {'\\', ':', '*', '?', '"', '<', '>', '|'};
-    for(const char character: specialCharacters){
-        androidPath.replace(QChar(character + 0xf000), QChar(character));
-    }
-    return androidPath;
-}
-
-inline QString androidFileNameToWindowsFileName(QString fileName){
-    //Use the same trick as WSL for characters that are allowed on Android but not on Windows (this trick consists in replacing a special character with a Unicode version by adding 0xf000 to its char code)
-    const char specialCharacters[] = {'\\', ':', '*', '?', '"', '<', '>', '|'};
-    for(const char character: specialCharacters){
-        fileName.replace(QChar(character), QChar(character + 0xf000));
-    }
-    return fileName;
-}
-
-inline QString getTemporaryFilePath(){
-    const QString temporaryDir = QDir::tempPath();
-    QString temporaryFilePath = temporaryDir + "/AndroidDrive.tmp";
-    for(int i = 0; QFile::exists(temporaryFilePath); i++){
-        temporaryFilePath = temporaryDir + "/AndroidDrive" + QString::number(i) + ".tmp";
-    }
-    return temporaryFilePath;
-}
-
-inline NTSTATUS pushQByteArrayToAdb(const QByteArray *byteArray, LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
-    NTSTATUS status = STATUS_SUCCESS;
-    if(byteArray->back() != 0){    //If the last byte is zero, it indicates that it hasn't been modified, so there's no point in pushing it (that's why we have the last byte to indicate if it's modified).
-        const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-        const QString filePath = windowsPathToAndroidPath(fileName);
-
-        QFile file(getTemporaryFilePath());
-        if(!file.open(QFile::WriteOnly)){
-            return STATUS_ACCESS_DENIED;
-        }
-        if(file.write(byteArray->chopped(1)) == -1){
-            status = STATUS_ACCESS_DENIED;
-            file.close();
-        }
-        else{
-            file.close();
-            status = device->pushToAdb(file.fileName(), filePath) ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
-        }
-        file.remove();
-    }
-    return status;
-}
 
 NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
@@ -219,14 +144,27 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
     const QString filePath = windowsPathToAndroidPath(fileName);
 
     bool ok;
-    const QString output = device->runAdbCommand(QString("test -d %1 || wc -c < %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);
+    const QString fileInfo = device->runAdbCommand(QString("stat --format=\"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
-    const bool isDirectory = output.isEmpty();
+    const QRegularExpressionMatch match = QRegularExpression("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+)$").match(fileInfo);
+    if(!match.hasMatch()){
+        return STATUS_UNSUCCESSFUL;
+    }
+
+    const bool isDirectory = match.captured(1) == "directory";
     LARGE_INTEGER fileSize;
-    fileSize.QuadPart = output.toLongLong();
+    fileSize.QuadPart = isDirectory ? 0 : match.captured(2).toLongLong();
+    FILETIME unknownTime;
+    unknownTime.dwHighDateTime = unknownTime.dwLowDateTime = 0;
+    bool creationTimeKnown;
+    const FILETIME creationTime = unixTimeToMicrosftTime(match.captured(3).toLongLong(&creationTimeKnown));
+    bool lastWriteTimeKnown;
+    const FILETIME lastWriteTime = unixTimeToMicrosftTime(match.captured(4).toLongLong(&lastWriteTimeKnown));
+    bool lastAccessTimeKnown;
+    const FILETIME lastAccessTime = unixTimeToMicrosftTime(match.captured(5).toLongLong(&lastAccessTimeKnown));
 
     handleFileInformation->dwFileAttributes = 0;
     if(isDirectory){
@@ -235,11 +173,9 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
     if(filePath.split("/").last().startsWith(".") && Settings().hideDotFiles()){
         handleFileInformation->dwFileAttributes |= Attribute::Hidden;
     }
-    /*TODO:
-    handleFileInformation->ftCreationTime = ;
-    handleFileInformation->ftLastWriteTime = ;
-    handleFileInformation->ftLastAccessTime = ;
-    */
+    handleFileInformation->ftCreationTime = creationTimeKnown ? creationTime : unknownTime;
+    handleFileInformation->ftLastWriteTime = lastWriteTimeKnown ? lastWriteTime : unknownTime;
+    handleFileInformation->ftLastAccessTime = lastAccessTimeKnown ? lastAccessTime : unknownTime;
     handleFileInformation->nFileSizeHigh = fileSize.HighPart;
     handleFileInformation->nFileSizeLow = fileSize.LowPart;
 
@@ -250,25 +186,39 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
     const QString filePath = windowsPathToAndroidPath(fileName);
 
-    //output will first contain strings of the form "(size in bytes) /sdcard/path", then it will contain the paths of all the directories.
+    /* Format sequences used for stat:
+     * %F = File type ("directory" for directories, something else for files)
+     * %s = File size in bytes
+     * %W = Unix timestamp in seconds for creation time
+     * %Y = Unix timestamp in seconds for last write time
+     * %X = Unix timestamp in seconds for last access time
+     * %n = File path
+     */
     bool ok;
-    const QStringList output = device->runAdbCommand(QString("test -d %1 && (wc -c %1/* %1/.* || ls -d %1/*/ %1/.*/ || true)").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(QRegularExpression("[\r\n]+"));
+    const QStringList output = device->runAdbCommand(QString("stat --format=\"%F %s %W %Y %X %n\" %1/* %1/.* || test -d %1").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(QRegularExpression("[\r\n]+"));    //The || test -d is necessary so that it doesn't return an error for empty directories (otherwise it will give an error like "Can't find /sdcard/emptydirectory/*" since there are no files that match that pattern), but so that it still returns an error if the directory doesn't exist at all.
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
     const bool hideDotFiles = Settings().hideDotFiles();
     for(const QString &fileInfo: output){
-        const QRegularExpressionMatch match = QRegularExpression("^\\s*([0-9]+)\\s+(/sdcard.+)$").match(fileInfo);
+        const QRegularExpressionMatch match = QRegularExpression("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+) (.+)$").match(fileInfo);
         if(!match.hasMatch()){
             continue;
         }
 
-        const QString subfilePath = match.captured(2);
-        const QString subfileName = androidFileNameToWindowsFileName(subfilePath.split("/").last());
-        const bool isDirectory = output.contains(subfilePath + "/");
+        const bool isDirectory = match.captured(1) == "directory";
         LARGE_INTEGER fileSize;
-        fileSize.QuadPart = isDirectory ? 0 : match.captured(1).toLongLong();
+        fileSize.QuadPart = isDirectory ? 0 : match.captured(2).toLongLong();
+        FILETIME unknownTime;
+        unknownTime.dwHighDateTime = unknownTime.dwLowDateTime = 0;
+        bool creationTimeKnown;
+        const FILETIME creationTime = unixTimeToMicrosftTime(match.captured(3).toLongLong(&creationTimeKnown));
+        bool lastWriteTimeKnown;
+        const FILETIME lastWriteTime = unixTimeToMicrosftTime(match.captured(4).toLongLong(&lastWriteTimeKnown));
+        bool lastAccessTimeKnown;
+        const FILETIME lastAccessTime = unixTimeToMicrosftTime(match.captured(5).toLongLong(&lastAccessTimeKnown));
+        const QString subfileName = androidFileNameToWindowsFileName(match.captured(6).split("/").last());
 
         WIN32_FIND_DATAW findData;
         findData.dwFileAttributes = 0;
@@ -278,11 +228,9 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
         if(hideDotFiles && subfileName.startsWith(".")){
             findData.dwFileAttributes |= Attribute::Hidden;
         }
-        /*TODO:
-        findData.ftCreationTime = ;
-        findData.ftLastWriteTime = ;
-        findData.ftLastAccessTime = ;
-        */
+        findData.ftCreationTime = creationTimeKnown ? creationTime : unknownTime;
+        findData.ftLastWriteTime = lastWriteTimeKnown ? lastWriteTime : unknownTime;
+        findData.ftLastAccessTime = lastAccessTimeKnown ? lastAccessTime : unknownTime;
         findData.nFileSizeHigh = fileSize.HighPart;
         findData.nFileSizeLow = fileSize.LowPart;
         findData.cFileName[subfileName.toWCharArray(findData.cFileName)] = L'\0';    //toWCharArray does most of the work, but it doesn't add a null terminator, so add one manually at the end of the string (the length of the string is returned by toWCharArray)
@@ -291,6 +239,17 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
     }
 
     return STATUS_SUCCESS;
+}
+
+NTSTATUS DOKAN_CALLBACK setFileTime(LPCWSTR fileName, const FILETIME *creationTime, const FILETIME *lastAccessTime, const FILETIME *lastWriteTime, PDOKAN_FILE_INFO dokanFileInfo){
+    UNREFERENCED_PARAMETER(creationTime);    //Android doesn't fully support creation times, so it's not possible to set the creation time
+
+    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = windowsPathToAndroidPath(fileName);
+
+    bool ok;
+    device->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), &ok, false);
+    return ok ? STATUS_SUCCESS : STATUS_OBJECT_PATH_NOT_FOUND;
 }
 
 NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){

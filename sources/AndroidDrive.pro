@@ -6,12 +6,14 @@ SOURCES += main.cpp \
     androiddevice.cpp \
     devicelistwindow.cpp \
     dokanoperations.cpp \
+    helperfunctions.cpp \
     settingswindow.cpp
 
 HEADERS += \
     androiddevice.h \
     devicelistwindow.h \
     dokanoperations.h \
+    helperfunctions.h \
     programinfo.h \
     settingswindow.h
 

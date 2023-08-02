@@ -33,8 +33,7 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
     this->_dokanOperations.FlushFileBuffers = flushFileBuffers;
     this->_dokanOperations.GetFileInformation = getFileInformation;
     this->_dokanOperations.FindFiles = findFiles;
-    this->_dokanOperations.FindFilesWithPattern = nullptr;    //TODO: implement this, it's not necessary for it to work but it's supposed to be better for performance
-    this->_dokanOperations.SetFileTime = nullptr;    //TODO: implement creation and modification times
+    this->_dokanOperations.SetFileTime = setFileTime;
     this->_dokanOperations.DeleteFile = deleteFile;
     this->_dokanOperations.DeleteDirectory = deleteDirectory;
     this->_dokanOperations.MoveFile = moveFile;
