@@ -21,12 +21,32 @@ enum Attribute{
     Offline          = 0x1000
 };
 
-inline QString escapeSpecialCharacters(QString filePath){
-    const char specialCharacters[] = {' ', '(', ')', '&'};
+inline QString escapeSpecialCharactersForBash(QString filePath){
+    //List of characters that need to be escaped from https://stackoverflow.com/a/27817504/4284627
+    const char specialCharacters[] = {'\\', ' ', '!', '"', '#', '$', '&', '\'', '(', ')', '*', ',', ';', '<', '>', '?', '[', ']', '^', '`', '{', '|', '}', '~'};    //It's important for the backslash to be first otherwise it will be escaped when already part of an escape sequence
     for(const char character: specialCharacters){
         filePath.replace(character, QString("\\") + character);
     }
     return filePath;
+}
+
+inline QString windowsPathToAndroidPath(LPCWSTR windowsPath){
+    QString androidPath = "/sdcard" + QString::fromWCharArray(windowsPath).replace("\\", "/");
+    //Use the same trick as WSL for characters that are allowed on Android but not on Windows (this trick consists in replacing a special character with a Unicode version by adding 0xf000 to its char code)
+    const char specialCharacters[] = {'\\', ':', '*', '?', '"', '<', '>', '|'};
+    for(const char character: specialCharacters){
+        androidPath.replace(QChar(character + 0xf000), QChar(character));
+    }
+    return androidPath;
+}
+
+inline QString androidFileNameToWindowsFileName(QString fileName){
+    //Use the same trick as WSL for characters that are allowed on Android but not on Windows (this trick consists in replacing a special character with a Unicode version by adding 0xf000 to its char code)
+    const char specialCharacters[] = {'\\', ':', '*', '?', '"', '<', '>', '|'};
+    for(const char character: specialCharacters){
+        fileName.replace(QChar(character), QChar(character + 0xf000));
+    }
+    return fileName;
 }
 
 inline QString getTemporaryFilePath(){
@@ -42,7 +62,7 @@ inline NTSTATUS pushQByteArrayToAdb(const QByteArray *byteArray, LPCWSTR fileNam
     NTSTATUS status = STATUS_SUCCESS;
     if(byteArray->back() != 0){    //If the last byte is zero, it indicates that it hasn't been modified, so there's no point in pushing it (that's why we have the last byte to indicate if it's modified).
         const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-        const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+        const QString filePath = windowsPathToAndroidPath(fileName);
 
         QFile file(getTemporaryFilePath());
         if(!file.open(QFile::WriteOnly)){
@@ -63,13 +83,13 @@ inline NTSTATUS pushQByteArrayToAdb(const QByteArray *byteArray, LPCWSTR fileNam
 
 NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+    const QString filePath = windowsPathToAndroidPath(fileName);
 
     ACCESS_MASK genericDesiredAccess;
     DWORD fileAttributesAndFlags, creationDisposition;
     DokanMapKernelToUserCreateFileFlags(desiredAccess, fileAttributes, createOptions, createDisposition, &genericDesiredAccess, &fileAttributesAndFlags, &creationDisposition);
 
-    const QString output = device->runAdbCommand(QString("(test -d %1 && echo d) || (test -f %1 && echo f)").arg(escapeSpecialCharacters(filePath)));
+    const QString output = device->runAdbCommand(QString("(test -d %1 && echo d) || (test -f %1 && echo f)").arg(escapeSpecialCharactersForBash(filePath)));
     const bool directoryExists = output == "d";
     const bool fileExists = output == "f";
 
@@ -93,7 +113,7 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
                 return STATUS_OBJECT_NAME_COLLISION;
             }
             bool ok;
-            device->runAdbCommand(QString("mkdir %1").arg(escapeSpecialCharacters(filePath)), &ok, false);
+            device->runAdbCommand(QString("mkdir %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
             return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
         }
         else if(!directoryExists){
@@ -107,7 +127,7 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
                 return STATUS_OBJECT_NAME_COLLISION;
             }
             bool ok;
-            device->runAdbCommand(QString("touch %1").arg(escapeSpecialCharacters(filePath)), &ok, false);
+            device->runAdbCommand(QString("touch %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
             if(!ok){
                 return STATUS_UNSUCCESSFUL;
             }
@@ -196,10 +216,10 @@ NTSTATUS DOKAN_CALLBACK flushFileBuffers(LPCWSTR fileName, PDOKAN_FILE_INFO doka
 
 NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_INFORMATION handleFileInformation, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+    const QString filePath = windowsPathToAndroidPath(fileName);
 
     bool ok;
-    const QString output = device->runAdbCommand(QString("test -d %1 || wc -c < %1").arg(escapeSpecialCharacters(filePath)), &ok);
+    const QString output = device->runAdbCommand(QString("test -d %1 || wc -c < %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
@@ -228,11 +248,11 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
 
 NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+    const QString filePath = windowsPathToAndroidPath(fileName);
 
     //output will first contain strings of the form "(size in bytes) /sdcard/path", then it will contain the paths of all the directories.
     bool ok;
-    const QStringList output = device->runAdbCommand(QString("test -d %1 && (wc -c %1/* %1/.* || ls -d %1/*/ %1/.*/ || true)").arg(escapeSpecialCharacters(filePath)), &ok).split(QRegularExpression("[\r\n]+"));
+    const QStringList output = device->runAdbCommand(QString("test -d %1 && (wc -c %1/* %1/.* || ls -d %1/*/ %1/.*/ || true)").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(QRegularExpression("[\r\n]+"));
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
@@ -245,7 +265,7 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
         }
 
         const QString subfilePath = match.captured(2);
-        const QString subfileName = subfilePath.split("/").last();
+        const QString subfileName = androidFileNameToWindowsFileName(subfilePath.split("/").last());
         const bool isDirectory = output.contains(subfilePath + "/");
         LARGE_INTEGER fileSize;
         fileSize.QuadPart = isDirectory ? 0 : match.captured(1).toLongLong();
@@ -275,19 +295,19 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
 
 NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+    const QString filePath = windowsPathToAndroidPath(fileName);
 
     bool ok;
-    device->runAdbCommand(QString("rm %1").arg(escapeSpecialCharacters(filePath)), &ok, false);
+    device->runAdbCommand(QString("rm %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
     return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
 }
 
 NTSTATUS DOKAN_CALLBACK deleteDirectory(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = "/sdcard" + QString::fromWCharArray(fileName).replace("\\", "/");
+    const QString filePath = windowsPathToAndroidPath(fileName);
 
     bool ok;
-    device->runAdbCommand(QString("rm -rf %1").arg(escapeSpecialCharacters(filePath)), &ok, false);
+    device->runAdbCommand(QString("rm -rf %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
     return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
 }
 
@@ -297,7 +317,7 @@ NTSTATUS DOKAN_CALLBACK moveFile(LPCWSTR oldFileName, LPCWSTR newFileName, BOOL 
     const QString newFilePath = "/sdcard" + QString::fromWCharArray(newFileName).replace("\\", "/");
 
     bool ok;
-    device->runAdbCommand(QString("test -d %3 || mv %1 %2 %3").arg(replaceIfExisting ? "-f" : "-n", escapeSpecialCharacters(oldFilePath), escapeSpecialCharacters(newFilePath)), &ok, true);
+    device->runAdbCommand(QString("test -d %3 || mv %1 %2 %3").arg(replaceIfExisting ? "-f" : "-n", escapeSpecialCharactersForBash(oldFilePath), escapeSpecialCharactersForBash(newFilePath)), &ok, true);
     return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
 }
 
