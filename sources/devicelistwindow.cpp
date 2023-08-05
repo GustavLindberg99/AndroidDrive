@@ -92,9 +92,11 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
         }
         else{
             this->_adbFailed = true;
+            this->_adb.start("adb.exe", {"devices"});
         }
         return;
     }
+    this->_adbFailed = false;
 
     //Create newly conneced devices
     const QStringList result = QString::fromUtf8(this->_adb.readAllStandardOutput()).trimmed().split(QRegularExpression("[\r\n]+"));
@@ -200,6 +202,7 @@ void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
 void DeviceListWindow::handleAdbError(QProcess::ProcessError error){
     if(!this->_adbFailed){    //If it only fails once in a while, don't bother the user with it. But if it fails twice in a row, there's probably something wrong, in which case we show an error message and exit.
         this->_adbFailed = true;
+        this->_adb.start("adb.exe", {"devices"});
         return;
     }
 
