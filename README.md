@@ -25,6 +25,11 @@ If you *don't* want AndroidDrive to mound a drive for a specific Android device,
 When AndroidDrive detects a new Android device, it will automatically be assigned the first available drive letter after C (for example if your only drive is the hard drive, this will mean that it will be assigned the letter D). You can change the drive letter assigned to a specific Android device by right clicking on the AndroidDrive icon in the task bar, going to Devices, clicking "Device settings" and selecting a drive letter under "Drive letter". If you do this to a drive that's already connected, you will need to disconnect and re-connect the drive for the changes to take effect.
 
 
+# Compatibility
+
+AndroidDrive has only been tested on Windows 10 and 11, but should work on any 64-bit computer with Windows 7 or later.
+
+
 # Credits
 
 Icons from https://www.iconfinder.com/ are made by [Alpár-Etele Méder](https://www.iconfinder.com/pocike) and [Tango](https://www.iconfinder.com/iconsets/tango-icon-library).
