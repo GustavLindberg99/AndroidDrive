@@ -144,7 +144,7 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
     const QString filePath = windowsPathToAndroidPath(fileName);
 
     bool ok;
-    const QString fileInfo = device->runAdbCommand(QString("stat --format=\"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);
+    const QString fileInfo = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);    //All devices don't support stat --format, so we have to use stat -c
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
