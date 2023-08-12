@@ -101,7 +101,8 @@ AndroidDevice *AndroidDevice::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
 }
 
 void AndroidDevice::connectDrive(char driveLetter){
-    for(int i = 0; QDir(driveLetter + QString(":")).exists() && i < 26; i++){
+    const DWORD drives = GetLogicalDrives();    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
+    for(int i = 0; (drives & (1 << (driveLetter - 'A'))) && i < 26; i++){
         driveLetter++;
         if(driveLetter == 'Z' + 1){
             driveLetter = 'A';
