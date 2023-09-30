@@ -5,8 +5,9 @@
 #include "dokanoperations.h"
 #include "helperfunctions.h"
 #include "settingswindow.h"
+#include "temporaryfile.h"
 
-NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
+NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG shareAccess, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
     const QString filePath = windowsPathToAndroidPath(fileName);
 
@@ -46,45 +47,25 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
         }
     }
     else{
-        QByteArray *byteArray;    //This byte array will contain the contents of the file, and then a last byte which is 1 if it's been modified and 0 if it hasn't. The last byte is useful for performance reasons, so that we don't have to push the file each time a file is opened for reading.
-        if(createDisposition == CREATE_ALWAYS){
-            if(fileExists){
-                return STATUS_OBJECT_NAME_COLLISION;
-            }
-            bool ok;
-            device->runAdbCommand(QString("touch %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
-            if(!ok){
-                return STATUS_UNSUCCESSFUL;
-            }
-            byteArray = new QByteArray("");    //Create an empty byte array with one last byte equal to 0 indicating it hasn't been modified. So initialize it to {'\0'}, except the compiler won't accept that syntax, so use an empty string with an implicit null terminator instead.
-        }
-        else if(!fileExists){
+        if(createDisposition != CREATE_ALWAYS && !fileExists){
             return STATUS_OBJECT_PATH_NOT_FOUND;
         }
-        else{
-            const QString temporaryFilePath = getTemporaryFilePath();
-            if(!device->pullFromAdb(filePath, temporaryFilePath)){
-                return STATUS_UNSUCCESSFUL;
-            }
-            QFile file(temporaryFilePath);
-            if(!file.open(QIODevice::ReadOnly)){
-                return STATUS_ACCESS_DENIED;
-            }
-            byteArray = new QByteArray(file.readAll());
-            byteArray->append('\0');    //Append a zero byte to indicate that it hasn't been modified. Use '\0' instead of just 0 because just 0 can be interpreted as a null pointer which can be passed to another overload.
-            file.close();
-            file.remove();
+        TemporaryFile *temporaryFile = new TemporaryFile(device, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition);
+        const NTSTATUS errorCode = temporaryFile->errorCode();
+        if(errorCode != STATUS_SUCCESS){
+            delete temporaryFile;
+            return errorCode;
         }
-        dokanFileInfo->Context = reinterpret_cast<ULONG64>(byteArray);
+        dokanFileInfo->Context = reinterpret_cast<ULONG64>(temporaryFile);
     }
     return STATUS_SUCCESS;
 }
 
 void DOKAN_CALLBACK closeFile(LPCWSTR, PDOKAN_FILE_INFO dokanFileInfo){
-    QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
 
-    if(byteArray != nullptr){
-        delete byteArray;
+    if(temporaryFile != nullptr){
+        delete temporaryFile;
         dokanFileInfo->Context = 0;
     }
 }
@@ -94,49 +75,38 @@ void DOKAN_CALLBACK cleanup(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
         deleteFile(fileName, dokanFileInfo);
     }
     else{
-        QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
-        if(byteArray != nullptr){
-            pushQByteArrayToAdb(byteArray, fileName, dokanFileInfo);
+        TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+        if(temporaryFile != nullptr){
+            temporaryFile->push();
         }
     }
 }
 
 NTSTATUS DOKAN_CALLBACK readFile(LPCWSTR, LPVOID buffer, DWORD bufferLength, LPDWORD readLength, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
-    const QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
-    if(byteArray == nullptr){
+    const TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    for(*readLength = 0; *readLength < bufferLength && *readLength + offset < byteArray->size() - 1; (*readLength)++){    //byteArray->size() - 1 because we don't want to read the last byte that's used to indicate if it has been modified
-        static_cast<char*>(buffer)[*readLength] = byteArray->at(*readLength + offset);
-    }
-
-    return STATUS_SUCCESS;
+    return temporaryFile->read(buffer, bufferLength, readLength, offset);
 }
 
 NTSTATUS DOKAN_CALLBACK writeFile(LPCWSTR, LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
-    QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
-    if(byteArray == nullptr){
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    if(offset + numberOfBytesToWrite > byteArray->size() - 1){
-        byteArray->resize(offset + numberOfBytesToWrite + 1);
-    }
-    byteArray->replace(byteArray->size() - 1, 1, "\1", 1);    //Change the last byte to 1 to indicate that it's been modified (for some reason just doing {1} doesn't work, so we need to do "\1" which is equivalent to {1, 0} and tell it to ignore the zero with the last argument)
-    byteArray->replace(offset, numberOfBytesToWrite, static_cast<const char*>(buffer), numberOfBytesToWrite);
-    *numberOfBytesWritten = numberOfBytesToWrite;
-
-    return STATUS_SUCCESS;
+    return temporaryFile->write(buffer, numberOfBytesToWrite, numberOfBytesWritten, offset, dokanFileInfo);
 }
 
-NTSTATUS DOKAN_CALLBACK flushFileBuffers(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
-    const QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
-    if(byteArray == nullptr){
+NTSTATUS DOKAN_CALLBACK flushFileBuffers(LPCWSTR, PDOKAN_FILE_INFO dokanFileInfo){
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    return pushQByteArrayToAdb(byteArray, fileName, dokanFileInfo);
+    return temporaryFile->push();
 }
 
 NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_INFORMATION handleFileInformation, PDOKAN_FILE_INFO dokanFileInfo){
@@ -149,7 +119,8 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
         return STATUS_UNSUCCESSFUL;
     }
 
-    const QRegularExpressionMatch match = QRegularExpression("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+)$").match(fileInfo);
+    static const QRegularExpression fileInfoRegex("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+)$");
+    const QRegularExpressionMatch match = fileInfoRegex.match(fileInfo);
     if(!match.hasMatch()){
         return STATUS_UNSUCCESSFUL;
     }
@@ -195,14 +166,16 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
      * %n = File path
      */
     bool ok;
-    const QStringList output = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X %n\" %1/* %1/.* || test -d %1").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(QRegularExpression("[\r\n]+"));    //The || test -d is necessary so that it doesn't return an error for empty directories (otherwise it will give an error like "Can't find /sdcard/emptydirectory/*" since there are no files that match that pattern), but so that it still returns an error if the directory doesn't exist at all.
+    static const QRegularExpression newlineRegex("[\r\n]+");
+    const QStringList output = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X %n\" %1/* %1/.* || test -d %1").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(newlineRegex);    //The || test -d is necessary so that it doesn't return an error for empty directories (otherwise it will give an error like "Can't find /sdcard/emptydirectory/*" since there are no files that match that pattern), but so that it still returns an error if the directory doesn't exist at all.
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
     const bool hideDotFiles = Settings().hideDotFiles();
+    static const QRegularExpression fileInfoRegex("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+) (.+)$");
     for(const QString &fileInfo: output){
-        const QRegularExpressionMatch match = QRegularExpression("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+) (.+)$").match(fileInfo);
+        const QRegularExpressionMatch match = fileInfoRegex.match(fileInfo);
         if(!match.hasMatch()){
             continue;
         }
@@ -233,7 +206,7 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
         findData.ftLastAccessTime = lastAccessTimeKnown ? lastAccessTime : unknownTime;
         findData.nFileSizeHigh = fileSize.HighPart;
         findData.nFileSizeLow = fileSize.LowPart;
-        findData.cFileName[subfileName.toWCharArray(findData.cFileName)] = L'\0';    //toWCharArray does most of the work, but it doesn't add a null terminator, so add one manually at the end of the string (the length of the string is returned by toWCharArray)
+        wcscpy_s(findData.cFileName, sizeof(findData.cFileName) / sizeof(findData.cFileName[0]), subfileName.toStdWString().c_str());
         findData.cAlternateFileName[0] = L'\0';    //There is no alternate file name, so just set the first byte to a null terminator to indicate an empty string
         fillFindData(&findData, dokanFileInfo);
     }
@@ -281,24 +254,18 @@ NTSTATUS DOKAN_CALLBACK moveFile(LPCWSTR oldFileName, LPCWSTR newFileName, BOOL 
 }
 
 NTSTATUS DOKAN_CALLBACK setAllocationSize(LPCWSTR, LONGLONG allocSize, PDOKAN_FILE_INFO dokanFileInfo){
-    QByteArray *byteArray = reinterpret_cast<QByteArray*>(dokanFileInfo->Context);
-    if(byteArray == nullptr){
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    if(byteArray->size() != allocSize + 1){
-        const char modified = byteArray->back();
-        byteArray->resize(allocSize + 1);
-        byteArray->insert(allocSize, modified);
-    }
-
-    return STATUS_SUCCESS;
+    return temporaryFile->setAllocationSize(allocSize);
 }
 
 NTSTATUS DOKAN_CALLBACK getVolumeInformation(LPWSTR volumeNameBuffer, DWORD volumeNameSize, LPDWORD volumeSerialNumber, LPDWORD maximumComponentLength, LPDWORD fileSystemFlags, LPWSTR fileSystemNameBuffer, DWORD fileSystemNameSize, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
 
-    volumeNameBuffer[device->model().left(volumeNameSize - 1).toWCharArray(volumeNameBuffer)] = L'\0';
+    wcscpy_s(volumeNameBuffer, volumeNameSize, device->model().toStdWString().c_str());
 
     if(volumeSerialNumber != nullptr){
         *volumeSerialNumber = device->serialNumber().toULongLong(nullptr, 36);
@@ -310,7 +277,7 @@ NTSTATUS DOKAN_CALLBACK getVolumeInformation(LPWSTR volumeNameBuffer, DWORD volu
         *fileSystemFlags = FILE_SUPPORTS_REMOTE_STORAGE | FILE_UNICODE_ON_DISK | FILE_PERSISTENT_ACLS | FILE_NAMED_STREAMS;
     }
 
-    fileSystemNameBuffer[device->fileSystem().left(fileSystemNameSize - 1).toWCharArray(fileSystemNameBuffer)] = L'\0';
+    wcscpy_s(fileSystemNameBuffer, fileSystemNameSize, device->fileSystem().toStdWString().c_str());
 
     return STATUS_SUCCESS;
 }
@@ -318,12 +285,14 @@ NTSTATUS DOKAN_CALLBACK getVolumeInformation(LPWSTR volumeNameBuffer, DWORD volu
 NTSTATUS DOKAN_CALLBACK getDiskFreeSpace(PULONGLONG freeBytesAvailable, PULONGLONG totalNumberOfBytes, PULONGLONG totalNumberOfFreeBytes, PDOKAN_FILE_INFO dokanFileInfo){
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
 
-    const QStringList dfOutput = device->runAdbCommand("df /sdcard").split(QRegularExpression("[\r\n]+"));
+    static const QRegularExpression newlineRegex("[\r\n]+");
+    const QStringList dfOutput = device->runAdbCommand("df /sdcard").split(newlineRegex);
     if(dfOutput.size() <= 1){
         return STATUS_UNSUCCESSFUL;
     }
 
-    const QStringList values = dfOutput[1].split(QRegularExpression("\\s+"));
+    static const QRegularExpression spaceRegex("\\s+");
+    const QStringList values = dfOutput[1].split(spaceRegex);
     if(values.size() <= 3){
         return STATUS_UNSUCCESSFUL;
     }

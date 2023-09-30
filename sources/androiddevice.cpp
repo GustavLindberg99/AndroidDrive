@@ -202,7 +202,8 @@ QString AndroidDevice::model() const{
 QString AndroidDevice::fileSystem() const{
     if(!this->_fileSystemCached){
         const QString output = this->runAdbCommand("mount | grep $(df /sdcard | sed \"s/.* //g\" | tail -n +2)");
-        const QRegularExpressionMatch match = QRegularExpression("\\S+\\s+on\\s+\\S+\\s+type\\s+([a-zA-Z0-9]+)\\s+").match(output);
+        static const QRegularExpression fileSystemRegex("\\S+\\s+on\\s+\\S+\\s+type\\s+([a-zA-Z0-9]+)\\s+");
+        const QRegularExpressionMatch match = fileSystemRegex.match(output);
         this->_cachedFileSystem = match.hasMatch() ? match.captured(1) : "";
         this->_fileSystemCached = true;
     }

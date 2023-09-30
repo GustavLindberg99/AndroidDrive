@@ -31,38 +31,6 @@ QString androidFileNameToWindowsFileName(QString fileName){
     return fileName;
 }
 
-QString getTemporaryFilePath(){
-    const QString temporaryDir = QDir::tempPath();
-    QString temporaryFilePath = temporaryDir + "/AndroidDrive.tmp";
-    for(int i = 0; QFile::exists(temporaryFilePath); i++){
-        temporaryFilePath = temporaryDir + "/AndroidDrive" + QString::number(i) + ".tmp";
-    }
-    return temporaryFilePath;
-}
-
-NTSTATUS pushQByteArrayToAdb(const QByteArray *byteArray, LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
-    NTSTATUS status = STATUS_SUCCESS;
-    if(byteArray->back() != 0){    //If the last byte is zero, it indicates that it hasn't been modified, so there's no point in pushing it (that's why we have the last byte to indicate if it's modified).
-        const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-        const QString filePath = windowsPathToAndroidPath(fileName);
-
-        QFile file(getTemporaryFilePath());
-        if(!file.open(QFile::WriteOnly)){
-            return STATUS_ACCESS_DENIED;
-        }
-        if(file.write(byteArray->chopped(1)) == -1){
-            status = STATUS_ACCESS_DENIED;
-            file.close();
-        }
-        else{
-            file.close();
-            status = device->pushToAdb(file.fileName(), filePath) ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
-        }
-        file.remove();
-    }
-    return status;
-}
-
 qlonglong microsoftTimeToUnixTime(FILETIME microsoftTime){
     LARGE_INTEGER mstLargeInt;
     mstLargeInt.LowPart = microsoftTime.dwLowDateTime;

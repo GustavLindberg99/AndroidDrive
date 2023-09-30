@@ -18,11 +18,11 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
     this->setWindowIcon(QIcon(":/icon.ico"));
 
     if(this->_device != nullptr){
-        QObject::connect(&this->_driveLetter, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](){this->_applyButton.setEnabled(true);});
+        QObject::connect(&this->_driveLetter, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](){this->_applyButton.setEnabled(true);});
         this->_driveLetter.setWhatsThis(QObject::tr("Allows you to select a preferred drive letter for the selected Android device. If the preferred drive letter is unavailable when this device is connected, it will use the next available drive letter in alphabetical order. If you change the drive letter while a drive for this device is connected, you will have to disconnect it and re-connect it again for the changes to take effect."));
         this->_deviceSettingsLayout.addRow(QObject::tr("Drive &letter"), &this->_driveLetter);
 
-        QObject::connect(&this->_autoConnect, &QCheckBox::clicked, [this](){this->_applyButton.setEnabled(true);});
+        QObject::connect(&this->_autoConnect, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
         this->_autoConnect.setWhatsThis(QObject::tr("If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer. Otherwise, you will have to connect it manually by going into Devices > Connect drive."));
         this->_deviceSettingsLayout.addRow(&this->_autoConnect);
 
@@ -32,11 +32,11 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
         this->_layout.addWidget(&this->_deviceSettingsBox, 0, 0, 1, 3);
     }
 
-    QObject::connect(&this->_openInExplorer, &QCheckBox::clicked, [this](){this->_applyButton.setEnabled(true);});
+    QObject::connect(&this->_openInExplorer, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
     this->_openInExplorer.setWhatsThis(QObject::tr("If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer."));
     this->_globalSettingsLayout.addRow(&this->_openInExplorer);
 
-    QObject::connect(&this->_hideDotFiles, &QCheckBox::clicked, [this](){this->_applyButton.setEnabled(true);});
+    QObject::connect(&this->_hideDotFiles, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
     this->_hideDotFiles.setWhatsThis(QObject::tr("If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer's \"Show hidden files\" option is activated."));
     this->_globalSettingsLayout.addRow(&this->_hideDotFiles);
 
@@ -52,15 +52,15 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
 
     Settings() >> this;
 
-    QObject::connect(&this->_okButton, &QPushButton::clicked, [this](){
+    QObject::connect(&this->_okButton, &QPushButton::clicked, this, [this](){
         this->_applyButton.click();
         this->close();
     });
-    QObject::connect(&this->_cancelButton, &QPushButton::clicked, [this](){
+    QObject::connect(&this->_cancelButton, &QPushButton::clicked, this, [this](){
         Settings() >> this;
         this->close();
     });
-    QObject::connect(&this->_applyButton, &QPushButton::clicked, [this](){
+    QObject::connect(&this->_applyButton, &QPushButton::clicked, this, [this](){
         Settings settings;
         settings << this;
         for(SettingsWindow *settingsWindow: qAsConst(SettingsWindow::_instances)){

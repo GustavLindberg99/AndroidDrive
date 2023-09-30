@@ -25,7 +25,7 @@ DeviceListWindow::DeviceListWindow():
     this->_layout.addWidget(&this->_connectButton, 1, 0);
     this->_layout.addWidget(&this->_settingsButton, 1, 1);
 
-    QObject::connect(&this->_connectButton, &QPushButton::pressed, [this](){
+    QObject::connect(&this->_connectButton, &QPushButton::pressed, this, [this](){
         AndroidDevice *device = this->selectedDevice();
         if(device != nullptr){
             if(device->isConnected()){
@@ -38,14 +38,14 @@ DeviceListWindow::DeviceListWindow():
         }
     });
 
-    QObject::connect(&this->_settingsButton, &QPushButton::pressed, [this](){
+    QObject::connect(&this->_settingsButton, &QPushButton::pressed, this, [this](){
         AndroidDevice *device = this->selectedDevice();
         if(device != nullptr){
             this->_settingsWindows[device]->show();
         }
     });
 
-    QObject::connect(&this->_view, &QListView::clicked, [this](){
+    QObject::connect(&this->_view, &QListView::clicked, this, [this](){
         this->updateButtons();
     });
 
@@ -66,7 +66,8 @@ AndroidDevice *DeviceListWindow::selectedDevice(){
     if(index < 0 || index >= this->_devices.size()){
         return nullptr;
     }
-    return this->_devices.values()[index];
+    const QList<AndroidDevice*> devices = this->_devices.values();
+    return devices[index];
 }
 
 void DeviceListWindow::updateButtons(){
@@ -99,14 +100,16 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     this->_adbFailed = false;
 
     //Create newly conneced devices
-    const QStringList result = QString::fromUtf8(this->_adb.readAllStandardOutput()).trimmed().split(QRegularExpression("[\r\n]+"));
+    static const QRegularExpression newlineRegex("[\r\n]+");
+    const QStringList result = QString::fromUtf8(this->_adb.readAllStandardOutput()).trimmed().split(newlineRegex);
     QStringList serialNumbers;
     bool changed = false;
+    static const QRegularExpression spaceRegex("\\s+");
     for(const QString &line: result){
         if(line == "List of devices attached" || line.isEmpty()){
             continue;
         }
-        const QString serialNumber = line.split(QRegularExpression("\\s+"))[0];
+        const QString serialNumber = line.split(spaceRegex)[0];
         if(!this->_devices.contains(serialNumber)){
             AndroidDevice *device = new AndroidDevice(serialNumber);
             Settings settings;
@@ -184,7 +187,7 @@ void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
         break;
     case DOKAN_MOUNT_ERROR:
     case DOKAN_MOUNT_POINT_ERROR:
-        errorMessage = QObject::tr("Could not assign a drive letter.");
+        errorMessage = QObject::tr("Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.");
         break;
     case DOKAN_VERSION_ERROR:
         errorMessage = QObject::tr("Dokan version error.");

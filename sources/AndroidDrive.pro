@@ -7,7 +7,8 @@ SOURCES += main.cpp \
     devicelistwindow.cpp \
     dokanoperations.cpp \
     helperfunctions.cpp \
-    settingswindow.cpp
+    settingswindow.cpp \
+    temporaryfile.cpp
 
 HEADERS += \
     androiddevice.h \
@@ -15,7 +16,8 @@ HEADERS += \
     dokanoperations.h \
     helperfunctions.h \
     programinfo.h \
-    settingswindow.h
+    settingswindow.h \
+    temporaryfile.h
 
 INCLUDEPATH += "C:/Program Files/Dokan/Dokan Library-2.0.6/include"
 LIBS += \

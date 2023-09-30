@@ -44,7 +44,7 @@ int main(int argc, char **argv){
     QObject::connect(settingsAction, &QAction::triggered, settingsWindow, &QWidget::show);
 
     QAction *aboutAction = contextMenu.addAction(QObject::tr("&About AndroidDrive"));
-    QObject::connect(aboutAction, &QAction::triggered, [](){
+    QObject::connect(aboutAction, &QAction::triggered, aboutAction, [](){
         QMessageBox msg;
         msg.setIconPixmap(QPixmap(":/icon.ico"));
         msg.setWindowIcon(QIcon(":/icon.ico"));

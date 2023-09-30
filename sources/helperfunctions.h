@@ -23,8 +23,6 @@ enum Attribute{
 QString escapeSpecialCharactersForBash(QString filePath);
 QString windowsPathToAndroidPath(LPCWSTR windowsPath);
 QString androidFileNameToWindowsFileName(QString fileName);
-QString getTemporaryFilePath();
-NTSTATUS pushQByteArrayToAdb(const QByteArray *byteArray, LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo);
 qlonglong microsoftTimeToUnixTime(FILETIME microsoftTime);
 FILETIME unixTimeToMicrosftTime(qlonglong unixTime);
 
