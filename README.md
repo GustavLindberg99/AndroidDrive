@@ -6,7 +6,7 @@ AndroidDrive is a program that allows mounting Android smartphones as drives on 
 
 # Setup
 To be able to use AndroidDrive, you need to do three things (the order in which you do them doesn't matter):
-- **Install AndroidDrive on your Windows computer**: Either use the [installation program](https://github.com/GustavLindberg99/AndroidDrive/raw/main/AndroidDrive-setup.exe), or download and extract [AndroidDrive.zip](https://github.com/Gustav-Lindberg/AndroidDrive/raw/main/AndroidDrive.zip). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
+- **Install AndroidDrive on your Windows computer**: Either use the [installation program](https://github.com/GustavLindberg99/AndroidDrive/raw/main/AndroidDrive-setup.exe), or download and extract [AndroidDrive.zip](https://github.com/GustavLindberg99/AndroidDrive/raw/main/AndroidDrive.zip). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
 
 - **Install Dokan on your Windows computer**: The easiest way is to use their [installation program](https://github.com/dokan-dev/dokany/releases/download/v2.0.6.1000/DokanSetup.exe) (this is the installation program for Dokan 2.0.6, which is the version AndroidDrive was tested on). If you prefer, you can find other ways to install Dokan in [their documentation](https://github.com/dokan-dev/dokany/wiki/Installation).
 
