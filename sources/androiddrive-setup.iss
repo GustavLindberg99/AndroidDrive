@@ -3,7 +3,7 @@
 
 #define MyAppName "AndroidDrive"
 #define MyAppVersion "2.0.6"
-#define MyAppURL "https://github.com/Gustav-Lindberg/AndroidDrive"
+#define MyAppURL "https://github.com/GustavLindberg99/AndroidDrive"
 #define MyAppExeName "AndroidDrive.exe"
 
 [Setup]
