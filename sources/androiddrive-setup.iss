@@ -4,7 +4,7 @@
 #include                  "androiddrive-setup-languages.iss"
 #define MyAppName         "AndroidDrive"
 #define MyAppExeName      MyAppName + ".exe"
-#define MyExePath         "C:\Users\glind\OneDrive\Documents\AndroidDrive\build-AndroidDrive\release"
+#define MyAppExePath      "C:\Users\glind\OneDrive\Documents\AndroidDrive\build-AndroidDrive\release"
 #define MyDepenciesPath   "C:\Users\glind\OneDrive\Documents\AndroidDrive\dependencies"
 #define MyAppVersion      GetVersionNumbersString(MyAppExePath + "\" + MyAppExeName)
 #define MyAppURL          "https://github.com/GustavLindberg99/AndroidDrive"
@@ -25,6 +25,7 @@ AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 
 AppCopyright=(c) {#MyAppStartingYear}-{#CurrentYear} {#MyAppCompany}
+AppPublisher={#MyAppCompany}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
@@ -44,7 +45,7 @@ LanguageDetectionMethod=uilanguage
 
 WizardStyle=modern
 
-DefaultDirName={pf64}{#MyAppName}
+DefaultDirName={pf64}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir={#MyAppOutputDir}
 OutputBaseFilename={#MyAppOutputExe}
@@ -66,4 +67,3 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
