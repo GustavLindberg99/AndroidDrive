@@ -216,8 +216,9 @@
     </message>
     <message>
         <location filename="settingswindow.cpp" line="30"/>
-        <source>If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer. Otherwise, you will have to connect it manually by going into Devices &gt; Connect drive.</source>
-        <translation>Si cette case est cochée, l&apos;appareil sélectionné sera automatiquement connecté comme lecteur quant vous le branchez à votre ordinateur. Sinon, vous devrez le connecter manuellement dans Appareils &gt; Connecter le lecteur.</translation>
+        <source>If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to connect it manually by going into Devices &gt; Connect drive.</source>
+        <oldsource>If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer. Otherwise, you will have to connect it manually by going into Devices &gt; Connect drive.</oldsource>
+        <translation>Si cette case est cochée, l&apos;appareil sélectionné sera automatiquement connecté comme lecteur quant vous le branchez à votre ordinateur.&lt;br/&gt;&lt;br/&gt;Sinon, vous devrez le connecter manuellement dans Appareils &gt; Connecter le lecteur.</translation>
     </message>
     <message>
         <location filename="settingswindow.cpp" line="33"/>
@@ -258,8 +259,9 @@
     </message>
     <message>
         <location filename="settingswindow.cpp" line="61"/>
-        <source>AndroidDrive doesn&apos;t seem to be available in your system language. &lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
-        <translation>AndroidDrive ne semble pas être disponible dans la langue de votre système. &lt;a %1&gt;Cliquez ici&lt;/a&gt; si cous voulez aider à le traduire.</translation>
+        <source>AndroidDrive doesn&apos;t seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
+        <oldsource>AndroidDrive doesn&apos;t seem to be available in your system language. &lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</oldsource>
+        <translation>AndroidDrive ne semble pas être disponible dans la langue de votre système.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Cliquez ici&lt;/a&gt; si cous voulez aider à le traduire.</translation>
     </message>
     <message>
         <location filename="settingswindow.cpp" line="69"/>
