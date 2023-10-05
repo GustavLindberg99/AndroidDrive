@@ -2,15 +2,29 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSystemTrayIcon>
+#include <QTranslator>
 #include "androiddevice.h"
 #include "devicelistwindow.h"
-#include "programinfo.h"
 #include "settingswindow.h"
+#include "updates.h"
+#include "version.h"
 
 int main(int argc, char **argv){
     QApplication app(argc, argv);
     app.setQuitOnLastWindowClosed(false);
     DokanInit();
+
+
+    //Load translations
+    QTranslator translator, baseTranslator;
+    QString language = Settings().language();
+    if(language == "auto"){
+        language = QLocale::system().name().section('_', 0, 0);
+    }
+    SettingsWindow::systemLanguageAvailable = translator.load(":/translations/androiddrive_" + language) || language == "en";
+    (void) baseTranslator.load(":/translations/qtbase_" + language);
+    app.installTranslator(&translator);
+    app.installTranslator(&baseTranslator);
 
 
     //Create the tray icon and the windows
@@ -28,6 +42,13 @@ int main(int argc, char **argv){
             app.quit();
         });
     };
+    checkForUpdates(
+        QUrl("https://github.com/GustavLindberg99/AndroidDrive"),
+        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/sources/version.h"),
+        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive.zip"),
+        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-setup.exe"),
+        quit
+    );
 
 
     //Initialize the device list window
