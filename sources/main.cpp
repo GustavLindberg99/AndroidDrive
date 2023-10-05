@@ -67,7 +67,7 @@ int main(int argc, char **argv){
     QAction *aboutAction = contextMenu.addAction(QObject::tr("&About AndroidDrive"));
     QObject::connect(aboutAction, &QAction::triggered, aboutAction, [](){
         QMessageBox msg;
-        msg.setIconPixmap(QPixmap(":/icon.ico"));
+        msg.setIconPixmap(QPixmap(":/icon.ico").scaled(64, 64));
         msg.setWindowIcon(QIcon(":/icon.ico"));
         msg.setWindowTitle(QObject::tr("About AndroidDrive"));
         msg.setText(QObject::tr("AndroidDrive version %1 by Gustav Lindberg.").arg(PROGRAMVERSION) + "<br><br>" + QObject::tr("Icons made by %3 and %4 from %1 are licensed by %2.").arg("<a href=\"https://www.iconfinder.com/\">www.iconfinder.com</a>", "<a href=\"http://creativecommons.org/licenses/by/3.0/\">CC 3.0 BY</a>", "<a href=\"https://www.iconfinder.com/pocike\">Alpár-Etele Méder</a>", "<a href=\"https://www.iconfinder.com/iconsets/tango-icon-library\">Tango</a>") + "<br><br>" + QObject::tr("This program uses %1 and %2.").arg("<a href=\"https://android.googlesource.com/platform/packages/modules/adb/\">ADB</a>", "<a href=\"https://dokan-dev.github.io/\">Dokan</a>"));
