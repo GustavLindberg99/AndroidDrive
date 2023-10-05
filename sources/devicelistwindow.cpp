@@ -16,6 +16,7 @@ DeviceListWindow::DeviceListWindow():
 
     this->setWindowTitle(QObject::tr("AndroidDrive - Devices"));
     this->setWindowIcon(QIcon(":/icon.ico"));
+    this->setWindowFlag(Qt::WindowContextHelpButtonHint, true);
 
     this->_view.setModel(&this->_model);
     this->_view.setEditTriggers(QListView::NoEditTriggers);
@@ -66,8 +67,7 @@ AndroidDevice *DeviceListWindow::selectedDevice(){
     if(index < 0 || index >= this->_devices.size()){
         return nullptr;
     }
-    const QList<AndroidDevice*> devices = this->_devices.values();
-    return devices[index];
+    return this->_devices.values()[index];
 }
 
 void DeviceListWindow::updateButtons(){
@@ -76,7 +76,7 @@ void DeviceListWindow::updateButtons(){
     this->_settingsButton.setEnabled(device != nullptr);
     if(device != nullptr && device->isConnected()){
         this->_connectButton.setText(QObject::tr("&Disconnect drive"));
-        this->_connectButton.setWhatsThis(QObject::tr("Disconnects the drive corresponding to the selected Android device. This only disconnects the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB. If you disconnect a drive manually, it won't be reconnected until you reconnect it manually."));
+        this->_connectButton.setWhatsThis(QObject::tr("Disconnects the drive corresponding to the selected Android device.<br/><br/>This only disconnects the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
     }
     else{
         this->_connectButton.setText(QObject::tr("&Connect drive"));
@@ -88,7 +88,7 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     //Check that it exited correctly
     if(exitCode != 0){
         if(this->_adbFailed){
-            QMessageBox::critical(nullptr, "", QObject::tr("Fatal error: Could not list Android devices: ADB exited with code %1").arg(exitCode));
+            QMessageBox::critical(nullptr, "", QObject::tr("Fatal error: Could not list Android devices.<br/><br/>ADB exited with code %1.").arg(exitCode));
             emit this->encounteredFatalError();
         }
         else{
@@ -187,7 +187,7 @@ void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
         break;
     case DOKAN_MOUNT_ERROR:
     case DOKAN_MOUNT_POINT_ERROR:
-        errorMessage = QObject::tr("Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.");
+        errorMessage = QObject::tr("Could not assign a drive letter.<br/><br/>Try changing the drive letter in Device Settings to an available drive letter.");
         break;
     case DOKAN_VERSION_ERROR:
         errorMessage = QObject::tr("Dokan version error.");

@@ -1,4 +1,5 @@
 QT += widgets
+QT += network
 
 CONFIG += c++17
 
@@ -8,16 +9,23 @@ SOURCES += main.cpp \
     dokanoperations.cpp \
     helperfunctions.cpp \
     settingswindow.cpp \
-    temporaryfile.cpp
+    temporaryfile.cpp \
+    updates.cpp
 
 HEADERS += \
     androiddevice.h \
     devicelistwindow.h \
     dokanoperations.h \
     helperfunctions.h \
-    programinfo.h \
     settingswindow.h \
-    temporaryfile.h
+    temporaryfile.h \
+    updates.h \
+    version.h
+
+TRANSLATIONS = \
+    androiddrive_fr.ts\
+    androiddrive_it.ts\
+    androiddrive_sv.ts
 
 INCLUDEPATH += "C:/Program Files/Dokan/Dokan Library-2.0.6/include"
 LIBS += \

@@ -7,6 +7,7 @@
 #include <QGroupBox>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QSet>
 #include <QSettings>
@@ -26,8 +27,11 @@ public:
     friend Settings &operator<<(Settings &settings, const SettingsWindow *settingsWindow);
     friend const Settings &operator>>(const Settings &settings, SettingsWindow *settingsWindow);
 
+    static bool systemLanguageAvailable;
+
 private:
     static QSet<SettingsWindow*> _instances;
+    static const QStringList _languageNames, _languageAbbreviations;
 
     const AndroidDevice *const _device;
 
@@ -38,6 +42,8 @@ private:
     QComboBox _driveLetter;
     QCheckBox _autoConnect;
     QCheckBox _openInExplorer, _hideDotFiles;
+
+    QComboBox _language;
 
     mutable QPushButton _okButton, _cancelButton, _applyButton;
 };
@@ -50,6 +56,7 @@ public:
     bool autoConnect(const AndroidDevice *device) const;
     bool openInExplorer() const;
     bool hideDotFiles() const;
+    QString language() const;
 };
 
 #endif // SETTINGSWINDOW_H

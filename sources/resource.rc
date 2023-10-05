@@ -2,7 +2,7 @@
 //Icons
 0 ICON "icon.ico"
 
-#include "programinfo.h"
+#include "version.h"
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION     PROGRAMVERSION_NUMBER
 PRODUCTVERSION  PROGRAMVERSION_NUMBER

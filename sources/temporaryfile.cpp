@@ -4,7 +4,7 @@
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
 
 TemporaryFile::TemporaryFile(const AndroidDevice *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition):
-    _localPath(QDir::toNativeSeparators(this->_temporaryDir.path() + "/AndroidDrive.tmp")),
+    _localPath(QDir::toNativeSeparators(this->_temporaryDir.filePath("AndroidDrive.tmp"))),
     _remotePath(remotePath),
     _device(device),
     _handle(INVALID_HANDLE_VALUE),
@@ -171,10 +171,6 @@ NTSTATUS TemporaryFile::setAllocationSize(LONGLONG allocSize){
 }
 
 NTSTATUS TemporaryFile::push(){
-    /*if(this->_handle != INVALID_HANDLE_VALUE){
-        CloseHandle(this->_handle);
-        this->_handle = INVALID_HANDLE_VALUE;
-    }*/
     if(this->_modified){
         if(!this->_device->pushToAdb(this->_localPath, this->_remotePath)){
             return STATUS_UNSUCCESSFUL;

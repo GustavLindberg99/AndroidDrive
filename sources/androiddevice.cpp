@@ -166,7 +166,7 @@ QString AndroidDevice::runAdbCommand(const QString &command, bool *ok, bool useC
     if(exitCode == 0){
         const QString result = adb.readAllStandardOutput().trimmed();
         if(useCache){
-            this->_adbCache[command] = QPair(result, QDateTime::currentMSecsSinceEpoch());
+            this->_adbCache[command] = QPair<QString, qint64>(result, QDateTime::currentMSecsSinceEpoch());
         }
         return result;
     }
