@@ -146,7 +146,7 @@
     <message>
         <location filename="main.cpp" line="73"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
-        <translation>Le icone sono state create da %3 e %4 da %1 e sono concesse in licenza da %2.</translation>
+        <translation>Le icone sono state create da %3 e %4 di %1 e sono concesse in licenza da %2.</translation>
     </message>
     <message>
         <location filename="main.cpp" line="73"/>
@@ -218,7 +218,7 @@
         <location filename="settingswindow.cpp" line="30"/>
         <source>If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to connect it manually by going into Devices &gt; Connect drive.</source>
         <oldsource>If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer. Otherwise, you will have to connect it manually by going into Devices &gt; Connect drive.</oldsource>
-        <translation>Se è selezionata questa casella, il dispositivo selezionato verrà automaticamente connesso come unità ogni volta che lo colleghi al computer.&lt;br/&gt;&lt;br/&gt;Altrimenti, dovrai collegarlo manualmente accedendo a Dispositivi -&gt; Connetti unità.</translation>
+        <translation>Se è selezionata questa casella, il dispositivo selezionato verrà automaticamente connesso come unità ogni volta che lo colleghi al computer. &lt;br/&gt;&lt;br/&gt;Altrimenti, dovrai collegarlo manualmente accedendo a Dispositivi -&gt; Connetti unità.</translation>
     </message>
     <message>
         <location filename="settingswindow.cpp" line="33"/>
@@ -260,7 +260,7 @@
         <location filename="settingswindow.cpp" line="61"/>
         <source>AndroidDrive doesn&apos;t seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
         <oldsource>AndroidDrive doesn&apos;t seem to be available in your system language. &lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</oldsource>
-        <translation>AndroidDrive sembra non essere disponibile nella lingua del sistema.&lt;br/&gt;&lt;br/&gt;Se vuoi aiutarci a tradurlo &lt;a %1&gt;fai clic qui&lt;/a&gt;.</translation>
+        <translation>AndroidDrive sembra non essere disponibile nella lingua del sistema. &lt;br/&gt;&lt;br/&gt;Se vuoi aiutarci a tradurlo &lt;a %1&gt;fai clic qui&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="settingswindow.cpp" line="69"/>
