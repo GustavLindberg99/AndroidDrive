@@ -45,8 +45,8 @@ int main(int argc, char **argv){
     checkForUpdates(
         QUrl("https://github.com/GustavLindberg99/AndroidDrive"),
         QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/sources/version.h"),
-        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive.zip"),
-        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-setup.exe"),
+        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-portable.zip"),
+        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-install.exe"),
         quit
     );
 
