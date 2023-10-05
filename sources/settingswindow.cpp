@@ -27,7 +27,7 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
         this->_deviceSettingsLayout.addRow(QObject::tr("Drive &letter"), &this->_driveLetter);
 
         QObject::connect(&this->_autoConnect, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
-        this->_autoConnect.setWhatsThis(QObject::tr("If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer. Otherwise, you will have to connect it manually by going into Devices > Connect drive."));
+        this->_autoConnect.setWhatsThis(QObject::tr("If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer.<br/><br/>Otherwise, you will have to connect it manually by going into Devices > Connect drive."));
         this->_deviceSettingsLayout.addRow(&this->_autoConnect);
 
         this->_deviceSettingsBox.setTitle(QObject::tr("Device settings for %1").arg(device->model()));
@@ -58,7 +58,7 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
     this->_globalSettingsLayout.addRow(QObject::tr("&Language"), &this->_language);
 
     if(!systemLanguageAvailable){
-        QLabel *contributeToTranslation = new QLabel(QObject::tr("AndroidDrive doesn't seem to be available in your system language. <a %1>Click here</a> if you would like to help translate it.").arg("href=\"https://github.com/GustavLindberg99/AndroidDrive/blob/main/sources/translations/contribute.md\""), this);
+        QLabel *contributeToTranslation = new QLabel(QObject::tr("AndroidDrive doesn't seem to be available in your system language.<br/><br/><a %1>Click here</a> if you would like to help translate it.").arg("href=\"https://github.com/GustavLindberg99/AndroidDrive/blob/main/sources/translations/contribute.md\""), this);
         contributeToTranslation->setWordWrap(true);
         contributeToTranslation->setTextFormat(Qt::RichText);
         contributeToTranslation->setTextInteractionFlags(Qt::TextBrowserInteraction);
