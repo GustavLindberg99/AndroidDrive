@@ -13,7 +13,7 @@ If your language is not listed above, you can help translate it. Do do so, follo
 2. Download [this file](https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/sources/translations/androiddrive_empty_translation.ts) and save it as `androiddrive_<LANGUAGE CODE>.ts`, where `<LANGUAGE CODE>` is the two-letter code of the language you're translating to. For example, this is `fr` for French, `it` for Italian, `sv` for Swedish, etc.
 3. Open the file in Qt Linguist. You will get a dialog where you can select languages. Normally it auto-detects everything correctly and you just need to click OK:
 
-   <img width="418"src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/81674d06-1cf2-48d8-96e8-a81d114992b1">
+   <img width="418" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/81674d06-1cf2-48d8-96e8-a81d114992b1">
    
    The source language (the one on the top) should always be English (United States). The target language (the one on the bottom) should be the language you're translating to. If you saved the file with the correct name, normally Qt Linguist should auto-detect the language and you don't need to do anything there either. If you want, though, you can select a country or region.
 
