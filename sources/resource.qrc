@@ -9,5 +9,7 @@
         <file>qtbase_sv.qm</file>
         <file>androiddrive_it.qm</file>
         <file>androiddrive_sv.qm</file>
+        <file>androiddrive_hu.qm</file>
+        <file>qtbase_hu.qm</file>
     </qresource>
 </RCC>

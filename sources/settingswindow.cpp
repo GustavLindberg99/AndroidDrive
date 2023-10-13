@@ -2,8 +2,8 @@
 
 QSet<SettingsWindow*> SettingsWindow::_instances;
 bool SettingsWindow::systemLanguageAvailable = true;
-const QStringList SettingsWindow::_languageNames{"", "English", "Français", "Italiano", "Svenska"};
-const QStringList SettingsWindow::_languageAbbreviations{"auto", "en", "fr", "it", "sv"};
+const QStringList SettingsWindow::_languageNames{"", "English", "Français", "Magyar", "Italiano", "Svenska"};
+const QStringList SettingsWindow::_languageAbbreviations{"auto", "en", "fr", "hu", "it", "sv"};
 
 SettingsWindow::SettingsWindow(const AndroidDevice *device):
     _device(device),
