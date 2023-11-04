@@ -40,7 +40,9 @@ If your language is not listed above and you would like to help translate it, yo
 
 # Compatibility
 
-AndroidDrive has only been tested on Windows 10 and 11, but should work on any 64-bit computer with Windows 7 or later.
+AndroidDrive works on any 64-bit computer with Windows 10 or later.
+
+Windows 7 is no longer supported since upgrading to Qt 6, but if you want it to work on Windows 7, you can download an older version of AndroidDrive (version 2.0.6) as an installer [here](https://github.com/GustavLindberg99/AndroidDrive/raw/a36e464a665bafd11866644507b5e900ef8c0e90/AndroidDrive-setup.exe) or a ZIP file [here](https://github.com/GustavLindberg99/AndroidDrive/raw/a36e464a665bafd11866644507b5e900ef8c0e90/AndroidDrive.zip). Note that this is an old version of AndroidDrive, so it doesn't have the latest features and won't be updated. If you have Windows 10 or later, it's highly recommended that you instead use the latest version as described in the Setup section above.
 
 
 # Credits
