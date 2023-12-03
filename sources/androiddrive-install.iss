@@ -4,13 +4,13 @@
 #include                  "androiddrive-install-languages.iss"
 #define MyAppName         "AndroidDrive"
 #define MyAppExeName      MyAppName + ".exe"
-#define MyAppExePath      "C:\Users\glind\OneDrive\Documents\AndroidDrive\build-AndroidDrive\release"
-#define MyDepenciesPath   "C:\Users\glind\OneDrive\Documents\AndroidDrive\dependencies"
+#define MyAppExePath      "..\build\release"
+#define MyDepenciesPath   "..\dependencies"
 #define MyAppVersion      GetVersionNumbersString(MyAppExePath + "\" + MyAppExeName)
 #define MyAppURL          "https://github.com/GustavLindberg99/AndroidDrive"
-#define MyAppOutputDir    "C:\Users\glind\OneDrive\Documents\AndroidDrive"
+#define MyAppOutputDir    ".."
 #define MyAppOutputExe    "AndroidDrive-install"
-#define MyAppLicenseFile  "C:\Users\glind\OneDrive\Documents\AndroidDrive\license.rtf"
+#define MyAppLicenseFile  "license.rtf"
 #define MyAppCompany      "Gustav Lindberg"
 #define MyAppStartingYear "2021"
 #define CurrentYear       GetDateTimeString('yyyy','','')

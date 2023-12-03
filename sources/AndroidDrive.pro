@@ -23,9 +23,10 @@ HEADERS += \
     version.h
 
 TRANSLATIONS = \
-    androiddrive_fr.ts\
-    androiddrive_it.ts\
-    androiddrive_sv.ts
+    translations/androiddrive_fr.ts\
+    translations/androiddrive_hu.ts\
+    translations/androiddrive_it.ts\
+    translations/androiddrive_sv.ts
 
 INCLUDEPATH += "C:/Program Files/Dokan/Dokan Library-2.0.6/include"
 LIBS += \

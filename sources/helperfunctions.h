@@ -22,6 +22,7 @@ enum Attribute{
 
 QString escapeSpecialCharactersForBash(QString filePath);
 QString windowsPathToAndroidPath(LPCWSTR windowsPath);
+QString getAltStream(LPCWSTR windowsPath);
 QString androidFileNameToWindowsFileName(QString fileName);
 qlonglong microsoftTimeToUnixTime(FILETIME microsoftTime);
 FILETIME unixTimeToMicrosftTime(qlonglong unixTime);

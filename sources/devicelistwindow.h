@@ -33,6 +33,7 @@ private:
     bool _adbFailed;
     bool _dokanInstalling;
 
+    QStringList _offlineDevices;
     QMap<QString, AndroidDevice*> _devices;
     QMap<AndroidDevice*, SettingsWindow*> _settingsWindows;
 

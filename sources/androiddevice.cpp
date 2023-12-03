@@ -23,6 +23,7 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
     ZeroMemory(&this->_dokanOptions, sizeof(DOKAN_OPTIONS));
     this->_dokanOptions.Version = DOKAN_VERSION;
     this->_dokanOptions.MountPoint = this->_mountPoint;    //dokanOptions.MountPoint and this->_mountPoint will point to the same memory address, which will be used in connectDrive() and fromDokanFileInfo()
+    this->_dokanOptions.Options |= DOKAN_OPTION_ALT_STREAM;
 
     ZeroMemory(&this->_dokanOperations, sizeof(DOKAN_OPERATIONS));
     this->_dokanOperations.ZwCreateFile = createFile;
@@ -33,6 +34,7 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
     this->_dokanOperations.FlushFileBuffers = flushFileBuffers;
     this->_dokanOperations.GetFileInformation = getFileInformation;
     this->_dokanOperations.FindFiles = findFiles;
+    this->_dokanOperations.SetFileAttributes = setFileAttributes;
     this->_dokanOperations.SetFileTime = setFileTime;
     this->_dokanOperations.DeleteFile = deleteFile;
     this->_dokanOperations.DeleteDirectory = deleteDirectory;

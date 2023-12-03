@@ -3,23 +3,15 @@
 
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
 
-TemporaryFile::TemporaryFile(const AndroidDevice *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition):
+TemporaryFile::TemporaryFile(const AndroidDevice *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream):
     _localPath(QDir::toNativeSeparators(this->_temporaryDir.filePath("AndroidDrive.tmp"))),
     _remotePath(remotePath),
     _device(device),
     _handle(INVALID_HANDLE_VALUE),
-    _modified(false),
+    _modified(!exists),
     _errorCode(STATUS_SUCCESS)
 {
-    if(createDisposition == CREATE_ALWAYS){
-        bool ok;
-        device->runAdbCommand(QString("touch %1").arg(escapeSpecialCharactersForBash(remotePath)), &ok, false);
-        if(!ok){
-            this->_errorCode = STATUS_UNSUCCESSFUL;
-            return;
-        }
-    }
-    else if(!device->pullFromAdb(remotePath, this->_localPath)){
+    if(exists && !device->pullFromAdb(remotePath, this->_localPath)){
         this->_errorCode = STATUS_UNSUCCESSFUL;
         return;
     }
@@ -31,11 +23,10 @@ TemporaryFile::TemporaryFile(const AndroidDevice *device, const QString &remoteP
         genericDesiredAccess |= GENERIC_WRITE;
     }
 
-    this->_handle = CreateFile(this->_localPath.toStdWString().c_str(), genericDesiredAccess, shareAccess, nullptr, creationDisposition, fileAttributesAndFlags, nullptr);
+    this->_handle = CreateFile(this->localPathWithAltStream(altStream).c_str(), genericDesiredAccess, shareAccess, nullptr, creationDisposition, fileAttributesAndFlags, nullptr);
 
     if(this->_handle == INVALID_HANDLE_VALUE){
         this->_errorCode = DokanNtStatusFromWin32(GetLastError());
-        return;
     }
 }
 
@@ -49,13 +40,13 @@ NTSTATUS TemporaryFile::errorCode() const{
     return this->_errorCode;
 }
 
-NTSTATUS TemporaryFile::read(LPVOID buffer, DWORD bufferLength, LPDWORD readLength, LONGLONG offset) const{
+NTSTATUS TemporaryFile::read(LPVOID buffer, DWORD bufferLength, LPDWORD readLength, LONGLONG offset, const QString &altStream) const{
     NTSTATUS status = STATUS_SUCCESS;
     bool closeHandleWhenFinished = false;
 
     HANDLE handle = this->_handle;
     if(handle == INVALID_HANDLE_VALUE){
-        handle = CreateFile(this->_localPath.toStdWString().c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        handle = CreateFile(this->localPathWithAltStream(altStream).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if(handle == INVALID_HANDLE_VALUE){
             return DokanNtStatusFromWin32(GetLastError());
         }
@@ -75,13 +66,13 @@ NTSTATUS TemporaryFile::read(LPVOID buffer, DWORD bufferLength, LPDWORD readLeng
     return status;
 }
 
-NTSTATUS TemporaryFile::write(LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
+NTSTATUS TemporaryFile::write(LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo, const QString &altStream){
     NTSTATUS status = STATUS_SUCCESS;
     bool closeHandleWhenFinished = false;
 
     HANDLE handle = this->_handle;
     if(handle == INVALID_HANDLE_VALUE){
-        handle = CreateFile(this->_localPath.toStdWString().c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
+        handle = CreateFile(this->localPathWithAltStream(altStream).c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
         if(handle == INVALID_HANDLE_VALUE){
             return DokanNtStatusFromWin32(GetLastError());
         }
@@ -173,9 +164,21 @@ NTSTATUS TemporaryFile::setAllocationSize(LONGLONG allocSize){
 NTSTATUS TemporaryFile::push(){
     if(this->_modified){
         if(!this->_device->pushToAdb(this->_localPath, this->_remotePath)){
-            return STATUS_UNSUCCESSFUL;
+            //If it failed while the handle is opened, close the handle because sometimes it fails because the open handle causes it to not have read permission
+            CloseHandle(this->_handle);
+            this->_handle = INVALID_HANDLE_VALUE;
+            if(!this->_device->pushToAdb(this->_localPath, this->_remotePath)){
+                return STATUS_UNSUCCESSFUL;
+            }
         }
         this->_modified = false;
     }
     return STATUS_SUCCESS;
+}
+
+std::wstring TemporaryFile::localPathWithAltStream(const QString &altStream) const{
+    if(altStream.isEmpty()){
+        return this->_localPath.toStdWString();
+    }
+    return (this->_localPath + ":" + altStream).toStdWString();
 }

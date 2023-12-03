@@ -14,7 +14,6 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
     ACCESS_MASK genericDesiredAccess;
     DWORD fileAttributesAndFlags, creationDisposition;
     DokanMapKernelToUserCreateFileFlags(desiredAccess, fileAttributes, createOptions, createDisposition, &genericDesiredAccess, &fileAttributesAndFlags, &creationDisposition);
-
     const QString output = device->runAdbCommand(QString("(test -d %1 && echo d) || (test -f %1 && echo f)").arg(escapeSpecialCharactersForBash(filePath)));
     const bool directoryExists = output == "d";
     const bool fileExists = output == "f";
@@ -47,10 +46,13 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
         }
     }
     else{
-        if(createDisposition != CREATE_ALWAYS && !fileExists){
-            return STATUS_OBJECT_PATH_NOT_FOUND;
+        //Truncate should always be used with write access
+        if(creationDisposition == TRUNCATE_EXISTING){
+            genericDesiredAccess |= GENERIC_WRITE;
         }
-        TemporaryFile *temporaryFile = new TemporaryFile(device, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition);
+
+        TemporaryFile *temporaryFile = new TemporaryFile(device, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
+
         const NTSTATUS errorCode = temporaryFile->errorCode();
         if(errorCode != STATUS_SUCCESS){
             delete temporaryFile;
@@ -82,22 +84,22 @@ void DOKAN_CALLBACK cleanup(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
     }
 }
 
-NTSTATUS DOKAN_CALLBACK readFile(LPCWSTR, LPVOID buffer, DWORD bufferLength, LPDWORD readLength, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
+NTSTATUS DOKAN_CALLBACK readFile(LPCWSTR fileName, LPVOID buffer, DWORD bufferLength, LPDWORD readLength, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
     const TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
     if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    return temporaryFile->read(buffer, bufferLength, readLength, offset);
+    return temporaryFile->read(buffer, bufferLength, readLength, offset, getAltStream(fileName));
 }
 
-NTSTATUS DOKAN_CALLBACK writeFile(LPCWSTR, LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
+NTSTATUS DOKAN_CALLBACK writeFile(LPCWSTR fileName, LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo){
     TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
     if(temporaryFile == nullptr){
         return STATUS_INVALID_HANDLE;
     }
 
-    return temporaryFile->write(buffer, numberOfBytesToWrite, numberOfBytesWritten, offset, dokanFileInfo);
+    return temporaryFile->write(buffer, numberOfBytesToWrite, numberOfBytesWritten, offset, dokanFileInfo, getAltStream(fileName));
 }
 
 NTSTATUS DOKAN_CALLBACK flushFileBuffers(LPCWSTR, PDOKAN_FILE_INFO dokanFileInfo){
@@ -214,15 +216,20 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
     return STATUS_SUCCESS;
 }
 
+NTSTATUS DOKAN_CALLBACK setFileAttributes(LPCWSTR, DWORD, PDOKAN_FILE_INFO){
+    //Android doesn't have file attributes like Windows does, so just do nothing.
+    //We have to return STATUS_SUCCESS because some Windows features expect this to be implemented so Windows Explorer won't work as expected if this doesn't return STATUS_SUCCESS.
+    return STATUS_SUCCESS;
+}
+
 NTSTATUS DOKAN_CALLBACK setFileTime(LPCWSTR fileName, const FILETIME *creationTime, const FILETIME *lastAccessTime, const FILETIME *lastWriteTime, PDOKAN_FILE_INFO dokanFileInfo){
     UNREFERENCED_PARAMETER(creationTime);    //Android doesn't fully support creation times, so it's not possible to set the creation time
 
     const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
     const QString filePath = windowsPathToAndroidPath(fileName);
 
-    bool ok;
-    device->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), &ok, false);
-    return ok ? STATUS_SUCCESS : STATUS_OBJECT_PATH_NOT_FOUND;
+    device->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), nullptr, false);
+    return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){

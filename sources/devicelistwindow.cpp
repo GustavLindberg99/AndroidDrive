@@ -102,38 +102,49 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     //Create newly conneced devices
     static const QRegularExpression newlineRegex("[\r\n]+");
     const QStringList result = QString::fromUtf8(this->_adb.readAllStandardOutput()).trimmed().split(newlineRegex);
-    QStringList serialNumbers;
+    QStringList serialNumbers, offlineSerialNumbers;
     bool changed = false;
     static const QRegularExpression spaceRegex("\\s+");
     for(const QString &line: result){
         if(line == "List of devices attached" || line.isEmpty()){
             continue;
         }
-        const QString serialNumber = line.split(spaceRegex)[0];
-        if(!this->_devices.contains(serialNumber)){
-            AndroidDevice *device = new AndroidDevice(serialNumber);
-            Settings settings;
-            if(settings.autoConnect(device)){
-                device->connectDrive(settings.driveLetter(device));
+        const QStringList splittedLine = line.split(spaceRegex);
+        const QString serialNumber = splittedLine[0];
+        if(splittedLine[1] == "offline"){
+            if(!this->_offlineDevices.contains(serialNumber)){
+                QMessageBox::warning(nullptr, "", QObject::tr("Device %1 is offline. Try unlocking the device, then unplugging it and re-plugging it.").arg(serialNumber));
+                this->_offlineDevices.append(serialNumber);
+                changed = true;
             }
-            QObject::connect(device, &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
-            QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
-            QObject::connect(device, &AndroidDevice::driveDisconnected, this, [this, serialNumber](int status){
-                AndroidDevice *device = this->_devices.value(serialNumber, nullptr);
-                if(device != nullptr){
-                    this->handleDokanError(device, status);
-                }
-            });
-            QObject::connect(device, &AndroidDevice::driveMounted, [](char driveLetter){
-                if(Settings().openInExplorer()){
-                    QProcess::startDetached("C:\\Windows\\explorer.exe", {driveLetter + QString(":\\")});
-                }
-            });
-            this->_devices[serialNumber] = device;
-            this->_settingsWindows[device] = new SettingsWindow(device);
-            changed = true;
+            offlineSerialNumbers.append(serialNumber);
         }
-        serialNumbers.append(serialNumber);
+        else{
+            if(!this->_devices.contains(serialNumber)){
+                AndroidDevice *device = new AndroidDevice(serialNumber);
+                Settings settings;
+                if(settings.autoConnect(device)){
+                    device->connectDrive(settings.driveLetter(device));
+                }
+                QObject::connect(device, &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
+                QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
+                QObject::connect(device, &AndroidDevice::driveDisconnected, this, [this, serialNumber](int status){
+                    AndroidDevice *device = this->_devices.value(serialNumber, nullptr);
+                    if(device != nullptr){
+                        this->handleDokanError(device, status);
+                    }
+                });
+                QObject::connect(device, &AndroidDevice::driveMounted, [](char driveLetter){
+                    if(Settings().openInExplorer()){
+                        QProcess::startDetached("C:\\Windows\\explorer.exe", {driveLetter + QString(":\\")});
+                    }
+                });
+                this->_devices[serialNumber] = device;
+                this->_settingsWindows[device] = new SettingsWindow(device);
+                changed = true;
+            }
+            serialNumbers.append(serialNumber);
+        }
     }
 
     //Delete disconnected devices
@@ -146,6 +157,12 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
             device->shutdown();
             this->_dokanInstalling = false;
             changed = true;
+        }
+    }
+    const QStringList oldOfflineDevices = this->_offlineDevices;
+    for(const QString &offlineDevice: oldOfflineDevices){
+        if(!offlineSerialNumbers.contains(offlineDevice)){
+            this->_offlineDevices.removeAll(offlineDevice);
         }
     }
 

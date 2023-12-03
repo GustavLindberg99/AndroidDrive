@@ -1,6 +1,6 @@
 #include <QDir>
 #include <QFile>
-#include "androiddevice.h"
+#include <QRegularExpression>
 #include "helperfunctions.h"
 
 QString escapeSpecialCharactersForBash(QString filePath){
@@ -13,13 +13,18 @@ QString escapeSpecialCharactersForBash(QString filePath){
 }
 
 QString windowsPathToAndroidPath(LPCWSTR windowsPath){
-    QString androidPath = "/sdcard" + QString::fromWCharArray(windowsPath).replace("\\", "/");
+    QString androidPath = "/sdcard" + QString::fromWCharArray(windowsPath).replace("\\", "/").split(":")[0];
     //Use the same trick as WSL for characters that are allowed on Android but not on Windows (this trick consists in replacing a special character with a Unicode version by adding 0xf000 to its char code)
     const char specialCharacters[] = {'\\', ':', '*', '?', '"', '<', '>', '|'};
     for(const char character: specialCharacters){
         androidPath.replace(QChar(character + 0xf000), QChar(character));
     }
     return androidPath;
+}
+
+QString getAltStream(LPCWSTR windowsPath){
+    static const QRegularExpression altStreamRegex("^[^:]+(:|$)");
+    return QString::fromWCharArray(windowsPath).replace(altStreamRegex, "");
 }
 
 QString androidFileNameToWindowsFileName(QString fileName){
