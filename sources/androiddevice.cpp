@@ -16,6 +16,7 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
     _shouldBeDisconnected(false),
     _mountPointRemoved(false),
     _mountPoint{L"?:\\"},    //The ? is a placeholder, it will be changed when the drive gets connected
+    _temporaryDir(nullptr),
     _fileSystemCached(false)
 {
     AndroidDevice::_instances.append(this);
@@ -103,14 +104,6 @@ AndroidDevice *AndroidDevice::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
 }
 
 void AndroidDevice::connectDrive(char driveLetter){
-    const DWORD drives = GetLogicalDrives();    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
-    for(int i = 0; (drives & (1 << (driveLetter - 'A'))) && i < 26; i++){
-        driveLetter++;
-        if(driveLetter == 'Z' + 1){
-            driveLetter = 'A';
-        }
-    }
-
     class Thread: public QThread{
     public:
         Thread(AndroidDevice *device): _device(device){}
@@ -119,6 +112,8 @@ void AndroidDevice::connectDrive(char driveLetter){
         virtual void run() override{
             const int status = DokanMain(&this->_device->_dokanOptions, &this->_device->_dokanOperations);
             emit this->_device->driveDisconnected(status);
+            delete this->_device->_temporaryDir;
+            this->_device->_temporaryDir = nullptr;
             this->_device->_thread = nullptr;
             this->deleteLater();
         }
@@ -128,6 +123,16 @@ void AndroidDevice::connectDrive(char driveLetter){
     };
 
     if(this->_thread == nullptr){
+        const DWORD drives = GetLogicalDrives();    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
+        for(int i = 0; (drives & (1 << (driveLetter - 'A'))) && i < 26; i++){
+            driveLetter++;
+            if(driveLetter == 'Z' + 1){
+                driveLetter = 'A';
+            }
+        }
+
+        this->_temporaryDir = new QTemporaryDir();
+
         this->_mountPoint[0] = driveLetter;    //We don't need to change dokanOptions.MountPoint because it points to the same memory address as this->_mountPoint
         this->_mountPointRemoved = false;
         this->_thread = new Thread(this);
@@ -214,4 +219,12 @@ QString AndroidDevice::fileSystem() const{
 
 QString AndroidDevice::serialNumber() const{
     return this->_serialNumber;
+}
+
+QString AndroidDevice::localPath(const QString &remotePath) const{
+    static const QRegularExpression leadingSlashes("^[/\\\\]+");
+    const QString remoteRelativePath = QString(remotePath).replace(leadingSlashes, "");
+    const QString result = QDir::toNativeSeparators(this->_temporaryDir->filePath(remoteRelativePath));
+    QFileInfo(result).dir().mkpath(".");
+    return result;
 }

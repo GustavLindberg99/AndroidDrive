@@ -46,11 +46,6 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
         }
     }
     else{
-        //Truncate should always be used with write access
-        if(creationDisposition == TRUNCATE_EXISTING){
-            genericDesiredAccess |= GENERIC_WRITE;
-        }
-
         TemporaryFile *temporaryFile = new TemporaryFile(device, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
 
         const NTSTATUS errorCode = temporaryFile->errorCode();
@@ -118,6 +113,10 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
     bool ok;
     const QString fileInfo = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);    //All devices don't support stat --format, so we have to use stat -c
     if(!ok){
+        TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+        if(temporaryFile != nullptr){
+            return temporaryFile->getFileInformation(handleFileInformation);
+        }
         return STATUS_UNSUCCESSFUL;
     }
 
@@ -238,7 +237,15 @@ NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileI
 
     bool ok;
     device->runAdbCommand(QString("rm %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
-    return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
+    if(!ok){
+        return STATUS_UNSUCCESSFUL;
+    }
+
+    QFile localFile(device->localPath(filePath));
+    if(localFile.exists()){
+        localFile.remove();
+    }
+    return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK deleteDirectory(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
@@ -247,7 +254,15 @@ NTSTATUS DOKAN_CALLBACK deleteDirectory(LPCWSTR fileName, PDOKAN_FILE_INFO dokan
 
     bool ok;
     device->runAdbCommand(QString("rm -rf %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
-    return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
+    if(!ok){
+        return STATUS_UNSUCCESSFUL;
+    }
+
+    QDir localDir(device->localPath(filePath));
+    if(localDir.exists()){
+        localDir.removeRecursively();
+    }
+    return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK moveFile(LPCWSTR oldFileName, LPCWSTR newFileName, BOOL replaceIfExisting, PDOKAN_FILE_INFO dokanFileInfo){
@@ -257,7 +272,18 @@ NTSTATUS DOKAN_CALLBACK moveFile(LPCWSTR oldFileName, LPCWSTR newFileName, BOOL 
 
     bool ok;
     device->runAdbCommand(QString("test -d %3 || mv %1 %2 %3").arg(replaceIfExisting ? "-f" : "-n", escapeSpecialCharactersForBash(oldFilePath), escapeSpecialCharactersForBash(newFilePath)), &ok, true);
-    return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
+    if(!ok){
+        return STATUS_UNSUCCESSFUL;
+    }
+
+    QFileInfo oldLocalFile(device->localPath(oldFilePath));
+    if(oldLocalFile.isFile()){
+        QFile(oldLocalFile.absoluteFilePath()).remove();
+    }
+    else if(oldLocalFile.isDir()){
+        QDir(oldLocalFile.absoluteFilePath()).removeRecursively();
+    }
+    return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK setAllocationSize(LPCWSTR, LONGLONG allocSize, PDOKAN_FILE_INFO dokanFileInfo){

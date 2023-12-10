@@ -4,6 +4,7 @@
 #include <QList>
 #include <QMap>
 #include <QString>
+#include <QTemporaryDir>
 #include <QThread>
 #include <functional>
 #include <dokan/dokan.h>
@@ -33,6 +34,8 @@ public:
     QString fileSystem() const;
     QString serialNumber() const;
 
+    QString localPath(const QString &remotePath) const;
+
 signals:
     void driveConnected();                 //Emitted when the Dokan main loop starts
     void driveMounted(char driveLetter);   //Emitted when the drive appears in the This PC folder
@@ -56,6 +59,8 @@ private:
     DOKAN_OPERATIONS _dokanOperations;
     DOKAN_OPTIONS _dokanOptions;
     wchar_t _mountPoint[4];
+
+    QTemporaryDir *_temporaryDir;
 
     //Cache for specific methods (it would be easier to declare these as static in their respective methods, but that would use the same cache accross instances, see https://stackoverflow.com/a/6223371/4284627)
     //These are mutable because the cache can be updated in const methods that don't really change the state of the object
