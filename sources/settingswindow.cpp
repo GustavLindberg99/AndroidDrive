@@ -1,3 +1,7 @@
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
 #include "settingswindow.h"
 
 QSet<SettingsWindow*> SettingsWindow::_instances;
@@ -5,15 +9,8 @@ bool SettingsWindow::systemLanguageAvailable = true;
 const QStringList SettingsWindow::_languageNames{"", "English", "Français", "Magyar", "Italiano", "Svenska"};
 const QStringList SettingsWindow::_languageAbbreviations{"auto", "en", "fr", "hu", "it", "sv"};
 
-SettingsWindow::SettingsWindow(const AndroidDevice *device):
-    _device(device),
-    _globalSettingsBox(QObject::tr("Global settings")),
-    _autoConnect(QObject::tr("Automatially connect &drive")),
-    _openInExplorer(QObject::tr("Open newly connected drives in &Explorer")),
-    _hideDotFiles(QObject::tr("&Hide files beginning with a dot")),
-    _okButton(QObject::tr("&OK")),
-    _cancelButton(QObject::tr("&Cancel")),
-    _applyButton(QObject::tr("&Apply"))
+SettingsWindow::SettingsWindow(const AndroidDrive *drive):
+    _drive(drive)
 {
     SettingsWindow::_instances.insert(this);
 
@@ -21,41 +18,76 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
     this->setWindowIcon(QIcon(":/icon.ico"));
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, true);
 
-    if(this->_device != nullptr){
-        QObject::connect(&this->_driveLetter, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](){this->_applyButton.setEnabled(true);});
-        this->_driveLetter.setWhatsThis(QObject::tr("Allows you to select a preferred drive letter for the selected Android device.<br/><br/>If the preferred drive letter is unavailable when this device is connected, it will use the next available drive letter in alphabetical order.<br/><br/>If you change the drive letter while a drive for this device is connected, you will have to disconnect it and re-connect it again for the changes to take effect."));
-        this->_deviceSettingsLayout.addRow(QObject::tr("Drive &letter"), &this->_driveLetter);
+    QGridLayout *layout = new QGridLayout(this);
 
-        QObject::connect(&this->_autoConnect, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
-        this->_autoConnect.setWhatsThis(QObject::tr("If this checkbox is checked, the selected device will be automatically connected as a drive whenever you plug it into your computer.<br/><br/>Otherwise, you will have to connect it manually by going into Devices > Connect drive."));
-        this->_deviceSettingsLayout.addRow(&this->_autoConnect);
+    const auto enableApplyButton = [this](){this->_applyButton->setEnabled(true);};
 
-        this->_deviceSettingsBox.setTitle(QObject::tr("Device settings for %1").arg(device->model()));
-        this->_deviceSettingsBox.setWhatsThis(QObject::tr("These settings only affect the selected device."));
-        this->_deviceSettingsBox.setLayout(&this->_deviceSettingsLayout);
-        this->_layout.addWidget(&this->_deviceSettingsBox, 0, 0, 1, 3);
+    if(this->_drive != nullptr){
+        QGroupBox *driveSettingsBox = new QGroupBox(QObject::tr("Drive settings for %1").arg(drive->completeName()), this);
+        QFormLayout *driveSettingsLayout = new QFormLayout(driveSettingsBox);
+
+        this->_driveLetter = new QComboBox(driveSettingsBox);
+        QObject::connect(this->_driveLetter, &QComboBox::currentIndexChanged, this->_applyButton, enableApplyButton);
+        this->_driveLetter->setWhatsThis(QObject::tr("Allows you to select a preferred drive letter for the selected Android drive.<br/><br/>If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.<br/><br/>If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect."));
+        driveSettingsLayout->addRow(QObject::tr("Drive &letter"), this->_driveLetter);
+
+        QWidget *driveNameContainer = new QWidget(driveSettingsBox);
+        QHBoxLayout *driveNameLayout = new QHBoxLayout(driveNameContainer);
+
+        this->_driveName = new QLineEdit(driveNameContainer);
+        QObject::connect(this->_driveName, &QLineEdit::textEdited, this->_applyButton, enableApplyButton);
+        this->_driveName->setWhatsThis(QObject::tr("Allows you to select a name for the selected Android drive."));
+        driveNameLayout->addWidget(this->_driveName);
+
+        QPushButton *resetDriveName = new QPushButton(QObject::tr("&Reset"), driveNameContainer);
+        QObject::connect(resetDriveName, &QPushButton::pressed, this->_driveName, [this](){
+            const QString name = this->_drive->completeName();
+            this->_driveName->setText(name);
+            emit this->_driveName->textEdited(name);
+        });
+        resetDriveName->setWhatsThis(QObject::tr("Resets the name of the drive to the default value."));
+        driveNameLayout->addWidget(resetDriveName);
+
+        driveNameLayout->setContentsMargins(0, 0, 0, 0);
+        driveNameContainer->setLayout(driveNameLayout);
+        driveSettingsLayout->addRow(QObject::tr("Drive &name"), driveNameContainer);
+
+        this->_autoConnect = new QCheckBox(QObject::tr("Automatically mount &drive"), driveSettingsBox);
+        QObject::connect(this->_autoConnect, &QCheckBox::clicked, this->_applyButton, enableApplyButton);
+        this->_autoConnect->setWhatsThis(QObject::tr("If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.<br/><br/>Otherwise, you will have to mount it manually by going into Devices > Mount drive."));
+        driveSettingsLayout->addRow(this->_autoConnect);
+
+        driveSettingsBox->setWhatsThis(QObject::tr("These settings only affect the selected drive."));
+        driveSettingsBox->setLayout(driveSettingsLayout);
+        layout->addWidget(driveSettingsBox, 0, 0, 1, 3);
     }
 
-    QObject::connect(&this->_openInExplorer, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
-    this->_openInExplorer.setWhatsThis(QObject::tr("If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer."));
-    this->_globalSettingsLayout.addRow(&this->_openInExplorer);
+    QGroupBox *globalSettingsBox = new QGroupBox(QObject::tr("Global settings"), this);
+    QFormLayout *globalSettingsLayout = new QFormLayout(globalSettingsBox);
 
-    QObject::connect(&this->_hideDotFiles, &QCheckBox::clicked, this, [this](){this->_applyButton.setEnabled(true);});
-    this->_hideDotFiles.setWhatsThis(QObject::tr("If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer's \"Show hidden files\" option is activated."));
-    this->_globalSettingsLayout.addRow(&this->_hideDotFiles);
+    this->_openInExplorer = new QCheckBox(QObject::tr("Open newly connected drives in &Explorer"), globalSettingsBox);
+    QObject::connect(this->_openInExplorer, &QCheckBox::clicked, this->_applyButton, enableApplyButton);
+    this->_openInExplorer->setWhatsThis(QObject::tr("If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer."));
+    globalSettingsLayout->addRow(this->_openInExplorer);
 
-    QObject::connect(&this->_language, &QComboBox::currentIndexChanged, this, [this](){this->_applyButton.setEnabled(true);});
+    this->_hideDotFiles = new QCheckBox(QObject::tr("&Hide files beginning with a dot"), globalSettingsBox);
+    QObject::connect(this->_hideDotFiles, &QCheckBox::clicked, this->_applyButton, enableApplyButton);
+    this->_hideDotFiles->setWhatsThis(QObject::tr("If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer's \"Show hidden files\" option is activated."));
+    globalSettingsLayout->addRow(this->_hideDotFiles);
+
+    this->_language = new QComboBox(globalSettingsBox);
+    QObject::connect(this->_language, &QComboBox::currentIndexChanged, this->_applyButton, enableApplyButton);
     for(const QString &language: SettingsWindow::_languageNames){
         if(language.isEmpty()){
             //QObject::tr("Use system language") can't go directly in _languageNames because otherwise it will be initialized before the translations are loaded
-            this->_language.addItem(QObject::tr("Use system language"));
+            this->_language->addItem(QObject::tr("Use system language"));
         }
         else{
-            this->_language.addItem(language);
+            this->_language->addItem(language);
         }
     }
-    this->_language.setWhatsThis(QObject::tr("Allows you to select which language AndroidDrive's GUI will be displayed in.<br/><br/>If you select \"Use system language\" but AndroidDrive isn't availiable in your system language, English will be used.<br/><br/>This setting has no effect on how the actual drive works.<br/><br/>You must restart AndroidDrive for this change to take effect."));
-    this->_globalSettingsLayout.addRow(QObject::tr("&Language"), &this->_language);
+    this->_language->setWhatsThis(QObject::tr("Allows you to select which language AndroidDrive's GUI will be displayed in.<br/><br/>If you select \"Use system language\" but AndroidDrive isn't availiable in your system language, English will be used.<br/><br/>This setting has no effect on how the actual drive works.<br/><br/>You must restart AndroidDrive for this change to take effect."));
+    globalSettingsLayout->addRow(QObject::tr("&Language"), this->_language);
 
     if(!systemLanguageAvailable){
         QLabel *contributeToTranslation = new QLabel(QObject::tr("AndroidDrive doesn't seem to be available in your system language.<br/><br/><a %1>Click here</a> if you would like to help translate it.").arg("href=\"https://github.com/GustavLindberg99/AndroidDrive/blob/main/sources/translations/contribute.md\""), this);
@@ -63,30 +95,33 @@ SettingsWindow::SettingsWindow(const AndroidDevice *device):
         contributeToTranslation->setTextFormat(Qt::RichText);
         contributeToTranslation->setTextInteractionFlags(Qt::TextBrowserInteraction);
         contributeToTranslation->setOpenExternalLinks(true);
-        this->_globalSettingsLayout.addRow(contributeToTranslation);
+        globalSettingsLayout->addRow(contributeToTranslation);
     }
 
-    this->_globalSettingsBox.setWhatsThis(QObject::tr("These settings affect all drives connected with AndroidDrive."));
-    this->_globalSettingsBox.setLayout(&this->_globalSettingsLayout);
-    this->_layout.addWidget(&this->_globalSettingsBox, device != nullptr, 0, 1, 3);
+    globalSettingsBox->setWhatsThis(QObject::tr("These settings affect all drives connected with AndroidDrive."));
+    globalSettingsBox->setLayout(globalSettingsLayout);
+    layout->addWidget(globalSettingsBox, drive != nullptr, 0, 1, 3);
 
-    this->_layout.addWidget(&this->_okButton, 1 + (device != nullptr), 0);
-    this->_layout.addWidget(&this->_cancelButton, 1 + (device != nullptr), 1);
-    this->_layout.addWidget(&this->_applyButton, 1 + (device != nullptr), 2);
+    QPushButton *okButton = new QPushButton(QObject::tr("&OK"), this);
+    QPushButton *cancelButton = new QPushButton(QObject::tr("&Cancel"), this);
 
-    this->setLayout(&this->_layout);
+    layout->addWidget(okButton, 1 + (drive != nullptr), 0);
+    layout->addWidget(cancelButton, 1 + (drive != nullptr), 1);
+    layout->addWidget(this->_applyButton, 1 + (drive != nullptr), 2);
+
+    this->setLayout(layout);
 
     Settings() >> this;
 
-    QObject::connect(&this->_okButton, &QPushButton::clicked, this, [this](){
-        this->_applyButton.click();
+    QObject::connect(okButton, &QPushButton::clicked, this, [this](){
+        this->_applyButton->click();
         this->close();
     });
-    QObject::connect(&this->_cancelButton, &QPushButton::clicked, this, [this](){
+    QObject::connect(cancelButton, &QPushButton::clicked, this, [this](){
         Settings() >> this;
         this->close();
     });
-    QObject::connect(&this->_applyButton, &QPushButton::clicked, this, [this](){
+    QObject::connect(this->_applyButton, &QPushButton::clicked, this, [this](){
         Settings settings;
         settings << this;
         for(SettingsWindow *settingsWindow: qAsConst(SettingsWindow::_instances)){
@@ -100,43 +135,49 @@ SettingsWindow::~SettingsWindow(){
 }
 
 Settings &operator<<(Settings &settings, const SettingsWindow *settingsWindow){
-    if(settingsWindow->_device != nullptr){
-        settings.setValue(settingsWindow->_device->model() + "_driveLetter", settingsWindow->_driveLetter.currentText().toLatin1().data()[0]);
-        settings.setValue(settingsWindow->_device->model() + "_connectAutomatically", settingsWindow->_autoConnect.isChecked());
+    if(settingsWindow->_drive != nullptr){
+        settings.setValue(settingsWindow->_drive->id() + "_driveLetter", settingsWindow->_driveLetter->currentText().at(0));
+        settings.setValue(settingsWindow->_drive->id() + "_driveName", settingsWindow->_driveName->text());
+        settings.setValue(settingsWindow->_drive->id() + "_connectAutomatically", settingsWindow->_autoConnect->isChecked());
     }
-    settings.setValue("openInExplorer", settingsWindow->_openInExplorer.isChecked());
-    settings.setValue("hideDotFiles", settingsWindow->_hideDotFiles.isChecked());
-    settings.setValue("language", SettingsWindow::_languageAbbreviations[settingsWindow->_language.currentIndex()]);
-    settingsWindow->_applyButton.setEnabled(false);
+    settings.setValue("openInExplorer", settingsWindow->_openInExplorer->isChecked());
+    settings.setValue("hideDotFiles", settingsWindow->_hideDotFiles->isChecked());
+    settings.setValue("language", SettingsWindow::_languageAbbreviations[settingsWindow->_language->currentIndex()]);
+    settingsWindow->_applyButton->setEnabled(false);
     return settings;
 }
 
 const Settings &operator>>(const Settings &settings, SettingsWindow *settingsWindow){
-    if(settingsWindow->_device != nullptr){
-        settingsWindow->_driveLetter.clear();
+    if(settingsWindow->_drive != nullptr){
+        settingsWindow->_driveLetter->clear();
         for(char letter = 'A'; letter <= 'Z'; letter++){
-            settingsWindow->_driveLetter.addItem(letter + QString(":"));
-            if(letter == settings.driveLetter(settingsWindow->_device)){
-                settingsWindow->_driveLetter.setCurrentIndex(settingsWindow->_driveLetter.count() - 1);
+            settingsWindow->_driveLetter->addItem(letter + QString(":"));
+            if(letter == settings.driveLetter(settingsWindow->_drive)){
+                settingsWindow->_driveLetter->setCurrentIndex(settingsWindow->_driveLetter->count() - 1);
             }
         }
-        settingsWindow->_autoConnect.setChecked(settings.autoConnect(settingsWindow->_device));
+        settingsWindow->_driveName->setText(settings.driveName(settingsWindow->_drive));
+        settingsWindow->_autoConnect->setChecked(settings.autoConnect(settingsWindow->_drive));
     }
-    settingsWindow->_openInExplorer.setChecked(settings.openInExplorer());
-    settingsWindow->_hideDotFiles.setChecked(settings.hideDotFiles());
-    settingsWindow->_language.setCurrentIndex(SettingsWindow::_languageAbbreviations.indexOf(settings.language()));
-    settingsWindow->_applyButton.setEnabled(false);
+    settingsWindow->_openInExplorer->setChecked(settings.openInExplorer());
+    settingsWindow->_hideDotFiles->setChecked(settings.hideDotFiles());
+    settingsWindow->_language->setCurrentIndex(SettingsWindow::_languageAbbreviations.indexOf(settings.language()));
+    settingsWindow->_applyButton->setEnabled(false);
     return settings;
 }
 
 Settings::Settings(): QSettings("Gustav Lindberg", "AndroidDrive"){}
 
-char Settings::driveLetter(const AndroidDevice *device) const{
-    return this->value(device->model() + "_driveLetter", 'D').toChar().toLatin1();
+char Settings::driveLetter(const AndroidDrive *drive) const{
+    return this->value(drive->id() + "_driveLetter", 'D').toChar().toLatin1();
 }
 
-bool Settings::autoConnect(const AndroidDevice *device) const{
-    return this->value(device->model() + "_connectAutomatically", true).toBool();
+QString Settings::driveName(const AndroidDrive *drive) const{
+    return this->value(drive->id() + "_driveName", drive->completeName()).toString();
+}
+
+bool Settings::autoConnect(const AndroidDrive *drive) const{
+    return this->value(drive->id() + "_connectAutomatically", true).toBool();
 }
 
 bool Settings::openInExplorer() const{

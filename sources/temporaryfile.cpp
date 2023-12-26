@@ -1,17 +1,17 @@
-#include "helperfunctions.h"
+#include "androiddrive.h"
 #include "temporaryfile.h"
 
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
 
-TemporaryFile::TemporaryFile(const AndroidDevice *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream):
-    _localPath(device->localPath(remotePath)),
+TemporaryFile::TemporaryFile(const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream):
+    _localPath(drive->localPath(remotePath)),
     _remotePath(remotePath),
-    _device(device),
+    _device(drive->device()),
     _handle(INVALID_HANDLE_VALUE),
     _modified(!exists),
     _errorCode(STATUS_SUCCESS)
 {
-    if(exists && !device->pullFromAdb(remotePath, this->_localPath) && !QFileInfo(this->_localPath).isFile()){
+    if(exists && !this->_device->pullFromAdb(remotePath, this->_localPath) && !QFileInfo(this->_localPath).isFile()){
         this->_errorCode = STATUS_UNSUCCESSFUL;
         return;
     }

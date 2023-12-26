@@ -6,7 +6,7 @@
 
 class TemporaryFile final{
 public:
-    TemporaryFile(const AndroidDevice *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
+    TemporaryFile(const AndroidDrive *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
     ~TemporaryFile();
 
     TemporaryFile(const TemporaryFile&) = delete;

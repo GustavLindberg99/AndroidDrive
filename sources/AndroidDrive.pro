@@ -5,6 +5,8 @@ CONFIG += c++17
 
 SOURCES += main.cpp \
     androiddevice.cpp \
+    androiddrive.cpp \
+    devicelistmodel.cpp \
     devicelistwindow.cpp \
     dokanoperations.cpp \
     helperfunctions.cpp \
@@ -14,6 +16,8 @@ SOURCES += main.cpp \
 
 HEADERS += \
     androiddevice.h \
+    androiddrive.h \
+    devicelistmodel.h \
     devicelistwindow.h \
     dokanoperations.h \
     helperfunctions.h \

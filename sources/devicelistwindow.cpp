@@ -1,56 +1,147 @@
 #include <QApplication>
 #include <QDesktopServices>
+#include <QGridLayout>
 #include <QMessageBox>
 #include <QProcess>
 #include <QUrl>
 #include "devicelistwindow.h"
 
-DeviceListWindow::DeviceListWindow():
-    _adbFailed(false),
-    _dokanInstalling(false),
-    _connectButton(QObject::tr("&Connect drive")),
-    _settingsButton(QObject::tr("Device &settings"))
-{
-    this->_connectButton.setWhatsThis(QObject::tr("Connects a drive containing the internal storage of the selected Android device."));
-    this->_settingsButton.setWhatsThis(QObject::tr("Allows you to change the settings for this device, for example select a new drive letter or choose whether it should connect automatically."));
+DeviceListWindow::DeviceListWindow(){
+    //Initialize the UI
+    QGridLayout *layout = new QGridLayout(this);
+
+    this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any."));
+    this->_settingsButton->setWhatsThis(QObject::tr("Allows you to change the settings for this device, for example select a new drive letter or choose whether it should be mounted automatically."));
+    this->_openInExplorerButton->setWhatsThis(QObject::tr("Opens the selected drive in Windows Explorer."));
 
     this->setWindowTitle(QObject::tr("AndroidDrive - Devices"));
     this->setWindowIcon(QIcon(":/icon.ico"));
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, true);
+    this->setMinimumWidth(400);
 
-    this->_view.setModel(&this->_model);
-    this->_view.setEditTriggers(QListView::NoEditTriggers);
-    this->setLayout(&this->_layout);
+    this->_view->setModel(&this->_model);
+    this->_view->setEditTriggers(QTreeView::NoEditTriggers);
+    this->_view->setColumnWidth(0, 200);
 
-    this->_layout.addWidget(&this->_view, 0, 0, 1, 2);
-    this->_layout.addWidget(&this->_connectButton, 1, 0);
-    this->_layout.addWidget(&this->_settingsButton, 1, 1);
+    layout->addWidget(this->_view, 0, 0, 1, 3);
+    layout->addWidget(this->_mountButton, 1, 0);
+    layout->addWidget(this->_settingsButton, 1, 1);
+    layout->addWidget(this->_openInExplorerButton, 1, 2);
 
-    QObject::connect(&this->_connectButton, &QPushButton::pressed, this, [this](){
+    this->setLayout(layout);
+
+    //Handle the mount button pressed signal
+    QObject::connect(this->_mountButton, &QPushButton::pressed, this, [this](){
         AndroidDevice *device = this->selectedDevice();
         if(device != nullptr){
-            if(device->isConnected()){
-                device->disconnectDrive();
+            if(device->numberOfConnectedDrives() > 0){
+                device->disconnectAllDrives();
             }
-            else{
-                device->connectDrive(Settings().driveLetter(device));
+            else for(AndroidDrive *drive: device->drives()){
+                drive->connectDrive(Settings().driveLetter(drive));
             }
             this->updateButtons();
         }
-    });
-
-    QObject::connect(&this->_settingsButton, &QPushButton::pressed, this, [this](){
-        AndroidDevice *device = this->selectedDevice();
-        if(device != nullptr){
-            this->_settingsWindows[device]->show();
+        else{
+            AndroidDrive *drive = this->selectedDrive();
+            if(drive != nullptr){
+                if(drive->isConnected()){
+                    drive->disconnectDrive();
+                }
+                else{
+                    drive->connectDrive(Settings().driveLetter(drive));
+                }
+                this->updateButtons();
+            }
         }
     });
 
-    QObject::connect(&this->_view, &QListView::clicked, this, [this](){
+    //Handle the settings button pressed signal
+    QObject::connect(this->_settingsButton, &QPushButton::pressed, this, [this](){
+        AndroidDrive *drive = this->selectedDrive();
+        if(drive != nullptr){
+            this->_settingsWindows[drive]->show();
+        }
+    });
+
+    //Handle the open in explorer button pressed signal
+    QObject::connect(this->_openInExplorerButton, &QPushButton::pressed, this, [this](){
+        AndroidDrive *drive = this->selectedDrive();
+        if(drive != nullptr){
+            QProcess::startDetached("C:\\Windows\\explorer.exe", {drive->mountPoint()});
+        }
+    });
+
+    //Update the buttons when the view is clicked, meaning that the user selected a new item
+    QObject::connect(this->_view, &QTreeView::clicked, this, [this](){
         this->updateButtons();
     });
 
-    QObject::connect(&this->_adb, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &DeviceListWindow::updateDevices);
+    //Handle when a new device is connected
+    QObject::connect(&this->_model, &DeviceListModel::rowsInserted, this, [this](const QModelIndex &parent, int first, int last){
+        //For some reason this is necessary for the view to update
+        this->_view->hide();
+        this->_view->show();
+
+        //If the parent isn't the root, the child isn't a device, but this function only cares about when devices are connected
+        if(parent != this->_model.rootIndex()){
+            return;
+        }
+
+        const QList<AndroidDevice*> devices = this->_model.devices();
+        for(int i = first; i <= last; i++){
+            AndroidDevice *device = devices[i];
+            Settings settings;
+
+            //Mount automatically if the setting for that is enabled
+            for(AndroidDrive *drive: device->drives()){
+                if(settings.autoConnect(drive)){
+                    drive->connectDrive(settings.driveLetter(drive));
+                }
+            }
+
+            //Update the buttons whenever the drive is connected or disconnected
+            QObject::connect(device, &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
+            QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
+
+            //Handle errors
+            QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::handleDokanError);
+
+            //Open in Explorer if the setting for that is enabled
+            QObject::connect(device, &AndroidDevice::driveMounted, [](AndroidDrive*, char driveLetter){
+                if(Settings().openInExplorer()){
+                    QProcess::startDetached("C:\\Windows\\explorer.exe", {driveLetter + QString(":\\")});
+                }
+            });
+
+            //Create a settings window for each drive
+            for(AndroidDrive *drive: device->drives()){
+                this->_settingsWindows[drive] = new SettingsWindow(drive);
+            }
+
+            //Expand items by default
+            this->_view->expand(this->_model.deviceToIndex(device));
+        }
+    });
+
+    //Handle when a device is disconnected
+    QObject::connect(&this->_model, &DeviceListModel::rowsAboutToBeRemoved, this, [this](const QModelIndex &parent, int first, int last){
+        //If the parent isn't the root, the child isn't a device, but this function only cares about when devices are disconnected
+        if(parent != this->_model.rootIndex()){
+            return;
+        }
+
+        const QList<AndroidDevice*> devices = this->_model.devices();
+        for(int i = first; i <= last; i++){
+            AndroidDevice *device = devices[i];
+            for(AndroidDrive *drive: device->drives()){
+                this->_settingsWindows.remove(drive);
+            }
+        }
+    });
+
+    //Start ADB to see which devices there are
+    QObject::connect(&this->_adb, &QProcess::finished, this, &DeviceListWindow::updateDevices);
     QObject::connect(&this->_adb, &QProcess::errorOccurred, this, &DeviceListWindow::handleAdbError);
     this->_adb.start("adb.exe", {"devices"});
 
@@ -62,25 +153,41 @@ DeviceListWindow::~DeviceListWindow(){
     this->_adb.close();
 }
 
-AndroidDevice *DeviceListWindow::selectedDevice(){
-    const int index = this->_view.currentIndex().row();
-    if(index < 0 || index >= this->_devices.size()){
-        return nullptr;
-    }
-    return this->_devices.values()[index];
+AndroidDevice *DeviceListWindow::selectedDevice() const{
+    const QModelIndex selectedIndex = this->_view->currentIndex();
+    return this->_model.indexToDevice(selectedIndex);
+}
+
+AndroidDrive *DeviceListWindow::selectedDrive() const{
+    const QModelIndex selectedIndex = this->_view->currentIndex();
+    return this->_model.indexToDrive(selectedIndex);
 }
 
 void DeviceListWindow::updateButtons(){
     const AndroidDevice *device = this->selectedDevice();
-    this->_connectButton.setEnabled(device != nullptr);
-    this->_settingsButton.setEnabled(device != nullptr);
-    if(device != nullptr && device->isConnected()){
-        this->_connectButton.setText(QObject::tr("&Disconnect drive"));
-        this->_connectButton.setWhatsThis(QObject::tr("Disconnects the drive corresponding to the selected Android device.<br/><br/>This only disconnects the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
+    const AndroidDrive *drive = this->selectedDrive();
+
+    this->_mountButton->setEnabled(device != nullptr || drive != nullptr);
+    this->_settingsButton->setEnabled(drive != nullptr);
+    this->_openInExplorerButton->setEnabled(drive != nullptr && drive->isConnected());
+
+    if(device != nullptr){
+        if(device->numberOfConnectedDrives() > 0){
+            this->_mountButton->setText(QObject::tr("&Unmount all drives"));
+            this->_mountButton->setWhatsThis(QObject::tr("Unmounts all drives corresponding to the selected Android device.<br/><br/>This only unmounts the drives, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
+        }
+        else{
+            this->_mountButton->setText(QObject::tr("&Mount all drives"));
+            this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any."));
+        }
+    }
+    else if(drive != nullptr && drive->isConnected()){
+        this->_mountButton->setText(QObject::tr("&Unmount drive"));
+        this->_mountButton->setWhatsThis(QObject::tr("Unmounts the selected drive.<br/><br/>This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
     }
     else{
-        this->_connectButton.setText(QObject::tr("&Connect drive"));
-        this->_connectButton.setWhatsThis(QObject::tr("Connects a drive containing the internal storage of the selected Android device."));
+        this->_mountButton->setText(QObject::tr("&Mount drive"));
+        this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the selected internal storage or external SD card."));
     }
 }
 
@@ -99,11 +206,10 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     }
     this->_adbFailed = false;
 
-    //Create newly conneced devices
+    //Find which devices are connected
     static const QRegularExpression newlineRegex("[\r\n]+");
     const QStringList result = QString::fromUtf8(this->_adb.readAllStandardOutput()).trimmed().split(newlineRegex);
     QStringList serialNumbers, offlineSerialNumbers;
-    bool changed = false;
     static const QRegularExpression spaceRegex("\\s+");
     for(const QString &line: result){
         if(line == "List of devices attached" || line.isEmpty()){
@@ -112,76 +218,24 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
         const QStringList splittedLine = line.split(spaceRegex);
         const QString serialNumber = splittedLine[0];
         if(splittedLine[1] == "offline"){
-            if(!this->_offlineDevices.contains(serialNumber)){
-                QMessageBox::warning(nullptr, "", QObject::tr("Device %1 is offline. Try unlocking the device, then unplugging it and re-plugging it.").arg(serialNumber));
-                this->_offlineDevices.append(serialNumber);
-                changed = true;
-            }
             offlineSerialNumbers.append(serialNumber);
+            if(!this->_model.offlineSerialNumbers().contains(serialNumber)){
+                QMessageBox::warning(nullptr, "", QObject::tr("Device %1 is offline.<br/><br/>Try unlocking the device, then unplugging it and re-plugging it.").arg(serialNumber));
+            }
         }
         else{
-            if(!this->_devices.contains(serialNumber)){
-                AndroidDevice *device = new AndroidDevice(serialNumber);
-                Settings settings;
-                if(settings.autoConnect(device)){
-                    device->connectDrive(settings.driveLetter(device));
-                }
-                QObject::connect(device, &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
-                QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
-                QObject::connect(device, &AndroidDevice::driveDisconnected, this, [this, serialNumber](int status){
-                    AndroidDevice *device = this->_devices.value(serialNumber, nullptr);
-                    if(device != nullptr){
-                        this->handleDokanError(device, status);
-                    }
-                });
-                QObject::connect(device, &AndroidDevice::driveMounted, [](char driveLetter){
-                    if(Settings().openInExplorer()){
-                        QProcess::startDetached("C:\\Windows\\explorer.exe", {driveLetter + QString(":\\")});
-                    }
-                });
-                this->_devices[serialNumber] = device;
-                this->_settingsWindows[device] = new SettingsWindow(device);
-                changed = true;
-            }
             serialNumbers.append(serialNumber);
         }
     }
 
-    //Delete disconnected devices
-    const QList<AndroidDevice*> oldDevices = this->_devices.values();
-    for(AndroidDevice *device: oldDevices){
-        if(!serialNumbers.contains(device->serialNumber())){
-            delete this->_settingsWindows[device];
-            this->_settingsWindows.remove(device);
-            this->_devices.remove(device->serialNumber());
-            device->shutdown();
-            this->_dokanInstalling = false;
-            changed = true;
-        }
-    }
-    const QStringList oldOfflineDevices = this->_offlineDevices;
-    for(const QString &offlineDevice: oldOfflineDevices){
-        if(!offlineSerialNumbers.contains(offlineDevice)){
-            this->_offlineDevices.removeAll(offlineDevice);
-        }
-    }
-
     //Update the model
-    if(changed){
-        QStringList models;
-        const QList<AndroidDevice*> devices = this->_devices.values();
-        for(const AndroidDevice *device: devices){
-            models.append(device->model());
-        }
-        this->_model.setStringList(models);
-        this->updateButtons();
-    }
+    this->_model.updateDevices(serialNumbers, offlineSerialNumbers);
 
     //Start ADB again to continue updating
     this->_adb.start("adb.exe", {"devices"});
 }
 
-void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
+void DeviceListWindow::handleDokanError(AndroidDrive *drive, int status){
     if(status == DOKAN_SUCCESS){
         return;
     }
@@ -193,10 +247,10 @@ void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
         break;
     case DOKAN_DRIVER_INSTALL_ERROR:
         if(this->_dokanInstalling){
-            device->connectDrive(Settings().driveLetter(device));    //Try connecting it again in case Dokan is finished installing
+            drive->connectDrive(Settings().driveLetter(drive));    //Try connecting it again in case Dokan is finished installing
             return;
         }
-        errorMessage = QObject::tr("Dokan doesn't seem to be installed. Would you like to install it now?");
+        errorMessage = QObject::tr("Dokan doesn't seem to be installed.<br/><br/>Would you like to install it now?");
         buttons = QMessageBox::Yes | QMessageBox::No;
         break;
     case DOKAN_START_ERROR:
@@ -213,7 +267,7 @@ void DeviceListWindow::handleDokanError(AndroidDevice *device, int status){
         errorMessage = QObject::tr("An unknown error occurred.");
         break;
     }
-    if(QMessageBox::critical(nullptr, "", QObject::tr("Could not connect device %1: %2").arg(device->model(), errorMessage), buttons) == QMessageBox::Yes){
+    if(QMessageBox::critical(nullptr, "", QObject::tr("Could not mount drive %1: %2").arg(drive->completeName(), errorMessage), buttons) == QMessageBox::Yes){
         QDesktopServices::openUrl(QUrl("https://github.com/dokan-dev/dokany/releases/download/v2.0.6.1000/DokanSetup.exe"));
         this->_dokanInstalling = true;
     }
@@ -238,7 +292,7 @@ void DeviceListWindow::handleAdbError(QProcess::ProcessError error){
         errorMessage = QObject::tr("An error occurred when attempting to write to the ADB process.");
         break;
     case QProcess::FailedToStart:
-        errorMessage = QObject::tr("ADB failed to start. Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.");
+        errorMessage = QObject::tr("ADB failed to start.<br/><br/>Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.");
         break;
     case QProcess::Crashed:
         errorMessage = QObject::tr("ADB crashed.");

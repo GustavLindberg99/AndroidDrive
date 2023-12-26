@@ -3,61 +3,51 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include "androiddevice.h"
-#include "dokanoperations.h"
+#include "androiddrive.h"
 
 QList<AndroidDevice*> AndroidDevice::_instances;
 std::function<void()> AndroidDevice::_callbackOnLastShutdown = [](){};
 
 AndroidDevice::AndroidDevice(const QString &serialNumber):
-    _willBeDeleted(false),
-    _serialNumber(serialNumber),
-    _thread(nullptr),
-    _mounted(false),
-    _shouldBeDisconnected(false),
-    _mountPointRemoved(false),
-    _mountPoint{L"?:\\"},    //The ? is a placeholder, it will be changed when the drive gets connected
-    _temporaryDir(nullptr),
-    _fileSystemCached(false)
+    _serialNumber(serialNumber)
 {
     AndroidDevice::_instances.append(this);
 
-    ZeroMemory(&this->_dokanOptions, sizeof(DOKAN_OPTIONS));
-    this->_dokanOptions.Version = DOKAN_VERSION;
-    this->_dokanOptions.MountPoint = this->_mountPoint;    //dokanOptions.MountPoint and this->_mountPoint will point to the same memory address, which will be used in connectDrive() and fromDokanFileInfo()
-    this->_dokanOptions.Options |= DOKAN_OPTION_ALT_STREAM;
-
-    ZeroMemory(&this->_dokanOperations, sizeof(DOKAN_OPERATIONS));
-    this->_dokanOperations.ZwCreateFile = createFile;
-    this->_dokanOperations.CloseFile = closeFile;
-    this->_dokanOperations.Cleanup = cleanup;
-    this->_dokanOperations.ReadFile = readFile;
-    this->_dokanOperations.WriteFile = writeFile;
-    this->_dokanOperations.FlushFileBuffers = flushFileBuffers;
-    this->_dokanOperations.GetFileInformation = getFileInformation;
-    this->_dokanOperations.FindFiles = findFiles;
-    this->_dokanOperations.SetFileAttributes = setFileAttributes;
-    this->_dokanOperations.SetFileTime = setFileTime;
-    this->_dokanOperations.DeleteFile = deleteFile;
-    this->_dokanOperations.DeleteDirectory = deleteDirectory;
-    this->_dokanOperations.MoveFile = moveFile;
-    this->_dokanOperations.SetEndOfFile = this->_dokanOperations.SetAllocationSize = setAllocationSize;
-    this->_dokanOperations.GetDiskFreeSpace = getDiskFreeSpace;
-    this->_dokanOperations.GetVolumeInformation = getVolumeInformation;
-    this->_dokanOperations.Unmounted = unmounted;
-    this->_dokanOperations.Mounted = mounted;
-
-    QObject::connect(this, &AndroidDevice::driveMounted, [this](){
-        this->_mounted = true;
-        if(this->_shouldBeDisconnected){
-            this->disconnectDrive();
+    //Get the paths to all the SD cards
+    const QString internalStoragePath = this->runAdbCommand("realpath /sdcard");
+    static const QRegularExpression newlineRegex("[\r\n]+"), spaceRegex("\\s+");
+    const QStringList internalStorageDfOutput = this->runAdbCommand("df /sdcard").split(newlineRegex);
+    if(internalStorageDfOutput.size() > 1){
+        const QString storageFilesystem = internalStorageDfOutput[1].split(spaceRegex)[0];
+        const QStringList allDfOutput = this->runAdbCommand(QString("df | grep %1").arg(storageFilesystem)).split(newlineRegex);
+        for(const QString &dfOutput: allDfOutput){
+            const QStringList values = dfOutput.split(spaceRegex);
+            if(values.size() > 5){
+                QString androidPath = dfOutput.split(spaceRegex)[5];
+                if(internalStoragePath.contains(androidPath)){
+                    androidPath = "/sdcard";
+                }
+                AndroidDrive *drive = new AndroidDrive(this, androidPath);
+                this->_drives.append(drive);
+                QObject::connect(drive, &AndroidDrive::driveConnected, this, [this, drive](){emit this->driveConnected(drive);});
+                QObject::connect(drive, &AndroidDrive::driveMounted, this, [this, drive](char driveLetter){emit this->driveMounted(drive, driveLetter);});
+                QObject::connect(drive, &AndroidDrive::driveUnmounted, this, [this, drive](){emit this->driveUnmounted(drive);});
+                QObject::connect(drive, &AndroidDrive::driveDisconnected, this, [this, drive](int status){emit this->driveDisconnected(drive, status);});
+            }
         }
-    });
-    QObject::connect(this, &AndroidDevice::driveUnmounted, [this](){
-        this->_mounted = false;
-    });
+    }
+
+    //If the above failed, just add /sdcard
+    if(this->_drives.empty()){
+        this->_drives.append(new AndroidDrive(this, "/sdcard"));
+    }
 }
 
 AndroidDevice::~AndroidDevice(){
+    for(AndroidDrive *drive: this->_drives){
+        delete drive;
+    }
+
     AndroidDevice::_instances.removeAll(this);
     if(AndroidDevice::_instances.isEmpty()){
         AndroidDevice::_callbackOnLastShutdown();
@@ -70,14 +60,16 @@ void AndroidDevice::shutdown(){
         return;
     }
     this->_willBeDeleted = true;
-    if(this->_thread == nullptr){
+    if(this->numberOfConnectedDrives() == 0){
         delete this;
     }
     else{
-        QObject::connect(this, &AndroidDevice::driveDisconnected, [this](){
-            delete this;
+        QObject::connect(this, &AndroidDevice::driveDisconnected, this, [this](){
+            if(this->numberOfConnectedDrives() == 0){
+                delete this;
+            }
         });
-        this->disconnectDrive();
+        this->disconnectAllDrives();
     }
 }
 
@@ -92,67 +84,26 @@ void AndroidDevice::shutdownAllDevices(const std::function<void()> &callback){
     }
 }
 
-AndroidDevice *AndroidDevice::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
-    const QList<AndroidDevice*> instances = AndroidDevice::_instances;
-    for(AndroidDevice *device: instances){
-        //device->_mountPoint and dokanOptions->MountPoint point to the same memory address if they belong to the same device, so comparing them by reference as below is a reliable way to tell which device goes with which DokanOptions object
-        if(device->_mountPoint == dokanFileInfo->DokanOptions->MountPoint){
-            return device;
-        }
-    }
-    return nullptr;
-}
-
-void AndroidDevice::connectDrive(char driveLetter){
-    class Thread: public QThread{
-    public:
-        Thread(AndroidDevice *device): _device(device){}
-
-    protected:
-        virtual void run() override{
-            const int status = DokanMain(&this->_device->_dokanOptions, &this->_device->_dokanOperations);
-            emit this->_device->driveDisconnected(status);
-            delete this->_device->_temporaryDir;
-            this->_device->_temporaryDir = nullptr;
-            this->_device->_thread = nullptr;
-            this->deleteLater();
-        }
-
-    private:
-        AndroidDevice *_device;
-    };
-
-    if(this->_thread == nullptr){
-        const DWORD drives = GetLogicalDrives();    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
-        for(int i = 0; (drives & (1 << (driveLetter - 'A'))) && i < 26; i++){
-            driveLetter++;
-            if(driveLetter == 'Z' + 1){
-                driveLetter = 'A';
-            }
-        }
-
-        this->_temporaryDir = new QTemporaryDir();
-
-        this->_mountPoint[0] = driveLetter;    //We don't need to change dokanOptions.MountPoint because it points to the same memory address as this->_mountPoint
-        this->_mountPointRemoved = false;
-        this->_thread = new Thread(this);
-        this->_thread->start();
-        emit this->driveConnected();
+void AndroidDevice::disconnectAllDrives(){
+    for(AndroidDrive *drive: this->_drives){
+        drive->disconnectDrive();
     }
 }
 
-void AndroidDevice::disconnectDrive(){
-    if(this->_thread != nullptr && !this->_mountPointRemoved){
-        this->_shouldBeDisconnected = !this->_mounted;
-        if(this->_mounted){
-            DokanRemoveMountPoint(this->_mountPoint);
-            this->_mountPointRemoved = true;
-        }
-    }
+int AndroidDevice::numberOfDrives() const{
+    return this->_drives.size();
 }
 
-bool AndroidDevice::isConnected() const{
-    return this->_thread != nullptr;
+int AndroidDevice::numberOfConnectedDrives() const{
+    int result = 0;
+    for(const AndroidDrive *drive: this->_drives){
+        result += drive->isConnected();
+    }
+    return result;
+}
+
+QList<AndroidDrive*> AndroidDevice::drives() const{
+    return this->_drives;
 }
 
 QString AndroidDevice::runAdbCommand(const QString &command, bool *ok, bool useCache) const{
@@ -206,25 +157,6 @@ QString AndroidDevice::model() const{
     return this->_cachedModel;
 }
 
-QString AndroidDevice::fileSystem() const{
-    if(!this->_fileSystemCached){
-        const QString output = this->runAdbCommand("mount | grep $(df /sdcard | sed \"s/.* //g\" | tail -n +2)");
-        static const QRegularExpression fileSystemRegex("\\S+\\s+on\\s+\\S+\\s+type\\s+([a-zA-Z0-9]+)\\s+");
-        const QRegularExpressionMatch match = fileSystemRegex.match(output);
-        this->_cachedFileSystem = match.hasMatch() ? match.captured(1) : "";
-        this->_fileSystemCached = true;
-    }
-    return this->_cachedFileSystem;
-}
-
 QString AndroidDevice::serialNumber() const{
     return this->_serialNumber;
-}
-
-QString AndroidDevice::localPath(const QString &remotePath) const{
-    static const QRegularExpression leadingSlashes("^[/\\\\]+");
-    const QString remoteRelativePath = QString(remotePath).replace(leadingSlashes, "");
-    const QString result = QDir::toNativeSeparators(this->_temporaryDir->filePath(remoteRelativePath));
-    QFileInfo(result).dir().mkpath(".");
-    return result;
 }

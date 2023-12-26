@@ -2,12 +2,11 @@
 #define DEVICELISTWINDOW_H
 
 #include <QDialog>
-#include <QGridLayout>
-#include <QListView>
 #include <QProcess>
 #include <QPushButton>
-#include <QStringListModel>
+#include <QTreeView>
 #include "androiddevice.h"
+#include "devicelistmodel.h"
 #include "settingswindow.h"
 
 class DeviceListWindow : public QDialog{
@@ -17,7 +16,8 @@ public:
     DeviceListWindow();
     virtual ~DeviceListWindow();
 
-    AndroidDevice *selectedDevice();
+    AndroidDevice *selectedDevice() const;
+    AndroidDrive *selectedDrive() const;
 
 signals:
     void encounteredFatalError();
@@ -25,23 +25,22 @@ signals:
 private slots:
     void updateButtons();
     void updateDevices(int exitCode, QProcess::ExitStatus exitStatus);
-    void handleDokanError(AndroidDevice *device, int status);
+    void handleDokanError(AndroidDrive *drive, int status);
     void handleAdbError(QProcess::ProcessError error);
 
 private:
     QProcess _adb;
-    bool _adbFailed;
-    bool _dokanInstalling;
+    bool _adbFailed = false;
+    bool _dokanInstalling = false;
 
-    QStringList _offlineDevices;
-    QMap<QString, AndroidDevice*> _devices;
-    QMap<AndroidDevice*, SettingsWindow*> _settingsWindows;
+    DeviceListModel _model;
+    QMap<AndroidDrive*, SettingsWindow*> _settingsWindows;
 
-    QStringListModel _model;
-    QListView _view;
-    QGridLayout _layout;
+    QTreeView *const _view = new QTreeView(this);
 
-    QPushButton _connectButton, _settingsButton;
+    QPushButton *const _mountButton = new QPushButton(QObject::tr("&Mount drive"), this);
+    QPushButton *const _settingsButton = new QPushButton(QObject::tr("Drive &settings"), this);
+    QPushButton *const _openInExplorerButton = new QPushButton(QObject::tr("&Open in Explorer"), this);
 };
 
 #endif // DEVICELISTWINDOW_H

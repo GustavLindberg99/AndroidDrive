@@ -9,5 +9,7 @@
         <file>translations/qtbase_hu.qm</file>
         <file>translations/qtbase_it.qm</file>
         <file>translations/qtbase_sv.qm</file>
+        <file>android.svg</file>
+        <file>drive.svg</file>
     </qresource>
 </RCC>

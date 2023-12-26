@@ -193,7 +193,7 @@ void checkForUpdates(const QUrl &githubRepo, const QUrl &versionHeader, const QU
                                        mostRecentMinorVersion > MINORVERSION || (mostRecentMinorVersion == MINORVERSION &&
                                        mostRecentPatchVersion > PATCHVERSION)));
 
-        if(updateIsAvailable && QMessageBox::question(nullptr, "", QObject::tr("An update is available. Do you want to install it now?")) == QMessageBox::Yes){
+        if(updateIsAvailable && QMessageBox::question(nullptr, "", QObject::tr("An update is available.<br/><br/>Do you want to install it now?")) == QMessageBox::Yes){
             #ifdef _WIN32
                 const bool useInstaller = QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", QSettings::NativeFormat).childGroups().contains(GUID "_is1", Qt::CaseInsensitive)
                           || QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", QSettings::NativeFormat).childGroups().contains(GUID "_is1", Qt::CaseInsensitive);

@@ -1,20 +1,20 @@
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
-#include "androiddevice.h"
+#include "androiddrive.h"
 #include "dokanoperations.h"
 #include "helperfunctions.h"
 #include "settingswindow.h"
 #include "temporaryfile.h"
 
 NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG shareAccess, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     ACCESS_MASK genericDesiredAccess;
     DWORD fileAttributesAndFlags, creationDisposition;
     DokanMapKernelToUserCreateFileFlags(desiredAccess, fileAttributes, createOptions, createDisposition, &genericDesiredAccess, &fileAttributesAndFlags, &creationDisposition);
-    const QString output = device->runAdbCommand(QString("(test -d %1 && echo d) || (test -f %1 && echo f)").arg(escapeSpecialCharactersForBash(filePath)));
+    const QString output = drive->device()->runAdbCommand(QString("(test -d %1 && echo d) || (test -f %1 && echo f)").arg(escapeSpecialCharactersForBash(filePath)));
     const bool directoryExists = output == "d";
     const bool fileExists = output == "f";
 
@@ -38,7 +38,7 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
                 return STATUS_OBJECT_NAME_COLLISION;
             }
             bool ok;
-            device->runAdbCommand(QString("mkdir %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
+            drive->device()->runAdbCommand(QString("mkdir %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
             return ok ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
         }
         else if(!directoryExists){
@@ -46,7 +46,7 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
         }
     }
     else{
-        TemporaryFile *temporaryFile = new TemporaryFile(device, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
+        TemporaryFile *temporaryFile = new TemporaryFile(drive, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
 
         const NTSTATUS errorCode = temporaryFile->errorCode();
         if(errorCode != STATUS_SUCCESS){
@@ -107,11 +107,11 @@ NTSTATUS DOKAN_CALLBACK flushFileBuffers(LPCWSTR, PDOKAN_FILE_INFO dokanFileInfo
 }
 
 NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_INFORMATION handleFileInformation, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     bool ok;
-    const QString fileInfo = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);    //All devices don't support stat --format, so we have to use stat -c
+    const QString fileInfo = drive->device()->runAdbCommand(QString("stat -c \"%F %s %W %Y %X\" %1").arg(escapeSpecialCharactersForBash(filePath)), &ok);    //All devices don't support stat --format, so we have to use stat -c
     if(!ok){
         TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
         if(temporaryFile != nullptr){
@@ -155,8 +155,8 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
 }
 
 NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     /* Format sequences used for stat:
      * %F = File type ("directory" for directories, something else for files)
@@ -168,7 +168,7 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
      */
     bool ok;
     static const QRegularExpression newlineRegex("[\r\n]+");
-    const QStringList output = device->runAdbCommand(QString("stat -c \"%F %s %W %Y %X %n\" %1/* %1/.* || test -d %1").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(newlineRegex);    //The || test -d is necessary so that it doesn't return an error for empty directories (otherwise it will give an error like "Can't find /sdcard/emptydirectory/*" since there are no files that match that pattern), but so that it still returns an error if the directory doesn't exist at all.
+    const QStringList output = drive->device()->runAdbCommand(QString("stat -c \"%F %s %W %Y %X %n\" %1/* %1/.* || test -d %1").arg(escapeSpecialCharactersForBash(filePath)), &ok).split(newlineRegex);    //The || test -d is necessary so that it doesn't return an error for empty directories (otherwise it will give an error like "Can't find /sdcard/emptydirectory/*" since there are no files that match that pattern), but so that it still returns an error if the directory doesn't exist at all.
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
@@ -224,24 +224,24 @@ NTSTATUS DOKAN_CALLBACK setFileAttributes(LPCWSTR, DWORD, PDOKAN_FILE_INFO){
 NTSTATUS DOKAN_CALLBACK setFileTime(LPCWSTR fileName, const FILETIME *creationTime, const FILETIME *lastAccessTime, const FILETIME *lastWriteTime, PDOKAN_FILE_INFO dokanFileInfo){
     UNREFERENCED_PARAMETER(creationTime);    //Android doesn't fully support creation times, so it's not possible to set the creation time
 
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
-    device->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), nullptr, false);
+    drive->device()->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), nullptr, false);
     return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     bool ok;
-    device->runAdbCommand(QString("rm %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
+    drive->device()->runAdbCommand(QString("rm %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
-    QFile localFile(device->localPath(filePath));
+    QFile localFile(drive->localPath(filePath));
     if(localFile.exists()){
         localFile.remove();
     }
@@ -249,16 +249,16 @@ NTSTATUS DOKAN_CALLBACK deleteFile(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileI
 }
 
 NTSTATUS DOKAN_CALLBACK deleteDirectory(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString filePath = windowsPathToAndroidPath(fileName);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     bool ok;
-    device->runAdbCommand(QString("rm -rf %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
+    drive->device()->runAdbCommand(QString("rm -rf %1").arg(escapeSpecialCharactersForBash(filePath)), &ok, false);
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
-    QDir localDir(device->localPath(filePath));
+    QDir localDir(drive->localPath(filePath));
     if(localDir.exists()){
         localDir.removeRecursively();
     }
@@ -266,17 +266,17 @@ NTSTATUS DOKAN_CALLBACK deleteDirectory(LPCWSTR fileName, PDOKAN_FILE_INFO dokan
 }
 
 NTSTATUS DOKAN_CALLBACK moveFile(LPCWSTR oldFileName, LPCWSTR newFileName, BOOL replaceIfExisting, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
-    const QString oldFilePath = "/sdcard" + QString::fromWCharArray(oldFileName).replace("\\", "/");
-    const QString newFilePath = "/sdcard" + QString::fromWCharArray(newFileName).replace("\\", "/");
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    const QString oldFilePath = drive->windowsPathToAndroidPath(oldFileName);
+    const QString newFilePath = drive->windowsPathToAndroidPath(newFileName);
 
     bool ok;
-    device->runAdbCommand(QString("test -d %3 || mv %1 %2 %3").arg(replaceIfExisting ? "-f" : "-n", escapeSpecialCharactersForBash(oldFilePath), escapeSpecialCharactersForBash(newFilePath)), &ok, true);
+    drive->device()->runAdbCommand(QString("test -d %3 || mv %1 %2 %3").arg(replaceIfExisting ? "-f" : "-n", escapeSpecialCharactersForBash(oldFilePath), escapeSpecialCharactersForBash(newFilePath)), &ok, true);
     if(!ok){
         return STATUS_UNSUCCESSFUL;
     }
 
-    QFileInfo oldLocalFile(device->localPath(oldFilePath));
+    QFileInfo oldLocalFile(drive->localPath(oldFilePath));
     if(oldLocalFile.isFile()){
         QFile(oldLocalFile.absoluteFilePath()).remove();
     }
@@ -296,12 +296,12 @@ NTSTATUS DOKAN_CALLBACK setAllocationSize(LPCWSTR, LONGLONG allocSize, PDOKAN_FI
 }
 
 NTSTATUS DOKAN_CALLBACK getVolumeInformation(LPWSTR volumeNameBuffer, DWORD volumeNameSize, LPDWORD volumeSerialNumber, LPDWORD maximumComponentLength, LPDWORD fileSystemFlags, LPWSTR fileSystemNameBuffer, DWORD fileSystemNameSize, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
 
-    wcscpy_s(volumeNameBuffer, volumeNameSize, device->model().toStdWString().c_str());
+    wcscpy_s(volumeNameBuffer, volumeNameSize, Settings().driveName(drive).toStdWString().c_str());
 
     if(volumeSerialNumber != nullptr){
-        *volumeSerialNumber = device->serialNumber().toULongLong(nullptr, 36);
+        *volumeSerialNumber = drive->device()->serialNumber().toULongLong(nullptr, 36);
     }
     if(maximumComponentLength != nullptr){
         *maximumComponentLength = 255;
@@ -310,16 +310,16 @@ NTSTATUS DOKAN_CALLBACK getVolumeInformation(LPWSTR volumeNameBuffer, DWORD volu
         *fileSystemFlags = FILE_SUPPORTS_REMOTE_STORAGE | FILE_UNICODE_ON_DISK | FILE_PERSISTENT_ACLS | FILE_NAMED_STREAMS;
     }
 
-    wcscpy_s(fileSystemNameBuffer, fileSystemNameSize, device->fileSystem().toStdWString().c_str());
+    wcscpy_s(fileSystemNameBuffer, fileSystemNameSize, drive->fileSystem().toStdWString().c_str());
 
     return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK getDiskFreeSpace(PULONGLONG freeBytesAvailable, PULONGLONG totalNumberOfBytes, PULONGLONG totalNumberOfFreeBytes, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDevice *device = AndroidDevice::fromDokanFileInfo(dokanFileInfo);
+    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
 
     static const QRegularExpression newlineRegex("[\r\n]+");
-    const QStringList dfOutput = device->runAdbCommand("df /sdcard").split(newlineRegex);
+    const QStringList dfOutput = drive->device()->runAdbCommand(QString("df %1").arg(drive->androidRootPath())).split(newlineRegex);
     if(dfOutput.size() <= 1){
         return STATUS_UNSUCCESSFUL;
     }
@@ -337,11 +337,11 @@ NTSTATUS DOKAN_CALLBACK getDiskFreeSpace(PULONGLONG freeBytesAvailable, PULONGLO
 }
 
 NTSTATUS DOKAN_CALLBACK unmounted(PDOKAN_FILE_INFO dokanFileInfo){
-    emit AndroidDevice::fromDokanFileInfo(dokanFileInfo)->driveUnmounted();
+    emit AndroidDrive::fromDokanFileInfo(dokanFileInfo)->driveUnmounted();
     return STATUS_SUCCESS;
 }
 
 NTSTATUS DOKAN_CALLBACK mounted(LPCWSTR mountPoint, PDOKAN_FILE_INFO dokanFileInfo){
-    emit AndroidDevice::fromDokanFileInfo(dokanFileInfo)->driveMounted(mountPoint[0]);
+    emit AndroidDrive::fromDokanFileInfo(dokanFileInfo)->driveMounted(mountPoint[0]);
     return STATUS_SUCCESS;
 }

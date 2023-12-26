@@ -1,17 +1,14 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
-#include <QDialog>
-#include <QGridLayout>
-#include <QFormLayout>
-#include <QGroupBox>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QLabel>
+#include <QDialog>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QSet>
 #include <QSettings>
-#include "androiddevice.h"
+#include "androiddrive.h"
 
 class AndroidDevice;
 
@@ -21,7 +18,7 @@ class SettingsWindow : public QDialog{
 public:
     friend class Settings;
 
-    SettingsWindow(const AndroidDevice *device);
+    SettingsWindow(const AndroidDrive *drive);
     virtual ~SettingsWindow();
 
     friend Settings &operator<<(Settings &settings, const SettingsWindow *settingsWindow);
@@ -33,27 +30,26 @@ private:
     static QSet<SettingsWindow*> _instances;
     static const QStringList _languageNames, _languageAbbreviations;
 
-    const AndroidDevice *const _device;
+    const AndroidDrive *const _drive;
 
-    QGridLayout _layout;
-    QGroupBox _deviceSettingsBox, _globalSettingsBox;
-    QFormLayout _deviceSettingsLayout, _globalSettingsLayout;
+    QComboBox *_driveLetter = nullptr;
+    QLineEdit *_driveName = nullptr;
+    QCheckBox *_autoConnect = nullptr;
 
-    QComboBox _driveLetter;
-    QCheckBox _autoConnect;
-    QCheckBox _openInExplorer, _hideDotFiles;
+    QCheckBox *_openInExplorer;
+    QCheckBox *_hideDotFiles;
+    QComboBox *_language;
 
-    QComboBox _language;
-
-    mutable QPushButton _okButton, _cancelButton, _applyButton;
+    QPushButton *const _applyButton = new QPushButton(QObject::tr("&Apply"), this);
 };
 
 class Settings: public QSettings{
 public:
     Settings();
 
-    char driveLetter(const AndroidDevice *device) const;
-    bool autoConnect(const AndroidDevice *device) const;
+    char driveLetter(const AndroidDrive *drive) const;
+    QString driveName(const AndroidDrive *drive) const;
+    bool autoConnect(const AndroidDrive *drive) const;
     bool openInExplorer() const;
     bool hideDotFiles() const;
     QString language() const;

@@ -1,7 +1,9 @@
 # AndroidDrive
 AndroidDrive is a program that allows mounting Android smartphones as drives on Windows.
 
-<img src="https://i.stack.imgur.com/Y1f9d.png" width="350"/> <img src="https://i.stack.imgur.com/lyJzD.png" width="350"/>
+<img width="394" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/f7e16581-2ab0-4353-ac31-b0fd722f9048">
+<img width="394" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/e6d81783-8c3c-4dd5-bf53-ca5d0bb87c05">
+<img width="165" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/7aa8a35b-53b5-40a2-b843-de569eaa7363">
 
 
 # Setup
