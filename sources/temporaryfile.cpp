@@ -1,4 +1,5 @@
 #include "androiddrive.h"
+#include "helperfunctions.h"
 #include "temporaryfile.h"
 
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
@@ -163,6 +164,8 @@ NTSTATUS TemporaryFile::setAllocationSize(LONGLONG allocSize){
 
 NTSTATUS TemporaryFile::push(){
     if(this->_modified){
+        BY_HANDLE_FILE_INFORMATION fileInformation;
+        this->getFileInformation(&fileInformation);
         if(!this->_device->pushToAdb(this->_localPath, this->_remotePath)){
             //If it failed while the handle is opened, close the handle because sometimes it fails because the open handle causes it to not have read permission
             CloseHandle(this->_handle);
@@ -171,6 +174,7 @@ NTSTATUS TemporaryFile::push(){
                 return STATUS_UNSUCCESSFUL;
             }
         }
+        this->_device->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(this->_remotePath), QString::number(microsoftTimeToUnixTime(fileInformation.ftLastWriteTime)), QString::number(microsoftTimeToUnixTime(fileInformation.ftLastAccessTime))), nullptr, false);
         this->_modified = false;
     }
     return STATUS_SUCCESS;
@@ -178,6 +182,11 @@ NTSTATUS TemporaryFile::push(){
 
 NTSTATUS TemporaryFile::getFileInformation(LPBY_HANDLE_FILE_INFORMATION handleFileInformation){
     const bool success = GetFileInformationByHandle(this->_handle, handleFileInformation);
+    return success ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
+}
+
+NTSTATUS TemporaryFile::setFileTime(const FILETIME *creationTime, const FILETIME *lastAccessTime, const FILETIME *lastWriteTime){
+    const bool success = SetFileTime(this->_handle, creationTime, lastAccessTime, lastWriteTime);
     return success ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
 }
 

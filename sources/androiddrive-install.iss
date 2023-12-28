@@ -45,7 +45,7 @@ LanguageDetectionMethod=uilanguage
 
 WizardStyle=modern
 
-DefaultDirName={pf64}\{#MyAppName}
+DefaultDirName={commonpf64}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir={#MyAppOutputDir}
 OutputBaseFilename={#MyAppOutputExe}

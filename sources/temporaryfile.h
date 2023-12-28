@@ -6,7 +6,7 @@
 
 class TemporaryFile final{
 public:
-    TemporaryFile(const AndroidDrive *device, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
+    TemporaryFile(const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
     ~TemporaryFile();
 
     TemporaryFile(const TemporaryFile&) = delete;
@@ -18,6 +18,7 @@ public:
     NTSTATUS write(LPCVOID buffer, DWORD numberOfBytesToWrite, LPDWORD numberOfBytesWritten, LONGLONG offset, PDOKAN_FILE_INFO dokanFileInfo, const QString &altStream);
     NTSTATUS setAllocationSize(LONGLONG allocSize);
     NTSTATUS getFileInformation(LPBY_HANDLE_FILE_INFORMATION handleFileInformation);
+    NTSTATUS setFileTime(const FILETIME *creationTime, const FILETIME *lastAccessTime, const FILETIME *lastWriteTime);
     NTSTATUS push();
 
 private:

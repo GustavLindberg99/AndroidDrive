@@ -228,6 +228,12 @@ NTSTATUS DOKAN_CALLBACK setFileTime(LPCWSTR fileName, const FILETIME *creationTi
     const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     drive->device()->runAdbCommand(QString("(test -d %1 || test -f %1) && touch -cm --date=\"@%2\" %1 && touch -ca --date=\"@%3\" %1").arg(escapeSpecialCharactersForBash(filePath), QString::number(microsoftTimeToUnixTime(*lastWriteTime)), QString::number(microsoftTimeToUnixTime(*lastAccessTime))), nullptr, false);
+
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    if(temporaryFile != nullptr){
+        temporaryFile->setFileTime(creationTime, lastAccessTime, lastWriteTime);
+    }
+
     return STATUS_SUCCESS;
 }
 
