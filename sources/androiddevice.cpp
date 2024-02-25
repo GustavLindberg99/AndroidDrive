@@ -19,11 +19,16 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
     const QStringList internalStorageDfOutput = this->runAdbCommand("df /sdcard").split(newlineRegex);
     if(internalStorageDfOutput.size() > 1){
         const QString storageFilesystem = internalStorageDfOutput[1].split(spaceRegex)[0];
-        const QStringList allDfOutput = this->runAdbCommand(QString("df | grep %1").arg(storageFilesystem)).split(newlineRegex);
+        const QStringList allDfOutput = this->runAdbCommand("df").split(newlineRegex);
         for(const QString &dfOutput: allDfOutput){
             const QStringList values = dfOutput.split(spaceRegex);
             if(values.size() > 5){
-                QString androidPath = dfOutput.split(spaceRegex)[5];
+                const QString filesystem = values[0];
+                static const QRegularExpression storageRegex("^/mnt/.*media");
+                if(filesystem != storageFilesystem && !filesystem.contains(storageRegex)){
+                    continue;
+                }
+                QString androidPath = values[5];
                 if(internalStoragePath.contains(androidPath)){
                     androidPath = "/sdcard";
                 }
