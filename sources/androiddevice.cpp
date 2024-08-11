@@ -1,8 +1,10 @@
+#include "androiddevice.h"
+
 #include <QDateTime>
 #include <QDir>
 #include <QProcess>
 #include <QRegularExpression>
-#include "androiddevice.h"
+
 #include "androiddrive.h"
 
 QList<AndroidDevice*> AndroidDevice::_instances;

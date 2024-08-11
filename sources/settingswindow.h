@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QSet>
 #include <QSettings>
+
 #include "androiddrive.h"
 
 class AndroidDevice;

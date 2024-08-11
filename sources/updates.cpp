@@ -1,3 +1,5 @@
+#include "updates.h"
+
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
@@ -8,7 +10,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTemporaryDir>
-#include "updates.h"
+
 #include "version.h"
 
 //This file is shared between projects, which is why there is both Windows-specific and Linux-specific code regardless of whether or not the project is cross-platform.

@@ -1,8 +1,10 @@
+#include "dokanoperations.h"
+
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
+
 #include "androiddrive.h"
-#include "dokanoperations.h"
 #include "helperfunctions.h"
 #include "settingswindow.h"
 #include "temporaryfile.h"
@@ -138,13 +140,7 @@ NTSTATUS DOKAN_CALLBACK getFileInformation(LPCWSTR fileName, LPBY_HANDLE_FILE_IN
     bool lastAccessTimeKnown;
     const FILETIME lastAccessTime = unixTimeToMicrosftTime(match.captured(5).toLongLong(&lastAccessTimeKnown));
 
-    handleFileInformation->dwFileAttributes = 0;
-    if(isDirectory){
-        handleFileInformation->dwFileAttributes |= Attribute::Directory;
-    }
-    if(filePath.split("/").last().startsWith(".") && Settings().hideDotFiles()){
-        handleFileInformation->dwFileAttributes |= Attribute::Hidden;
-    }
+    handleFileInformation->dwFileAttributes = getFileAttributes(isDirectory, filePath.split("/").last());
     handleFileInformation->ftCreationTime = creationTimeKnown ? creationTime : unknownTime;
     handleFileInformation->ftLastWriteTime = lastWriteTimeKnown ? lastWriteTime : unknownTime;
     handleFileInformation->ftLastAccessTime = lastAccessTimeKnown ? lastAccessTime : unknownTime;
@@ -173,7 +169,6 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
         return STATUS_UNSUCCESSFUL;
     }
 
-    const bool hideDotFiles = Settings().hideDotFiles();
     static const QRegularExpression fileInfoRegex("^([A-Za-z\\s]+) ([0-9]+) ([0-9?]+) ([0-9?]+) ([0-9?]+) (.+)$");
     for(const QString &fileInfo: output){
         const QRegularExpressionMatch match = fileInfoRegex.match(fileInfo);
@@ -195,13 +190,7 @@ NTSTATUS DOKAN_CALLBACK findFiles(LPCWSTR fileName, PFillFindData fillFindData, 
         const QString subfileName = androidFileNameToWindowsFileName(match.captured(6).split("/").last());
 
         WIN32_FIND_DATAW findData;
-        findData.dwFileAttributes = 0;
-        if(isDirectory){
-            findData.dwFileAttributes |= Attribute::Directory;
-        }
-        if(hideDotFiles && subfileName.startsWith(".")){
-            findData.dwFileAttributes |= Attribute::Hidden;
-        }
+        findData.dwFileAttributes = getFileAttributes(isDirectory, subfileName);
         findData.ftCreationTime = creationTimeKnown ? creationTime : unknownTime;
         findData.ftLastWriteTime = lastWriteTimeKnown ? lastWriteTime : unknownTime;
         findData.ftLastAccessTime = lastAccessTimeKnown ? lastAccessTime : unknownTime;

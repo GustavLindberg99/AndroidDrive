@@ -1,7 +1,9 @@
+#include "androiddrive.h"
+
 #include <QRegularExpression>
 #include <QThread>
+
 #include "androiddevice.h"
-#include "androiddrive.h"
 #include "dokanoperations.h"
 
 QList<AndroidDrive*> AndroidDrive::_instances;

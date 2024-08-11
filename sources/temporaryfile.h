@@ -2,6 +2,7 @@
 #define TEMPORARYFILE_H
 
 #include <QString>
+
 #include "androiddevice.h"
 
 class TemporaryFile final{

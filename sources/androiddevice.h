@@ -6,8 +6,9 @@
 #include <QString>
 #include <QTemporaryDir>
 #include <QThread>
-#include <functional>
+
 #include <dokan/dokan.h>
+#include <functional>
 
 class AndroidDrive;
 

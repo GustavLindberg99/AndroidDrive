@@ -1,8 +1,9 @@
+#include "settingswindow.h"
+
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLabel>
-#include "settingswindow.h"
 
 QSet<SettingsWindow*> SettingsWindow::_instances;
 bool SettingsWindow::systemLanguageAvailable = true;

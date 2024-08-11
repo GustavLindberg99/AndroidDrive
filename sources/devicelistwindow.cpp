@@ -1,10 +1,11 @@
+#include "devicelistwindow.h"
+
 #include <QApplication>
 #include <QDesktopServices>
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QProcess>
 #include <QUrl>
-#include "devicelistwindow.h"
 
 DeviceListWindow::DeviceListWindow(){
     //Initialize the UI

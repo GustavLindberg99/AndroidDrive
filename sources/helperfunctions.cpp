@@ -1,7 +1,10 @@
+#include "helperfunctions.h"
+
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
-#include "helperfunctions.h"
+
+#include "settingswindow.h"
 
 QString escapeSpecialCharactersForBash(QString filePath){
     //List of characters that need to be escaped from https://stackoverflow.com/a/27817504/4284627
@@ -44,4 +47,19 @@ FILETIME unixTimeToMicrosftTime(qlonglong unixTime){
     microsftTime.dwLowDateTime = mstLargeInt.LowPart;
     microsftTime.dwHighDateTime = mstLargeInt.HighPart;
     return microsftTime;
+}
+
+DWORD getFileAttributes(bool isDirectory, const QString &fileName){
+    DWORD fileAttributes = 0;
+    if(isDirectory){
+        fileAttributes |= Attribute::Directory;
+    }
+    if((fileName.startsWith(".") && Settings().hideDotFiles()) || fileName == "desktop.ini"){
+        fileAttributes |= Attribute::Hidden;
+    }
+    //This is needed for custom folder icons to be displayed correctly (source: https://superuser.com/q/882442/513819)
+    if(isDirectory || fileName == "desktop.ini"){
+        fileAttributes |= Attribute::System;
+    }
+    return fileAttributes;
 }

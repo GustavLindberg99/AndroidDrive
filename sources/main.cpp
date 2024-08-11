@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QSystemTrayIcon>
 #include <QTranslator>
+
 #include "androiddevice.h"
 #include "devicelistwindow.h"
 #include "settingswindow.h"

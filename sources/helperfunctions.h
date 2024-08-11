@@ -2,6 +2,7 @@
 #define HELPERFUNCTIONS_H
 
 #include <QString>
+
 #include <dokan/dokan.h>
 
 enum Attribute{
@@ -25,5 +26,6 @@ QString getAltStream(LPCWSTR windowsPath);
 QString androidFileNameToWindowsFileName(QString fileName);
 qlonglong microsoftTimeToUnixTime(FILETIME microsoftTime);
 FILETIME unixTimeToMicrosftTime(qlonglong unixTime);
+DWORD getFileAttributes(bool isDirectory, const QString &fileName);
 
 #endif // HELPERFUNCTIONS_H

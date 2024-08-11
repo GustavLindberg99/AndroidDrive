@@ -2,6 +2,7 @@
 #define DEVICELISTMODEL_H
 
 #include <QAbstractItemModel>
+
 #include "androiddevice.h"
 
 //This model is a tree model with three levels: the root level (which contains titles for the columns), devices and drives.

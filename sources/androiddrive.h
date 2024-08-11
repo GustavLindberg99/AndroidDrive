@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QTemporaryDir>
+
 #include <dokan/dokan.h>
 
 class AndroidDevice;

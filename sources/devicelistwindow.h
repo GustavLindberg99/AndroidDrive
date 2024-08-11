@@ -5,6 +5,7 @@
 #include <QProcess>
 #include <QPushButton>
 #include <QTreeView>
+
 #include "androiddevice.h"
 #include "devicelistmodel.h"
 #include "settingswindow.h"
