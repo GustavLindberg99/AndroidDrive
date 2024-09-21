@@ -9,20 +9,42 @@
 #include <QSet>
 #include <QSettings>
 
-#include "androiddrive.h"
+#include "settings.h"
 
-class AndroidDevice;
-
-class SettingsWindow : public QDialog{
+class SettingsWindow : public QDialog {
     Q_OBJECT
 
 public:
-    friend class Settings;
-
+    /**
+     * Constructs a settings window for a drive (without opening the window).
+     *
+     * @param drive - A non-owning pointer to the drive that these settings are for (the settings window should be owned by the drive to ensure that it's closed when the drive is destroyed). Can be null to show only general settings.
+     */
     SettingsWindow(const AndroidDrive *drive);
+
+    /**
+     * Destructor.
+     */
     virtual ~SettingsWindow();
 
+    /**
+     * Saves the settings specified in a settings window to a settings object.
+     *
+     * @param settings - The settings object to save the settings to.
+     * @param settingsWindow - The settings window to get the settings from.
+     *
+     * @return The settings object to enable chaining.
+     */
     friend Settings &operator<<(Settings &settings, const SettingsWindow *settingsWindow);
+
+    /**
+     * Displays the settings from a settings object in a settings window.
+     *
+     * @param settings - The settings object to load the settings from.
+     * @param settingsWindow - The settings window to display the settings in.
+     *
+     * @return The settings object to enable chaining.
+     */
     friend const Settings &operator>>(const Settings &settings, SettingsWindow *settingsWindow);
 
     static bool systemLanguageAvailable;
@@ -42,18 +64,6 @@ private:
     QComboBox *_language;
 
     QPushButton *const _applyButton = new QPushButton(QObject::tr("&Apply"), this);
-};
-
-class Settings: public QSettings{
-public:
-    Settings();
-
-    char driveLetter(const AndroidDrive *drive) const;
-    QString driveName(const AndroidDrive *drive) const;
-    bool autoConnect(const AndroidDrive *drive) const;
-    bool openInExplorer() const;
-    bool hideDotFiles() const;
-    QString language() const;
 };
 
 #endif // SETTINGSWINDOW_H

@@ -29,19 +29,14 @@ int main(int argc, char **argv){
 
 
     //Create the tray icon and the windows
-    QSystemTrayIcon *trayIcon = new QSystemTrayIcon(QIcon(":/icon.ico"));
-    DeviceListWindow *deviceListWindow = new DeviceListWindow();
-    SettingsWindow *settingsWindow = new SettingsWindow(nullptr);
-    const auto quit = [&app, &trayIcon, &deviceListWindow, &settingsWindow](){
-        delete trayIcon;
-        trayIcon = nullptr;
-        deviceListWindow->deleteLater();
-        deviceListWindow = nullptr;
-        delete settingsWindow;
-        settingsWindow = nullptr;
-        AndroidDevice::shutdownAllDevices([&app](){
-            app.quit();
-        });
+    auto trayIcon = std::make_unique<QSystemTrayIcon>(QIcon(":/icon.ico"));
+    auto deviceListWindow = std::make_unique<DeviceListWindow>();
+    auto settingsWindow = std::make_unique<SettingsWindow>(nullptr);
+    const auto quit = [&trayIcon, &deviceListWindow, &settingsWindow](){
+        AndroidDevice::quitOnLastDeletedDevice();
+        trayIcon.reset();
+        deviceListWindow.reset();
+        settingsWindow.reset();
     };
     checkForUpdates(
         QUrl("https://github.com/GustavLindberg99/AndroidDrive"),
@@ -53,17 +48,17 @@ int main(int argc, char **argv){
 
 
     //Initialize the device list window
-    QObject::connect(deviceListWindow, &DeviceListWindow::encounteredFatalError, quit);
+    QObject::connect(deviceListWindow.get(), &DeviceListWindow::encounteredFatalError, quit);
 
 
     //Initialize the tray icon
     QMenu contextMenu;
 
     QAction *deviceListAction = contextMenu.addAction(QObject::tr("&Devices"));
-    QObject::connect(deviceListAction, &QAction::triggered, deviceListWindow, &QWidget::show);
+    QObject::connect(deviceListAction, &QAction::triggered, deviceListWindow.get(), &QWidget::show);
 
     QAction *settingsAction = contextMenu.addAction(QObject::tr("&Settings"));
-    QObject::connect(settingsAction, &QAction::triggered, settingsWindow, &QWidget::show);
+    QObject::connect(settingsAction, &QAction::triggered, settingsWindow.get(), &QWidget::show);
 
     QAction *aboutAction = contextMenu.addAction(QObject::tr("&About AndroidDrive"));
     QObject::connect(aboutAction, &QAction::triggered, aboutAction, [](){

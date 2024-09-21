@@ -5,6 +5,8 @@
 #include <QGroupBox>
 #include <QLabel>
 
+#include "androiddrive.h"
+
 QSet<SettingsWindow*> SettingsWindow::_instances;
 bool SettingsWindow::systemLanguageAvailable = true;
 const QStringList SettingsWindow::_languageNames{"", "English", "Français", "Magyar", "Italiano", "Svenska"};
@@ -137,13 +139,13 @@ SettingsWindow::~SettingsWindow(){
 
 Settings &operator<<(Settings &settings, const SettingsWindow *settingsWindow){
     if(settingsWindow->_drive != nullptr){
-        settings.setValue(settingsWindow->_drive->id() + "_driveLetter", settingsWindow->_driveLetter->currentText().at(0));
-        settings.setValue(settingsWindow->_drive->id() + "_driveName", settingsWindow->_driveName->text());
-        settings.setValue(settingsWindow->_drive->id() + "_connectAutomatically", settingsWindow->_autoConnect->isChecked());
+        settings.setDriveLetter(settingsWindow->_drive, settingsWindow->_driveLetter->currentText().at(0).toLatin1());
+        settings.setDriveName(settingsWindow->_drive, settingsWindow->_driveName->text());
+        settings.setAutoConnect(settingsWindow->_drive, settingsWindow->_autoConnect->isChecked());
     }
-    settings.setValue("openInExplorer", settingsWindow->_openInExplorer->isChecked());
-    settings.setValue("hideDotFiles", settingsWindow->_hideDotFiles->isChecked());
-    settings.setValue("language", SettingsWindow::_languageAbbreviations[settingsWindow->_language->currentIndex()]);
+    settings.setOpenInExplorer(settingsWindow->_openInExplorer->isChecked());
+    settings.setHideDotFiles(settingsWindow->_hideDotFiles->isChecked());
+    settings.setLanguage(SettingsWindow::_languageAbbreviations[settingsWindow->_language->currentIndex()]);
     settingsWindow->_applyButton->setEnabled(false);
     return settings;
 }
@@ -165,30 +167,4 @@ const Settings &operator>>(const Settings &settings, SettingsWindow *settingsWin
     settingsWindow->_language->setCurrentIndex(SettingsWindow::_languageAbbreviations.indexOf(settings.language()));
     settingsWindow->_applyButton->setEnabled(false);
     return settings;
-}
-
-Settings::Settings(): QSettings("Gustav Lindberg", "AndroidDrive"){}
-
-char Settings::driveLetter(const AndroidDrive *drive) const{
-    return this->value(drive->id() + "_driveLetter", 'D').toChar().toLatin1();
-}
-
-QString Settings::driveName(const AndroidDrive *drive) const{
-    return this->value(drive->id() + "_driveName", drive->completeName()).toString();
-}
-
-bool Settings::autoConnect(const AndroidDrive *drive) const{
-    return this->value(drive->id() + "_connectAutomatically", true).toBool();
-}
-
-bool Settings::openInExplorer() const{
-    return this->value("openInExplorer", true).toBool();
-}
-
-bool Settings::hideDotFiles() const{
-    return this->value("hideDotFiles", true).toBool();
-}
-
-QString Settings::language() const{
-    return this->value("language", "auto").toString();
 }

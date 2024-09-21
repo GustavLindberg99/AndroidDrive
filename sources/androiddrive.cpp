@@ -9,11 +9,13 @@
 QList<AndroidDrive*> AndroidDrive::_instances;
 DWORD AndroidDrive::_internalLogicalDrives = 0;
 
-AndroidDrive::AndroidDrive(AndroidDevice *device, const QString &androidRootPath):
-    _device(device),
-    _androidRootPath(androidRootPath)
+AndroidDrive::AndroidDrive(QString androidRootPath, QString model, QString serialNumber):
+    _androidRootPath(std::move(androidRootPath)),
+    _model(std::move(model)),
+    _serialNumber(std::move(serialNumber)),
+    _settingsWindow(this)
 {
-    AndroidDrive::_instances.append(this);
+    AndroidDrive::_instances.push_back(this);
 
     ZeroMemory(&this->_dokanOptions, sizeof(DOKAN_OPTIONS));
     this->_dokanOptions.Version = DOKAN_VERSION;
@@ -40,18 +42,31 @@ AndroidDrive::AndroidDrive(AndroidDevice *device, const QString &androidRootPath
     this->_dokanOperations.Unmounted = unmounted;
     this->_dokanOperations.Mounted = mounted;
 
-    QObject::connect(this, &AndroidDrive::driveMounted, [this](){
+    QObject::connect(this, &AndroidDrive::driveMounted, this, [this](){
         this->_mounted = true;
         if(this->_shouldBeDisconnected){
             this->disconnectDrive();
         }
     });
-    QObject::connect(this, &AndroidDrive::driveUnmounted, [this](){
+    QObject::connect(this, &AndroidDrive::driveUnmounted, this, [this](){
         this->_mounted = false;
+    });
+
+    //Do the cleanup after Dokan exit here to make sure that it's run on the main thread instead of the Dokan thread (otherwise the destructors will be called in the Dokan thread so the thread will try to join itself and crash).
+    //Qt::ConnectionType::AutoConnection is the default so this will be run on the main thread since the connection is done on the main thread.
+    QObject::connect(this, &AndroidDrive::driveDisconnected, this, [this](){
+        this->_temporaryFiles.clear();
+        this->_temporaryDir = nullptr;
+        this->_device = nullptr;
+        AndroidDrive::_internalLogicalDrives &= ~(1 << (this->_mountPoint[0] - 'A'));
     });
 }
 
 AndroidDrive::~AndroidDrive(){
+    this->disconnectDrive();
+    if(this->_thread.joinable()){
+        this->_thread.join();
+    }
     AndroidDrive::_instances.removeAll(this);
 }
 
@@ -66,27 +81,12 @@ AndroidDrive *AndroidDrive::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
     return nullptr;
 }
 
-void AndroidDrive::connectDrive(char driveLetter){
-    class Thread: public QThread{
-    public:
-        Thread(AndroidDrive *drive): _drive(drive){}
-
-    protected:
-        virtual void run() override{
-            const int status = DokanMain(&this->_drive->_dokanOptions, &this->_drive->_dokanOperations);
-            delete this->_drive->_temporaryDir;
-            this->_drive->_temporaryDir = nullptr;
-            this->_drive->_thread = nullptr;
-            AndroidDrive::_internalLogicalDrives &= ~(1 << (this->_drive->_mountPoint[0] - 'A'));
-            emit this->_drive->driveDisconnected(status);
-            this->deleteLater();
+void AndroidDrive::connectDrive(char driveLetter, const std::shared_ptr<AndroidDevice> &device){
+    if(!this->isConnected()){
+        if(this->_thread.joinable()){
+            this->_thread.join();
         }
 
-    private:
-        AndroidDrive *_drive;
-    };
-
-    if(this->_thread == nullptr){
         const DWORD driveLetters = GetLogicalDrives() | AndroidDrive::_internalLogicalDrives;    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
         for(int i = 0; (driveLetters & (1 << (driveLetter - 'A'))) && i < 26; i++){
             driveLetter++;
@@ -96,42 +96,49 @@ void AndroidDrive::connectDrive(char driveLetter){
         }
 
         AndroidDrive::_internalLogicalDrives |= 1 << (driveLetter - 'A');
-        this->_temporaryDir = new QTemporaryDir();
+        this->_shouldBeDisconnected = false;
+        this->_temporaryDir = std::make_unique<QTemporaryDir>();
+        this->_device = device;
         this->_mountPoint[0] = driveLetter;    //We don't need to change dokanOptions.MountPoint because it points to the same memory address as this->_mountPoint
-        this->_mountPointRemoved = false;
-        this->_thread = new Thread(this);
-        this->_thread->start();
+
+        const QString output = this->device()->runAdbCommand("mount | grep $(df /sdcard | sed \"s/.* //g\" | tail -n +2)");
+        static const QRegularExpression fileSystemRegex("\\S+\\s+on\\s+\\S+\\s+type\\s+([a-zA-Z0-9]+)\\s+");
+        const QRegularExpressionMatch match = fileSystemRegex.match(output);
+        this->_fileSystem = match.hasMatch() ? match.captured(1) : "";
+
+        this->_thread = std::thread([this](){
+            const int status = DokanMain(&this->_dokanOptions, &this->_dokanOperations);
+            emit this->driveDisconnected(status);
+        });
         emit this->driveConnected();
     }
 }
 
 void AndroidDrive::disconnectDrive(){
-    if(this->_thread != nullptr && !this->_mountPointRemoved){
-        this->_shouldBeDisconnected = !this->_mounted;
-        if(this->_mounted){
-            DokanRemoveMountPoint(this->_mountPoint);
-            this->_mountPointRemoved = true;
-        }
+    if(this->isConnected()){
+        this->_shouldBeDisconnected = true;
+        DokanRemoveMountPoint(this->_mountPoint);
     }
 }
 
 bool AndroidDrive::isConnected() const{
-    return this->_thread != nullptr;
+    return this->_temporaryDir != nullptr;
 }
 
-AndroidDevice *AndroidDrive::device() const{
+bool AndroidDrive::mountingInProgress() const{
+    return !this->_mounted && !this->_shouldBeDisconnected && this->isConnected();
+}
+
+bool AndroidDrive::unmountingInProgress() const{
+    return this->_shouldBeDisconnected && this->isConnected();
+}
+
+std::shared_ptr<AndroidDevice> AndroidDrive::device() const{
     return this->_device;
 }
 
 QString AndroidDrive::fileSystem() const{
-    if(!this->_fileSystemCached){
-        const QString output = this->device()->runAdbCommand("mount | grep $(df /sdcard | sed \"s/.* //g\" | tail -n +2)");
-        static const QRegularExpression fileSystemRegex("\\S+\\s+on\\s+\\S+\\s+type\\s+([a-zA-Z0-9]+)\\s+");
-        const QRegularExpressionMatch match = fileSystemRegex.match(output);
-        this->_cachedFileSystem = match.hasMatch() ? match.captured(1) : "";
-        this->_fileSystemCached = true;
-    }
-    return this->_cachedFileSystem;
+    return this->_fileSystem;
 }
 
 QString AndroidDrive::name() const{
@@ -143,14 +150,14 @@ QString AndroidDrive::name() const{
 }
 
 QString AndroidDrive::completeName() const{
-    if(this->device()->numberOfDrives() == 1){
-        return this->device()->model();
+    if(this->device() != nullptr && this->device()->numberOfDrives() == 1){
+        return this->_model;
     }
-    return this->device()->model() + " " + this->name();
+    return this->_model + " " + this->name();
 }
 
 QString AndroidDrive::id() const{
-    return this->device()->serialNumber() + this->androidRootPath();
+    return this->_serialNumber + this->androidRootPath();
 }
 
 QString AndroidDrive::androidRootPath() const{
@@ -177,4 +184,28 @@ QString AndroidDrive::windowsPathToAndroidPath(LPCWSTR windowsPath) const{
 
 QString AndroidDrive::mountPoint() const{
     return QString::fromWCharArray(this->_mountPoint);
+}
+
+NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream){
+    std::unique_ptr<TemporaryFile> temporaryFile = std::make_unique<TemporaryFile>(dokanFileInfo, this, remotePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, exists, altStream);
+    const NTSTATUS errorCode = temporaryFile->errorCode();
+
+    //If there's no error, move the unique_ptr to the list of temporary files to keep it in memory, otherwise do nothing and it will be deleted at the end of the scope.
+    if(errorCode == STATUS_SUCCESS){
+        this->_temporaryFiles.push_back(std::move(temporaryFile));
+    }
+
+    return errorCode;
+}
+
+void AndroidDrive::deleteTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo){
+    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    std::erase_if(
+        this->_temporaryFiles,
+        [temporaryFile](const std::unique_ptr<TemporaryFile> &it){return it.get() == temporaryFile;}
+    );
+}
+
+void AndroidDrive::openSettingsWindow(){
+    this->_settingsWindow.show();
 }

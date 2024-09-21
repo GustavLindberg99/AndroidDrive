@@ -38,8 +38,8 @@ DeviceListWindow::DeviceListWindow(){
             if(device->numberOfConnectedDrives() > 0){
                 device->disconnectAllDrives();
             }
-            else for(AndroidDrive *drive: device->drives()){
-                drive->connectDrive(Settings().driveLetter(drive));
+            else{
+                device->connectAllDrives();
             }
             this->updateButtons();
         }
@@ -50,7 +50,7 @@ DeviceListWindow::DeviceListWindow(){
                     drive->disconnectDrive();
                 }
                 else{
-                    drive->connectDrive(Settings().driveLetter(drive));
+                    drive->connectDrive(Settings().driveLetter(drive), this->_model.parentDevice(drive));
                 }
                 this->updateButtons();
             }
@@ -61,7 +61,7 @@ DeviceListWindow::DeviceListWindow(){
     QObject::connect(this->_settingsButton, &QPushButton::pressed, this, [this](){
         AndroidDrive *drive = this->selectedDrive();
         if(drive != nullptr){
-            this->_settingsWindows[drive]->show();
+            drive->openSettingsWindow();
         }
     });
 
@@ -89,55 +89,32 @@ DeviceListWindow::DeviceListWindow(){
             return;
         }
 
-        const QList<AndroidDevice*> devices = this->_model.devices();
+        const QList<std::shared_ptr<AndroidDevice>> devices = this->_model.devices();
         for(int i = first; i <= last; i++){
-            AndroidDevice *device = devices[i];
+            const std::shared_ptr<AndroidDevice> device = devices[i];
             Settings settings;
 
             //Mount automatically if the setting for that is enabled
-            for(AndroidDrive *drive: device->drives()){
-                if(settings.autoConnect(drive)){
-                    drive->connectDrive(settings.driveLetter(drive));
-                }
-            }
+            device->autoconnectAllDrives();
 
             //Update the buttons whenever the drive is connected or disconnected
-            QObject::connect(device, &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
-            QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
+            QObject::connect(device.get(), &AndroidDevice::driveConnected, this, &DeviceListWindow::updateButtons);
+            QObject::connect(device.get(), &AndroidDevice::driveMounted, this, &DeviceListWindow::updateButtons);
+            QObject::connect(device.get(), &AndroidDevice::driveUnmounted, this, &DeviceListWindow::updateButtons);
+            QObject::connect(device.get(), &AndroidDevice::driveDisconnected, this, &DeviceListWindow::updateButtons);
 
             //Handle errors
-            QObject::connect(device, &AndroidDevice::driveDisconnected, this, &DeviceListWindow::handleDokanError);
+            QObject::connect(device.get(), &AndroidDevice::driveDisconnected, this, &DeviceListWindow::handleDokanError);
 
             //Open in Explorer if the setting for that is enabled
-            QObject::connect(device, &AndroidDevice::driveMounted, [](AndroidDrive*, char driveLetter){
+            QObject::connect(device.get(), &AndroidDevice::driveMounted, [](AndroidDrive*, char driveLetter){
                 if(Settings().openInExplorer()){
                     QProcess::startDetached("C:\\Windows\\explorer.exe", {driveLetter + QString(":\\")});
                 }
             });
 
-            //Create a settings window for each drive
-            for(AndroidDrive *drive: device->drives()){
-                this->_settingsWindows[drive] = new SettingsWindow(drive);
-            }
-
             //Expand items by default
             this->_view->expand(this->_model.deviceToIndex(device));
-        }
-    });
-
-    //Handle when a device is disconnected
-    QObject::connect(&this->_model, &DeviceListModel::rowsAboutToBeRemoved, this, [this](const QModelIndex &parent, int first, int last){
-        //If the parent isn't the root, the child isn't a device, but this function only cares about when devices are disconnected
-        if(parent != this->_model.rootIndex()){
-            return;
-        }
-
-        const QList<AndroidDevice*> devices = this->_model.devices();
-        for(int i = first; i <= last; i++){
-            AndroidDevice *device = devices[i];
-            for(AndroidDrive *drive: device->drives()){
-                this->_settingsWindows.remove(drive);
-            }
         }
     });
 
@@ -150,6 +127,9 @@ DeviceListWindow::DeviceListWindow(){
 }
 
 DeviceListWindow::~DeviceListWindow(){
+    for(const std::shared_ptr<AndroidDevice> &device: this->_model.devices()){
+        device->disconnectAllDrives();
+    }
     this->_adb.disconnect();
     this->_adb.close();
 }
@@ -165,6 +145,10 @@ AndroidDrive *DeviceListWindow::selectedDrive() const{
 }
 
 void DeviceListWindow::updateButtons(){
+    //For some reason this is necessary for the view to update
+    this->_view->hide();
+    this->_view->show();
+
     const AndroidDevice *device = this->selectedDevice();
     const AndroidDrive *drive = this->selectedDrive();
 
@@ -182,13 +166,16 @@ void DeviceListWindow::updateButtons(){
             this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any."));
         }
     }
-    else if(drive != nullptr && drive->isConnected()){
-        this->_mountButton->setText(QObject::tr("&Unmount drive"));
-        this->_mountButton->setWhatsThis(QObject::tr("Unmounts the selected drive.<br/><br/>This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
-    }
-    else{
-        this->_mountButton->setText(QObject::tr("&Mount drive"));
-        this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the selected internal storage or external SD card."));
+    else if(drive != nullptr){
+        if(drive->isConnected()){
+            this->_mountButton->setText(QObject::tr("&Unmount drive"));
+            this->_mountButton->setWhatsThis(QObject::tr("Unmounts the selected drive.<br/><br/>This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB."));
+        }
+        else{
+            this->_mountButton->setText(QObject::tr("&Mount drive"));
+            this->_mountButton->setWhatsThis(QObject::tr("Mounts a drive containing the selected internal storage or external SD card."));
+        }
+        this->_mountButton->setEnabled(!drive->mountingInProgress() && !drive->unmountingInProgress());
     }
 }
 
@@ -219,13 +206,16 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
         const QStringList splittedLine = line.split(spaceRegex);
         const QString serialNumber = splittedLine[0];
         if(splittedLine[1] == "offline"){
-            offlineSerialNumbers.append(serialNumber);
-            if(!this->_model.offlineSerialNumbers().contains(serialNumber)){
-                QMessageBox::warning(nullptr, "", QObject::tr("Device %1 is offline.<br/><br/>Try unlocking the device, then unplugging it and re-plugging it.").arg(serialNumber));
+            offlineSerialNumbers.push_back(serialNumber);
+            if(this->_model.timeSinceOffline(serialNumber) == 3){
+                QMessageBox::warning(nullptr, "",
+                    QObject::tr("Device %1 is offline.<br/><br/>Try unlocking the device, then unplugging it and re-plugging it.<br/><br/>If this error persists, you may be able to find solutions <a href=\"%2\">here</a> (any adb commands mentioned there can be run in the command prompt after running <code>cd \"%3\"</code>).")
+                    .arg(serialNumber, "https://stackoverflow.com/q/14993855/4284627", QCoreApplication::applicationDirPath())
+                );
             }
         }
         else{
-            serialNumbers.append(serialNumber);
+            serialNumbers.push_back(serialNumber);
         }
     }
 
@@ -248,7 +238,7 @@ void DeviceListWindow::handleDokanError(AndroidDrive *drive, int status){
         break;
     case DOKAN_DRIVER_INSTALL_ERROR:
         if(this->_dokanInstalling){
-            drive->connectDrive(Settings().driveLetter(drive));    //Try connecting it again in case Dokan is finished installing
+            drive->connectDrive(Settings().driveLetter(drive), this->_model.parentDevice(drive));    //Try connecting it again in case Dokan is finished installing
             return;
         }
         errorMessage = QObject::tr("Dokan doesn't seem to be installed.<br/><br/>Would you like to install it now?");

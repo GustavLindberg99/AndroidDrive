@@ -10,7 +10,7 @@
 #include "temporaryfile.h"
 
 NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG shareAccess, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
-    const AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
     const QString filePath = drive->windowsPathToAndroidPath(fileName);
 
     ACCESS_MASK genericDesiredAccess;
@@ -48,25 +48,14 @@ NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT,
         }
     }
     else{
-        TemporaryFile *temporaryFile = new TemporaryFile(drive, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
-
-        const NTSTATUS errorCode = temporaryFile->errorCode();
-        if(errorCode != STATUS_SUCCESS){
-            delete temporaryFile;
-            return errorCode;
-        }
-        dokanFileInfo->Context = reinterpret_cast<ULONG64>(temporaryFile);
+        return drive->addTemporaryFile(dokanFileInfo, filePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, fileExists, getAltStream(fileName));
     }
     return STATUS_SUCCESS;
 }
 
 void DOKAN_CALLBACK closeFile(LPCWSTR, PDOKAN_FILE_INFO dokanFileInfo){
-    TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
-
-    if(temporaryFile != nullptr){
-        delete temporaryFile;
-        dokanFileInfo->Context = 0;
-    }
+    AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);
+    drive->deleteTemporaryFile(dokanFileInfo);
 }
 
 void DOKAN_CALLBACK cleanup(LPCWSTR fileName, PDOKAN_FILE_INFO dokanFileInfo){

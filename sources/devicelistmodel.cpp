@@ -14,7 +14,7 @@ QModelIndex DeviceListModel::index(int row, int column, const QModelIndex &paren
     //If the parent is the root item (represented by a null pointer), then the child is a device
     if(this->indexIsRoot(parent)){
         if(row >= 0 && row < this->_devices.size()){
-            return this->createIndex(row, column, static_cast<QObject*>(this->_devices[row]));    //This needs to be manually cast to a QObject* before being cast to a void*, see https://stackoverflow.com/a/5445220/4284627
+            return this->createIndex(row, column, static_cast<QObject*>(this->_devices[row].get()));    //This needs to be manually cast to a QObject* before being cast to a void*, see https://stackoverflow.com/a/5445220/4284627
         }
     }
 
@@ -22,7 +22,7 @@ QModelIndex DeviceListModel::index(int row, int column, const QModelIndex &paren
     AndroidDevice *parentDevice = this->indexToDevice(parent);
     if(parentDevice != nullptr){
         if(row >= 0 && row < parentDevice->numberOfDrives()){
-            AndroidDrive *childDrive = parentDevice->drives().at(row);    //Use .at(row) instead of [row] for performance reasons: https://stackoverflow.com/a/48881232/4284627
+            AndroidDrive *childDrive = parentDevice->driveAt(row);
             return this->createIndex(row, column, static_cast<QObject*>(childDrive));
         }
     }
@@ -43,7 +43,7 @@ QModelIndex DeviceListModel::parent(const QModelIndex &index) const{
 
     //If the item is a drive, the parent is a device
     if(drive != nullptr){
-        return this->deviceToIndex(drive->device());
+        return this->deviceToIndex(this->parentDevice(drive));
     }
 
     //If the item is a device, the parent is the root item
@@ -115,7 +115,15 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const{
             }
             else if(drive != nullptr){
                 if(drive->isConnected()){
-                    return QObject::tr("Mounted as %1").arg(drive->mountPoint());
+                    if(drive->mountingInProgress()){
+                        return QObject::tr("Mounting...");
+                    }
+                    else if(drive->unmountingInProgress()){
+                        return QObject::tr("Unmounting...");
+                    }
+                    else{
+                        return QObject::tr("Mounted as %1").arg(drive->mountPoint());
+                    }
                 }
                 else{
                     return QObject::tr("Not mounted");
@@ -149,58 +157,68 @@ Qt::ItemFlags DeviceListModel::flags(const QModelIndex &index) const{
 void DeviceListModel::updateDevices(const QStringList &newSerialNumbers, const QStringList &newOfflineSerialNumbers){
     //Add new devices
     for(const QString &newSerialNumber: newSerialNumbers){
-        if(std::find_if(this->_devices.begin(), this->_devices.end(), [&newSerialNumber](const AndroidDevice *device){return device->serialNumber() == newSerialNumber;}) == this->_devices.end()){
+        const bool serialNumberExists = std::find_if(this->_devices.begin(), this->_devices.end(), [&newSerialNumber](const std::shared_ptr<const AndroidDevice> &device){
+            return device->serialNumber() == newSerialNumber;
+        }) != this->_devices.end();
+        if(!serialNumberExists){
             const int index = this->_devices.size();
             this->beginInsertRows(this->rootIndex(), index, index);
-            AndroidDevice *device = new AndroidDevice(newSerialNumber);
-            this->_devices.append(device);
+            this->_devices.push_back(std::make_shared<AndroidDevice>(newSerialNumber));
             this->endInsertRows();
-        }
-    }
-
-    //Add new offline devices
-    for(const QString &newOfflineSerialNumber: newOfflineSerialNumbers){
-        if(!this->_offlineSerialNumbers.contains(newOfflineSerialNumber)){
-            this->_offlineSerialNumbers.append(newOfflineSerialNumber);
         }
     }
 
     //Remove devices that no longer exist
     for(int i = 0; i < this->_devices.size(); i++){
-        AndroidDevice *oldDevice = this->_devices[i];
+        const std::shared_ptr<AndroidDevice> oldDevice = this->_devices[i];
         if(!newSerialNumbers.contains(oldDevice->serialNumber())){
             this->beginRemoveRows(this->rootIndex(), i, i);
             this->_devices.removeAll(oldDevice);
-            oldDevice->shutdown();
+            oldDevice->disconnectAllDrives();
             this->endRemoveRows();
             i--;
         }
     }
 
-    //Remove offline devices that no longer exist
-    const QStringList oldOfflineSerialNumbers = this->_offlineSerialNumbers;
-    for(const QString &oldOfflineSerialNumber: oldOfflineSerialNumbers){
-        if(!newOfflineSerialNumbers.contains(oldOfflineSerialNumber)){
-            this->_offlineSerialNumbers.removeAll(oldOfflineSerialNumber);
+    //Update the list of offline serial numbers
+    const QStringList allOfflineSerialNumbers = this->_offlineSerialNumbers.keys() + newOfflineSerialNumbers;
+    for(const QString &offlineSerialNumber: allOfflineSerialNumbers){
+        if(newOfflineSerialNumbers.contains(offlineSerialNumber)){
+            this->_offlineSerialNumbers[offlineSerialNumber]++;
+        }
+        else{
+            this->_offlineSerialNumbers.remove(offlineSerialNumber);
         }
     }
 }
 
-QList<AndroidDevice*> DeviceListModel::devices() const{
+QList<std::shared_ptr<AndroidDevice>> DeviceListModel::devices() const{
     return this->_devices;
+    /*QList<std::shared_ptr<AndroidDevice>> result;
+    for(const auto& i: this->_devices) result.push_back(i.get());
+    return result;*/
 }
 
-QStringList DeviceListModel::offlineSerialNumbers() const{
-    return this->_offlineSerialNumbers;
+std::shared_ptr<AndroidDevice> DeviceListModel::parentDevice(const AndroidDrive * drive) const{
+    const auto parentDevice = std::find_if(this->_devices.begin(), this->_devices.end(), [&drive](const std::shared_ptr<AndroidDevice> &device){
+        return device->isParentOfDrive(drive);
+    });
+    return *parentDevice;
+}
+
+int DeviceListModel::timeSinceOffline(const QString &offlineSerialNumber) const{
+    return this->_offlineSerialNumbers.value(offlineSerialNumber, 0);
 }
 
 QModelIndex DeviceListModel::rootIndex(int column) const{
     return this->createIndex(0, column, nullptr);
 }
 
-QModelIndex DeviceListModel::deviceToIndex(AndroidDevice *device, int column) const{
+QModelIndex DeviceListModel::deviceToIndex(const std::shared_ptr<AndroidDevice> &device, int column) const{
     const int row = this->_devices.indexOf(device);
-    return this->createIndex(row, column, static_cast<QObject*>(device));
+    /*int row = -1;
+    for(int i = 0; i < this->_devices.length(); i++) if(this->_devices[i].get() == device) row = i;*/
+    return this->createIndex(row, column, static_cast<QObject*>(device.get()));
 }
 
 bool DeviceListModel::indexIsRoot(const QModelIndex &index) const{

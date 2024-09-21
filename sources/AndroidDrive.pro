@@ -1,7 +1,7 @@
 QT += widgets
 QT += network
 
-CONFIG += c++17
+CONFIG += c++20
 
 SOURCES += main.cpp \
     androiddevice.cpp \
@@ -10,6 +10,7 @@ SOURCES += main.cpp \
     devicelistwindow.cpp \
     dokanoperations.cpp \
     helperfunctions.cpp \
+    settings.cpp \
     settingswindow.cpp \
     temporaryfile.cpp \
     updates.cpp
@@ -21,6 +22,7 @@ HEADERS += \
     devicelistwindow.h \
     dokanoperations.h \
     helperfunctions.h \
+    settings.h \
     settingswindow.h \
     temporaryfile.h \
     updates.h \

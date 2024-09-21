@@ -1,5 +1,6 @@
 #include "androiddevice.h"
 
+#include <QApplication>
 #include <QDateTime>
 #include <QDir>
 #include <QProcess>
@@ -8,12 +9,12 @@
 #include "androiddrive.h"
 
 QList<AndroidDevice*> AndroidDevice::_instances;
-std::function<void()> AndroidDevice::_callbackOnLastShutdown = [](){};
+bool AndroidDevice::_quitOnLastDeletedDevice = false;
 
 AndroidDevice::AndroidDevice(const QString &serialNumber):
     _serialNumber(serialNumber)
 {
-    AndroidDevice::_instances.append(this);
+    AndroidDevice::_instances.push_back(this);
 
     //Get the paths to all the SD cards
     const QString internalStoragePath = this->runAdbCommand("realpath /sdcard");
@@ -34,83 +35,79 @@ AndroidDevice::AndroidDevice(const QString &serialNumber):
                 if(internalStoragePath.contains(androidPath)){
                     androidPath = "/sdcard";
                 }
-                AndroidDrive *drive = new AndroidDrive(this, androidPath);
-                this->_drives.append(drive);
-                QObject::connect(drive, &AndroidDrive::driveConnected, this, [this, drive](){emit this->driveConnected(drive);});
-                QObject::connect(drive, &AndroidDrive::driveMounted, this, [this, drive](char driveLetter){emit this->driveMounted(drive, driveLetter);});
-                QObject::connect(drive, &AndroidDrive::driveUnmounted, this, [this, drive](){emit this->driveUnmounted(drive);});
-                QObject::connect(drive, &AndroidDrive::driveDisconnected, this, [this, drive](int status){emit this->driveDisconnected(drive, status);});
+                this->addDrive(androidPath);
             }
         }
     }
 
     //If the above failed, just add /sdcard
     if(this->_drives.empty()){
-        this->_drives.append(new AndroidDrive(this, "/sdcard"));
+        this->addDrive("/sdcard");
     }
 }
 
 AndroidDevice::~AndroidDevice(){
-    for(AndroidDrive *drive: this->_drives){
-        delete drive;
-    }
-
     AndroidDevice::_instances.removeAll(this);
+    if(AndroidDevice::_instances.isEmpty() && AndroidDevice::_quitOnLastDeletedDevice){
+        qApp->quit();
+    }
+}
+
+void AndroidDevice::quitOnLastDeletedDevice(){
+    AndroidDevice::_quitOnLastDeletedDevice = true;
     if(AndroidDevice::_instances.isEmpty()){
-        AndroidDevice::_callbackOnLastShutdown();
-        AndroidDevice::_callbackOnLastShutdown = [](){};
+        qApp->quit();
     }
 }
 
-void AndroidDevice::shutdown(){
-    if(this->_willBeDeleted){
-        return;
-    }
-    this->_willBeDeleted = true;
-    if(this->numberOfConnectedDrives() == 0){
-        delete this;
-    }
-    else{
-        QObject::connect(this, &AndroidDevice::driveDisconnected, this, [this](){
-            if(this->numberOfConnectedDrives() == 0){
-                delete this;
-            }
-        });
-        this->disconnectAllDrives();
+void AndroidDevice::connectAllDrives(){
+    Settings settings;
+    for(const std::unique_ptr<AndroidDrive> &drive: this->_drives){
+        drive->connectDrive(settings.driveLetter(drive.get()), this->shared_from_this());
     }
 }
 
-void AndroidDevice::shutdownAllDevices(const std::function<void()> &callback){
-    AndroidDevice::_callbackOnLastShutdown = callback;
-    const QList<AndroidDevice*> instances = AndroidDevice::_instances;
-    if(instances.isEmpty()){
-        callback();
-    }
-    else for(AndroidDevice *device: instances){
-        device->shutdown();
+void AndroidDevice::autoconnectAllDrives(){
+    Settings settings;
+    for(const std::unique_ptr<AndroidDrive> &drive: this->_drives){
+        if(settings.autoConnect(drive.get())){
+            drive->connectDrive(settings.driveLetter(drive.get()), this->shared_from_this());
+        }
     }
 }
 
 void AndroidDevice::disconnectAllDrives(){
-    for(AndroidDrive *drive: this->_drives){
+    for(const std::unique_ptr<AndroidDrive> &drive: this->_drives){
         drive->disconnectDrive();
     }
 }
 
 int AndroidDevice::numberOfDrives() const{
-    return this->_drives.size();
+    return static_cast<int>(this->_drives.size());
 }
 
 int AndroidDevice::numberOfConnectedDrives() const{
     int result = 0;
-    for(const AndroidDrive *drive: this->_drives){
+    for(const std::unique_ptr<AndroidDrive> &drive: this->_drives){
         result += drive->isConnected();
     }
     return result;
 }
 
-QList<AndroidDrive*> AndroidDevice::drives() const{
-    return this->_drives;
+bool AndroidDevice::isParentOfDrive(const AndroidDrive *drive) const{
+    for(const std::unique_ptr<AndroidDrive> &otherDrive: this->_drives){
+        if(drive == otherDrive.get()){
+            return true;
+        }
+    }
+    return false;
+}
+
+AndroidDrive *AndroidDevice::driveAt(int index) const{
+    if(index < 0 || index > this->numberOfDrives()){
+        return nullptr;
+    }
+    return this->_drives[index].get();
 }
 
 QString AndroidDevice::runAdbCommand(const QString &command, bool *ok, bool useCache) const{
@@ -166,4 +163,13 @@ QString AndroidDevice::model() const{
 
 QString AndroidDevice::serialNumber() const{
     return this->_serialNumber;
+}
+
+void AndroidDevice::addDrive(QString androidRootPath){
+    std::unique_ptr<AndroidDrive> drive = std::make_unique<AndroidDrive>(std::move(androidRootPath), this->model(), this->serialNumber());
+    QObject::connect(drive.get(), &AndroidDrive::driveConnected, this, [this, drive = drive.get()](){emit this->driveConnected(drive);});
+    QObject::connect(drive.get(), &AndroidDrive::driveMounted, this, [this, drive = drive.get()](char driveLetter){emit this->driveMounted(drive, driveLetter);});
+    QObject::connect(drive.get(), &AndroidDrive::driveUnmounted, this, [this, drive = drive.get()](){emit this->driveUnmounted(drive);});
+    QObject::connect(drive.get(), &AndroidDrive::driveDisconnected, this, [this, drive = drive.get()](int status){emit this->driveDisconnected(drive, status);});
+    this->_drives.push_back(std::move(drive));
 }
