@@ -200,10 +200,12 @@ NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QS
 
 void AndroidDrive::deleteTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo){
     TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
-    std::erase_if(
-        this->_temporaryFiles,
-        [temporaryFile](const std::unique_ptr<TemporaryFile> &it){return it.get() == temporaryFile;}
-    );
+    for(size_t i = 0; i < this->_temporaryFiles.size(); i++){
+        if(this->_temporaryFiles[i].get() == temporaryFile){
+            this->_temporaryFiles.erase(this->_temporaryFiles.begin() + i);
+            break;
+        }
+    }
 }
 
 void AndroidDrive::openSettingsWindow(){
