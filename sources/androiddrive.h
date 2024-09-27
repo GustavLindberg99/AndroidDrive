@@ -7,6 +7,7 @@
 
 #include <dokan/dokan.h>
 #include <memory>
+#include <mutex>
 #include <thread>
 
 #include "settingswindow.h"
@@ -221,6 +222,7 @@ private:
 
     std::shared_ptr<AndroidDevice> _device = nullptr;
     std::thread _thread;
+    std::mutex _mutex;
     std::unique_ptr<QTemporaryDir> _temporaryDir = nullptr;
     std::vector<std::unique_ptr<TemporaryFile>> _temporaryFiles;
 

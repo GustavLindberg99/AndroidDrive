@@ -12,7 +12,6 @@ public:
     /**
      * Downloads a file from the Android device to a local temporary file.
      *
-     * @param dokanFileInfo - The Dokan file info object that the temporary file should be added to as Context.
      * @param remotePath - The path of the Android file to download.
      * @param creationDisposition - The creation disposition to use when creating the handle.
      * @param shareAccess - The share access to use when creating the handle.
@@ -25,10 +24,10 @@ public:
      *
      * @return STATUS_SUCCESS on success, an error status on failure.
      */
-    TemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
+    TemporaryFile(const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream);
 
     /**
-     * Destructor. Closes the handle and resets dokanFileInfo->Context.
+     * Destructor, closes the handle.
      */
     ~TemporaryFile();
 
@@ -120,7 +119,6 @@ private:
 
     const QString _localPath, _remotePath;
     const std::shared_ptr<const AndroidDevice> _device;
-    const PDOKAN_FILE_INFO _dokanFileInfo;
     HANDLE _handle;
     NTSTATUS _errorCode;
     bool _modified;

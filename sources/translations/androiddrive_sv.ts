@@ -12,7 +12,7 @@
         <location filename="../devicelistwindow.cpp" line="175"/>
         <location filename="../devicelistwindow.h" line="85"/>
         <source>&amp;Mount drive</source>
-        <translation>&amp;Montera enhet</translation>
+        <translation>&amp;Montera enheten</translation>
     </message>
     <message>
         <location filename="../devicelistwindow.h" line="86"/>

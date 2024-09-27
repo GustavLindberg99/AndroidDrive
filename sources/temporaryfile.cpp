@@ -5,17 +5,14 @@
 
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
 
-TemporaryFile::TemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream):
+TemporaryFile::TemporaryFile(const AndroidDrive *drive, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream):
     _localPath(drive->localPath(remotePath)),
     _remotePath(remotePath),
     _device(drive->device()),
-    _dokanFileInfo(dokanFileInfo),
     _handle(INVALID_HANDLE_VALUE),
     _errorCode(STATUS_SUCCESS),
     _modified(!exists)
 {
-    this->_dokanFileInfo->Context = reinterpret_cast<ULONG64>(this);
-
     if(exists && !this->_device->pullFromAdb(remotePath, this->_localPath) && !QFileInfo(this->_localPath).isFile()){
         this->_errorCode = STATUS_UNSUCCESSFUL;
         return;
@@ -36,7 +33,6 @@ TemporaryFile::TemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const AndroidDrive 
 }
 
 TemporaryFile::~TemporaryFile(){
-    this->_dokanFileInfo->Context = 0;
     if(this->_handle != INVALID_HANDLE_VALUE){
         CloseHandle(this->_handle);
     }

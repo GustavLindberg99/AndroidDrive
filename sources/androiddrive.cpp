@@ -55,6 +55,7 @@ AndroidDrive::AndroidDrive(QString androidRootPath, QString model, QString seria
     //Do the cleanup after Dokan exit here to make sure that it's run on the main thread instead of the Dokan thread (otherwise the destructors will be called in the Dokan thread so the thread will try to join itself and crash).
     //Qt::ConnectionType::AutoConnection is the default so this will be run on the main thread since the connection is done on the main thread.
     QObject::connect(this, &AndroidDrive::driveDisconnected, this, [this](){
+        std::lock_guard<std::mutex> lockGuard(this->_mutex);
         this->_temporaryFiles.clear();
         this->_temporaryDir = nullptr;
         this->_device = nullptr;
@@ -187,11 +188,16 @@ QString AndroidDrive::mountPoint() const{
 }
 
 NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream){
-    std::unique_ptr<TemporaryFile> temporaryFile = std::make_unique<TemporaryFile>(dokanFileInfo, this, remotePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, exists, altStream);
+    std::lock_guard<std::mutex> lockGuard(this->_mutex);
+    if(this->_device == nullptr){
+        return STATUS_ALREADY_DISCONNECTED;
+    }
+    std::unique_ptr<TemporaryFile> temporaryFile = std::make_unique<TemporaryFile>(this, remotePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, exists, altStream);
     const NTSTATUS errorCode = temporaryFile->errorCode();
 
     //If there's no error, move the unique_ptr to the list of temporary files to keep it in memory, otherwise do nothing and it will be deleted at the end of the scope.
     if(errorCode == STATUS_SUCCESS){
+        dokanFileInfo->Context = reinterpret_cast<ULONG64>(temporaryFile.get());
         this->_temporaryFiles.push_back(std::move(temporaryFile));
     }
 
@@ -199,7 +205,9 @@ NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QS
 }
 
 void AndroidDrive::deleteTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo){
+    std::lock_guard<std::mutex> lockGuard(this->_mutex);
     TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
+    dokanFileInfo->Context = 0;
     for(size_t i = 0; i < this->_temporaryFiles.size(); i++){
         if(this->_temporaryFiles[i].get() == temporaryFile){
             this->_temporaryFiles.erase(this->_temporaryFiles.begin() + i);
