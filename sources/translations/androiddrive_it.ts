@@ -10,17 +10,17 @@
     </message>
     <message>
         <location filename="../devicelistwindow.cpp" line="175"/>
-        <location filename="../devicelistwindow.h" line="85"/>
+        <location filename="../devicelistwindow.hpp" line="85"/>
         <source>&amp;Mount drive</source>
         <translation>&amp;Monta unità</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.h" line="86"/>
+        <location filename="../devicelistwindow.hpp" line="86"/>
         <source>Drive &amp;settings</source>
         <translation>&amp;Impostazioni unità</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.h" line="87"/>
+        <location filename="../devicelistwindow.hpp" line="87"/>
         <source>&amp;Open in Explorer</source>
         <translation>Apri in Expl&amp;orer</translation>
     </message>
@@ -77,78 +77,83 @@
         <translation>Errore irreversibile: impossibile elencare i dispositivi Android.&lt;br/&gt;&lt;br/&gt;ADB è uscito con il codice %1.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="212"/>
+        <location filename="../devicelistwindow.cpp" line="215"/>
         <source>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
         <translation>Il dispositivo %1 è offline.&lt;br/&gt;&lt;br/&gt;Prova a sbloccare il dispositivo, quindi a scollegarlo e ricollegarlo.&lt;br/&gt;&lt;br/&gt;Se questo errore persiste, potresti riuscire a trovare soluzioni &lt;a href=&quot;%2&quot;&gt;qui&lt;/a&gt; (qualsiasi comando adb menzionato può essere eseguito nel prompt dei comandi dopo aver eseguito &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="237"/>
+        <location filename="../devicelistwindow.cpp" line="221"/>
+        <source>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
+        <translation>Il dispositivo %1 non è autorizzato.&lt;br/&gt;&lt;br/&gt;Prova a sbloccare il dispositivo.&lt;br/&gt;Se viene visualizzata una finestra di dialogo che ti chiede se desideri consentire a questo computer di accedere ai dati del telefono, seleziona &quot;Consenti&quot;.&lt;br/&gt;Se non mostra quella finestra di dialogo, disabilita e riabilita il debug USB come spiegato &lt;a href=&quot;%2&quot;&gt;qui&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Se continua a non funzionare, prova scollegando e ricollegando il dispositivo.</translation>
+    </message>
+    <message>
+        <location filename="../devicelistwindow.cpp" line="247"/>
         <source>Could not create a drive with the given drive letter.</source>
         <translation>Impossibile creare un&apos;unità con la lettera unità specificata.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="244"/>
+        <location filename="../devicelistwindow.cpp" line="254"/>
         <source>Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
         <translation>Dokan non sembra essere installato.&lt;br/&gt;&lt;br/&gt;Vuoi installarlo?</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="248"/>
+        <location filename="../devicelistwindow.cpp" line="258"/>
         <source>Could not start the driver.</source>
         <translation>Impossibile avviare il driver.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="252"/>
+        <location filename="../devicelistwindow.cpp" line="262"/>
         <source>Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
         <oldsource>Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.</oldsource>
         <translation>Impossibile assegnare una lettera unità.&lt;br/&gt;&lt;br/&gt;Prova a modificare in &apos;Impostazioni dispositivo&apos; la lettera unità con una lettera unità disponibile.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="255"/>
+        <location filename="../devicelistwindow.cpp" line="265"/>
         <source>Dokan version error.</source>
         <translation>Errore versione Dokan.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="258"/>
+        <location filename="../devicelistwindow.cpp" line="268"/>
         <source>An unknown error occurred.</source>
         <translation>Si è verificato un errore sconosciuto.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="261"/>
+        <location filename="../devicelistwindow.cpp" line="271"/>
         <source>Could not mount drive %1: %2</source>
         <translation>Impossibile montare l&apos;unità %1: %2</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="277"/>
+        <location filename="../devicelistwindow.cpp" line="287"/>
         <source>ADB timed out.</source>
         <translation>Timeout ADB.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="280"/>
+        <location filename="../devicelistwindow.cpp" line="290"/>
         <source>An error occurred when attempting to read from the ADB process.</source>
         <translation>Si è verificato un errore durante un tentativo di lettura nel processo ADB.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="283"/>
+        <location filename="../devicelistwindow.cpp" line="293"/>
         <source>An error occurred when attempting to write to the ADB process.</source>
         <translation>Si è verificato un errore durante il tentativo di scrittura nel processo ADB.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="286"/>
+        <location filename="../devicelistwindow.cpp" line="296"/>
         <source>ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>Impossibile avviare ADB.&lt;br/&gt;&lt;br/&gt;Non è presente il file adb.exe oppure potresti non avere le autorizzazioni sufficienti per eseguire il programma.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="289"/>
+        <location filename="../devicelistwindow.cpp" line="299"/>
         <source>ADB crashed.</source>
         <translation>ADB si è crashato.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="292"/>
+        <location filename="../devicelistwindow.cpp" line="302"/>
         <source>ADB encountered an unknown error.</source>
         <translation>ADB ha riscontrato un errore sconosciuto.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="295"/>
+        <location filename="../devicelistwindow.cpp" line="305"/>
         <source>Fatal error: Could not list Android devices: %1</source>
         <translation>Errore irreversibile: impossibile elencare i dispositivi Android: %1</translation>
     </message>
@@ -233,7 +238,7 @@
         <translation>&amp;Annulla</translation>
     </message>
     <message>
-        <location filename="../settingswindow.h" line="66"/>
+        <location filename="../settingswindow.hpp" line="66"/>
         <source>&amp;Apply</source>
         <translation>A&amp;pplica</translation>
     </message>
@@ -330,12 +335,12 @@
         <translation>È disponibile un aggiornamento.&lt;br/&gt;&lt;br/&gt;Vuoi installarlo?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="146"/>
+        <location filename="../androiddrive.cpp" line="151"/>
         <source>Internal storage</source>
         <translation>storage interno</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="149"/>
+        <location filename="../androiddrive.cpp" line="154"/>
         <source>SD card %1</source>
         <translation>Scheda SD %1</translation>
     </message>

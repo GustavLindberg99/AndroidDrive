@@ -1,7 +1,7 @@
-#include "temporaryfile.h"
+#include "temporaryfile.hpp"
 
-#include "androiddrive.h"
-#include "helperfunctions.h"
+#include "androiddrive.hpp"
+#include "helperfunctions.hpp"
 
 //Since AndroidDrive reads and writes to files by copying them to local temporary files, a lot of this code is based on Dokan's Mirror example.
 

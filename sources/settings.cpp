@@ -1,6 +1,6 @@
-#include "settings.h"
+#include "settings.hpp"
 
-#include "androiddrive.h"
+#include "androiddrive.hpp"
 
 char Settings::driveLetter(const AndroidDrive *drive) const{
     return this->_settings.value(drive->id() + "_driveLetter", 'D').toChar().toLatin1();

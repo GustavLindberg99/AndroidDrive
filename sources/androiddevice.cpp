@@ -1,4 +1,4 @@
-#include "androiddevice.h"
+#include "androiddevice.hpp"
 
 #include <QApplication>
 #include <QDateTime>
@@ -6,7 +6,7 @@
 #include <QProcess>
 #include <QRegularExpression>
 
-#include "androiddrive.h"
+#include "androiddrive.hpp"
 
 QList<AndroidDevice*> AndroidDevice::_instances;
 bool AndroidDevice::_quitOnLastDeletedDevice = false;

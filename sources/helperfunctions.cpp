@@ -1,10 +1,10 @@
-#include "helperfunctions.h"
+#include "helperfunctions.hpp"
 
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
 
-#include "settingswindow.h"
+#include "settingswindow.hpp"
 
 QString escapeSpecialCharactersForBash(QString filePath){
     //List of characters that need to be escaped from https://stackoverflow.com/a/27817504/4284627

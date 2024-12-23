@@ -1,4 +1,4 @@
-#include "devicelistwindow.h"
+#include "devicelistwindow.hpp"
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -205,13 +205,23 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
         }
         const QStringList splittedLine = line.split(spaceRegex);
         const QString serialNumber = splittedLine[0];
-        if(splittedLine[1] == "offline"){
+        const bool offline = splittedLine[1] == "offline";
+        const bool unauthorized = splittedLine[1] == "unauthorized";
+        if(offline || unauthorized){
             offlineSerialNumbers.push_back(serialNumber);
             if(this->_model.timeSinceOffline(serialNumber) == 3){
-                QMessageBox::warning(nullptr, "",
-                    QObject::tr("Device %1 is offline.<br/><br/>Try unlocking the device, then unplugging it and re-plugging it.<br/><br/>If this error persists, you may be able to find solutions <a href=\"%2\">here</a> (any adb commands mentioned there can be run in the command prompt after running <code>cd \"%3\"</code>).")
-                    .arg(serialNumber, "https://stackoverflow.com/q/14993855/4284627", QCoreApplication::applicationDirPath())
-                );
+                if(offline){
+                    QMessageBox::warning(nullptr, "",
+                        QObject::tr("Device %1 is offline.<br/><br/>Try unlocking the device, then unplugging it and re-plugging it.<br/><br/>If this error persists, you may be able to find solutions <a href=\"%2\">here</a> (any adb commands mentioned there can be run in the command prompt after running <code>cd \"%3\"</code>).")
+                        .arg(serialNumber, "https://stackoverflow.com/q/14993855/4284627", QCoreApplication::applicationDirPath())
+                    );
+                }
+                else if(unauthorized){
+                    QMessageBox::warning(nullptr, "",
+                        QObject::tr("Device %1 is unauthorized.<br/><br/>Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap \"Allow\". If it doesn't show that dialog, disable and re-enable USB debugging as explained <a href=\"%2\">here</a>.<br/><br/>If it still isn't working, try unplugging and then re-plugging your device.")
+                        .arg(serialNumber, "https://github.com/GustavLindberg99/AndroidDrive?tab=readme-ov-file#setup")
+                    );
+                }
             }
         }
         else{

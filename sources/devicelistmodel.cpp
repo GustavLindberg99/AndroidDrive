@@ -1,10 +1,10 @@
-#include "devicelistmodel.h"
+#include "devicelistmodel.hpp"
 
 #include <QIcon>
 
 #include <algorithm>
 
-#include "androiddrive.h"
+#include "androiddrive.hpp"
 
 QModelIndex DeviceListModel::index(int row, int column, const QModelIndex &parent) const{
     if(!this->hasIndex(row, column, parent)){

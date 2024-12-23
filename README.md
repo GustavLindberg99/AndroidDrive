@@ -16,7 +16,7 @@ To be able to use AndroidDrive, you need to do three things (the order in which 
 
   1. Open Settings on your Android device.
   2. Go to "About phone".
-  3. Scroll down to the bottom and tap "Build Number" seven times until you get a message saying that you're a developer.
+  3. Scroll down to the bottom and tap "Build Number" seven times until you get a message saying that you're a developer (on some phones, "Build Number" might be under "Software Information").
   4. Go back to the main settings screen, then go to System > Advanced > Developer Settings and enable USB debugging.
 
 # Usage
@@ -68,11 +68,7 @@ adb.exe devices
 
 If your device isn't listed in the command prompt after running this, that's a problem with ADB, not AndroidDrive. You may be able to find solutions [here](https://stackoverflow.com/q/21170392/4284627).
 
-In the unlikely event that your device *is* listed in the command prompt when running the commands above but *not* in AndroidDrive, you can report that as a bug [here](https://github.com/GustavLindberg99/AndroidDrive/issues/new/choose).
-
-## Windows Explorer gives an error that location is not available
-
-This can happen if Android is asking for your permission to use USB debugging on that specific computer. If that's the case, when you unlock your Android device, it will show you a dialog asking if you want to allow this computer to access phone data. Tap "Allow". For convenience, you can also check the checkbox to always allow from this computer. If it still isn't working, try unplugging and then re-plugging your device.
+If your device *is* listed in the command prompt when running the commands above but *not* in AndroidDrive, you can report that as a bug [here](https://github.com/GustavLindberg99/AndroidDrive/issues/new/choose).
 
 
 # Credits

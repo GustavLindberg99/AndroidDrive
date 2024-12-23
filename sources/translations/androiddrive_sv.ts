@@ -10,17 +10,17 @@
     </message>
     <message>
         <location filename="../devicelistwindow.cpp" line="175"/>
-        <location filename="../devicelistwindow.h" line="85"/>
+        <location filename="../devicelistwindow.hpp" line="85"/>
         <source>&amp;Mount drive</source>
         <translation>&amp;Montera enheten</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.h" line="86"/>
+        <location filename="../devicelistwindow.hpp" line="86"/>
         <source>Drive &amp;settings</source>
         <translation>Enhets&amp;inställningar</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.h" line="87"/>
+        <location filename="../devicelistwindow.hpp" line="87"/>
         <source>&amp;Open in Explorer</source>
         <translation>Öppna i &amp;Utforskaren</translation>
     </message>
@@ -77,78 +77,83 @@
         <translation>Oåterkalleligt fel: Kunde inte lista Android-enheter.&lt;br/&gt;&lt;br/&gt;ADB avslutade med kod %1.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="212"/>
+        <location filename="../devicelistwindow.cpp" line="215"/>
         <source>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
         <translation>Enheten %1 är offline.&lt;br/&gt;&lt;br/&gt;Försök att låsa upp enheten, koppla ur den och koppla in den igen.&lt;br/&gt;&lt;br/&gt;Om felet kvarstår kan du kanske hitta lösningar &lt;a href=&quot;%2&quot;&gt;här&lt;/a&gt; (adb-kommandon kan köras i kommandotolken efter att ha kört &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="237"/>
+        <location filename="../devicelistwindow.cpp" line="221"/>
+        <source>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
+        <translation>Enheten %1 är har inte rätt behörighet.&lt;br/&gt;&lt;br/&gt;Pröva att låsa upp enheten. Om den visar en dialogruta som frågar om du vill tillåta USB-felsökning på den här datorn, tryck på &quot;Tillåt&quot;. Om den inte visar någon dialogruta, stäng av och sätt på USB-felsökning som förklarat &lt;a href=&quot;%2&quot;&gt;här&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Om det fortfarande inte fungerar, koppla ur den och koppla in den igen.</translation>
+    </message>
+    <message>
+        <location filename="../devicelistwindow.cpp" line="247"/>
         <source>Could not create a drive with the given drive letter.</source>
         <translation>Kunde inte skapa en enhet med den angivna enhetsbeteckningen.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="244"/>
+        <location filename="../devicelistwindow.cpp" line="254"/>
         <source>Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
         <translation>Dokan verkar inte vara installerad.&lt;br/&gt;&lt;br/&gt;Vill du installera den nu?</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="248"/>
+        <location filename="../devicelistwindow.cpp" line="258"/>
         <source>Could not start the driver.</source>
         <translation>Kunde inte starta drivrutinen.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="252"/>
+        <location filename="../devicelistwindow.cpp" line="262"/>
         <source>Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
         <oldsource>Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.</oldsource>
         <translation>Kunde inte tilldela en enhetsbeteckning.&lt;br/&gt;&lt;br/&gt;Försök att ändra enhetsbeteckningen i Enhetsinställningar till en tillgänglig enhetsbeteckning.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="255"/>
+        <location filename="../devicelistwindow.cpp" line="265"/>
         <source>Dokan version error.</source>
         <translation>Dokan-versionsfel.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="258"/>
+        <location filename="../devicelistwindow.cpp" line="268"/>
         <source>An unknown error occurred.</source>
         <translation>Ett okänt fel har uppstått.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="261"/>
+        <location filename="../devicelistwindow.cpp" line="271"/>
         <source>Could not mount drive %1: %2</source>
         <translation>Kunde inte montera enhet %1: %2</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="277"/>
+        <location filename="../devicelistwindow.cpp" line="287"/>
         <source>ADB timed out.</source>
         <translation>Tidsgränsen för ADB har uppnåtts.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="280"/>
+        <location filename="../devicelistwindow.cpp" line="290"/>
         <source>An error occurred when attempting to read from the ADB process.</source>
         <translation>Ett fel har uppstått vid läsningen från ADB-processen.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="283"/>
+        <location filename="../devicelistwindow.cpp" line="293"/>
         <source>An error occurred when attempting to write to the ADB process.</source>
         <translation>Ett fel har uppstått vid skrivningen till ADB-processen.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="286"/>
+        <location filename="../devicelistwindow.cpp" line="296"/>
         <source>ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>ADB har inte kunnat startas.&lt;br/&gt;&lt;br/&gt;Antingen saknas filen adb.exe, eller så har du kanske inte rättigheten att starta programmet.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="289"/>
+        <location filename="../devicelistwindow.cpp" line="299"/>
         <source>ADB crashed.</source>
         <translation>ADB kraschade.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="292"/>
+        <location filename="../devicelistwindow.cpp" line="302"/>
         <source>ADB encountered an unknown error.</source>
         <translation>ADB påträffade ett okänt fel.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="295"/>
+        <location filename="../devicelistwindow.cpp" line="305"/>
         <source>Fatal error: Could not list Android devices: %1</source>
         <translation>Oåterkalleligt fel: Kunde inte lista Android-enheter: %1</translation>
     </message>
@@ -223,7 +228,7 @@
         <translation>&amp;Avbryt</translation>
     </message>
     <message>
-        <location filename="../settingswindow.h" line="66"/>
+        <location filename="../settingswindow.hpp" line="66"/>
         <source>&amp;Apply</source>
         <translation>&amp;Tillämpa</translation>
     </message>
@@ -331,12 +336,12 @@
         <translation>En uppdatering är tillgänglig.&lt;br/&gt;&lt;br/&gt;Vill du installera den nu?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="146"/>
+        <location filename="../androiddrive.cpp" line="151"/>
         <source>Internal storage</source>
         <translation>Internt lagringsutrymme</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="149"/>
+        <location filename="../androiddrive.cpp" line="154"/>
         <source>SD card %1</source>
         <translation>SD-kort %1</translation>
     </message>

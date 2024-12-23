@@ -1,10 +1,10 @@
-#include "androiddrive.h"
+#include "androiddrive.hpp"
 
 #include <QRegularExpression>
 #include <QThread>
 
-#include "androiddevice.h"
-#include "dokanoperations.h"
+#include "androiddevice.hpp"
+#include "dokanoperations.hpp"
 
 QList<AndroidDrive*> AndroidDrive::_instances;
 DWORD AndroidDrive::_internalLogicalDrives = 0;
@@ -69,6 +69,10 @@ AndroidDrive::~AndroidDrive(){
         this->_thread.join();
     }
     AndroidDrive::_instances.removeAll(this);
+
+    //Sometimes the mutex is already locked by the main thread when it gets destroyed. If that's the case, it must be unlocked otherwise it crashes. It can't be locked by another thread because the other thread was just joined.
+    (void) this->_mutex.try_lock();
+    this->_mutex.unlock();
 }
 
 AndroidDrive *AndroidDrive::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){

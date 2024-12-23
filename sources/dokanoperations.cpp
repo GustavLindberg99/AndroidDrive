@@ -1,13 +1,13 @@
-#include "dokanoperations.h"
+#include "dokanoperations.hpp"
 
 #include <QDir>
 #include <QFile>
 #include <QRegularExpression>
 
-#include "androiddrive.h"
-#include "helperfunctions.h"
-#include "settingswindow.h"
-#include "temporaryfile.h"
+#include "androiddrive.hpp"
+#include "helperfunctions.hpp"
+#include "settingswindow.hpp"
+#include "temporaryfile.hpp"
 
 NTSTATUS DOKAN_CALLBACK createFile(LPCWSTR fileName, PDOKAN_IO_SECURITY_CONTEXT, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG shareAccess, ULONG createDisposition, ULONG createOptions, PDOKAN_FILE_INFO dokanFileInfo){
     AndroidDrive *drive = AndroidDrive::fromDokanFileInfo(dokanFileInfo);

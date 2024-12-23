@@ -1,4 +1,4 @@
-#include "updates.h"
+#include "updates.hpp"
 
 #include <QDesktopServices>
 #include <QMessageBox>

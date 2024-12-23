@@ -1,11 +1,11 @@
-#include "settingswindow.h"
+#include "settingswindow.hpp"
 
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLabel>
 
-#include "androiddrive.h"
+#include "androiddrive.hpp"
 
 QSet<SettingsWindow*> SettingsWindow::_instances;
 bool SettingsWindow::systemLanguageAvailable = true;

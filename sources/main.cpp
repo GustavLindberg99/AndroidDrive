@@ -4,10 +4,10 @@
 #include <QSystemTrayIcon>
 #include <QTranslator>
 
-#include "androiddevice.h"
-#include "devicelistwindow.h"
-#include "settingswindow.h"
-#include "updates.h"
+#include "androiddevice.hpp"
+#include "devicelistwindow.hpp"
+#include "settingswindow.hpp"
+#include "updates.hpp"
 #include "version.h"
 
 int main(int argc, char **argv){

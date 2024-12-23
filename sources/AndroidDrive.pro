@@ -16,16 +16,16 @@ SOURCES += main.cpp \
     updates.cpp
 
 HEADERS += \
-    androiddevice.h \
-    androiddrive.h \
-    devicelistmodel.h \
-    devicelistwindow.h \
-    dokanoperations.h \
-    helperfunctions.h \
-    settings.h \
-    settingswindow.h \
-    temporaryfile.h \
-    updates.h \
+    androiddevice.hpp \
+    androiddrive.hpp \
+    devicelistmodel.hpp \
+    devicelistwindow.hpp \
+    dokanoperations.hpp \
+    helperfunctions.hpp \
+    settings.hpp \
+    settingswindow.hpp \
+    temporaryfile.hpp \
+    updates.hpp \
     version.h
 
 TRANSLATIONS = \
