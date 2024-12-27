@@ -142,12 +142,16 @@ std::shared_ptr<AndroidDevice> AndroidDrive::device() const{
     return this->_device;
 }
 
+bool AndroidDrive::isInternalStorage() const{
+    return this->_androidRootPath == "/sdcard";
+}
+
 QString AndroidDrive::fileSystem() const{
     return this->_fileSystem;
 }
 
 QString AndroidDrive::name() const{
-    if(this->_androidRootPath == "/sdcard"){
+    if(this->isInternalStorage()){
         return QObject::tr("Internal storage");
     }
     const QString sdCardName = QFileInfo(this->_androidRootPath).baseName();

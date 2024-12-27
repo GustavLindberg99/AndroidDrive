@@ -99,10 +99,15 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const{
 
         case Qt::DecorationRole:    //Icon
             if(device != nullptr){
-                return QIcon(":/android.svg");
+                return QIcon(":/phone.svg");
             }
             else if(drive != nullptr){
-                return QIcon(":/drive.svg");
+                if(drive->isInternalStorage()){
+                    return QIcon(":/systemdrive.svg");
+                }
+                else{
+                    return QIcon(":/drive.svg");
+                }
             }
             break;
         }

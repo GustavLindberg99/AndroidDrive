@@ -94,6 +94,13 @@ public:
     std::shared_ptr<AndroidDevice> device() const;
 
     /**
+     * Checks whether this drive is the interal storage drive.
+     *
+     * @return True if it's the device's internal storage drive, false if it's an external SD card.
+     */
+    bool isInternalStorage() const;
+
+    /**
      * Gets the name of the file system. Don't use on disconnected drives.
      *
      * @return The name of the file system.

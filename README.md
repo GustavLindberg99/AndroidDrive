@@ -27,6 +27,12 @@ If you *don't* want AndroidDrive to mound a drive for a specific Android device,
 When AndroidDrive detects a new Android device, it will automatically be assigned the first available drive letter after C (for example if your only drive is the hard drive, this will mean that it will be assigned the letter D). You can change the drive letter assigned to a specific Android device by right clicking on the AndroidDrive icon in the task bar, going to Devices, clicking "Device settings" and selecting a drive letter under "Drive letter". If you do this to a drive that's already connected, you will need to disconnect and re-connect the drive for the changes to take effect.
 
 
+# Files app
+I've also created a [Files app for Android](https://play.google.com/store/apps/details?id=io.github.gustavlindberg99.files) that you can install on your Android device. This app and AndroidDrive can be used independently (none of the two is necessary for the other one to work), but this app is made specifically to work well with AndroidDrive.
+
+For example, you can change the icon of a folder in the app and the new icon will be visible on your computer on the drive connected with AndroidDrive. You can also create a shortcut (LNK file) on the Android drive on with your computer and use the shortcut on your phone.
+
+
 # Languages
 
 AndroidDrive is currently available in the following languages:

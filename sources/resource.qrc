@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icon.ico</file>
         <file>translations/androiddrive_fr.qm</file>
         <file>translations/androiddrive_hu.qm</file>
         <file>translations/androiddrive_it.qm</file>
@@ -9,7 +8,10 @@
         <file>translations/qtbase_hu.qm</file>
         <file>translations/qtbase_it.qm</file>
         <file>translations/qtbase_sv.qm</file>
-        <file>android.svg</file>
         <file>drive.svg</file>
+        <file>phone.svg</file>
+        <file>systemdrive.svg</file>
+        <file>icon.svg</file>
+        <file>icon.ico</file>
     </qresource>
 </RCC>
