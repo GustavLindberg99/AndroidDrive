@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de" sourcelanguage="en_US">
+<TS version="2.1" language="de_DE" sourcelanguage="en_US">
 <context>
     <name>QObject</name>
     <message>
@@ -79,12 +79,12 @@
     <message>
         <location filename="../devicelistwindow.cpp" line="215"/>
         <source>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
-        <translation>Gerät %1 ist offline.&lt;br/&gt;&lt;br/&gt;Versuche, das Gerät zu entsperren, es abzuziehen und neu anzustecken.&lt;br/&gt;&lt;br/&gt;Wenn dieser Fehler bestehen bleibt, kannst du hier nach Lösungen suchen: &lt;a href=&quot;%2&quot;&gt;hier&lt;/a&gt; (alle hier genannten ADB-Kommandos können nach dem Kommando-Prompt ausgeführt werden, nach Ausführen von &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</translation>
+        <translation>Gerät %1 ist offline.&lt;br/&gt;&lt;br/&gt;Versuche, das Gerät zu entsperren, es aus- und wieder einzustecken.&lt;br/&gt;&lt;br/&gt;Wenn dieser Fehler bestehen bleibt, kannst du hier nach Lösungen suchen: &lt;a href=&quot;%2&quot;&gt;hier&lt;/a&gt; (alle hier genannten ADB-Kommandos können nach dem Kommando-Prompt ausgeführt werden, nach Ausführen von &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</translation>
     </message>
     <message>
         <location filename="../devicelistwindow.cpp" line="221"/>
         <source>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerät %1 ist nicht autorisiert.&lt;br/&gt;&lt;br/&gt;Versuchen Sie, Ihr Gerät zu entsperren. Wenn ein Dialog angezeigt wird, in dem Du gefragt wirst, ob Du diesem Computer den Zugriff auf Telefondaten gestatten möchten, tippe auf „Zulassen“. Wenn dieses Dialogfeld nicht angezeigt wird, deaktiviere und aktiviere das USB-Debugging wie hier beschrieben &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Wenn es immer noch nicht funktioniert, versuche, Dein Gerät aus- und wieder einzustecken.</translation>
     </message>
     <message>
         <location filename="../devicelistwindow.cpp" line="247"/>
