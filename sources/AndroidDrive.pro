@@ -29,6 +29,8 @@ HEADERS += \
     version.h
 
 TRANSLATIONS = \
+    translations/androiddrive_de.ts\
+    translations/androiddrive_empty.ts\
     translations/androiddrive_fr.ts\
     translations/androiddrive_hu.ts\
     translations/androiddrive_it.ts\

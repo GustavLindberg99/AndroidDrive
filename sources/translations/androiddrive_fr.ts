@@ -336,12 +336,12 @@
         <translation>Une mise à jour est disponible.&lt;br/&gt;&lt;br/&gt;Voulez-vous l&apos;installer maintenant?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="151"/>
+        <location filename="../androiddrive.cpp" line="155"/>
         <source>Internal storage</source>
         <translation>Stockage interne</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="154"/>
+        <location filename="../androiddrive.cpp" line="158"/>
         <source>SD card %1</source>
         <translation>Carte SD %1</translation>
     </message>
@@ -351,27 +351,27 @@
         <translation>Appareil</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="114"/>
+        <location filename="../devicelistmodel.cpp" line="119"/>
         <source>Status</source>
         <translation>Statut</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="119"/>
+        <location filename="../devicelistmodel.cpp" line="124"/>
         <source>Mounting...</source>
         <translation>Montage...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="122"/>
+        <location filename="../devicelistmodel.cpp" line="127"/>
         <source>Unmounting...</source>
         <translation>Démontage...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="125"/>
+        <location filename="../devicelistmodel.cpp" line="130"/>
         <source>Mounted as %1</source>
         <translation>Monté en tant que %1</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="129"/>
+        <location filename="../devicelistmodel.cpp" line="134"/>
         <source>Not mounted</source>
         <translation>Démonté</translation>
     </message>
