@@ -27,5 +27,5 @@ If your language is not listed above, you can help translate it. Do do so, follo
    If it says "File ... not available" on the top right under "Sources and Forms", don't worry about it, that's perfectly normal. You will still be able to translate it just as easily and your translation will still be useable.
 
 6. When you're done translating, to publish your translation, you need to start by forking this repository by clicking [here](https://github.com/GustavLindberg99/AndroidDrive/fork). Then go to `https://github.com/<your username>/AndroidDrive/upload/main/sources/translations` and upload your translation.
-7. Next create a pull request by going to `https://github.com/GustavLindberg99/AndroidDrive/compare/main...<your username>:AndroidDrive:main` and click Create pull request.
+7. Next create a pull request by going to `https://github.com/GustavLindberg99/AndroidDrive/compare/main...<your username>:AndroidDrive:main` and click Create pull request. Make sure to allow edits by maintainers so that I can make the necessary changes to the source code.
 8. Now all you need to do is wait for me to approve your pull request and publish your translation.
