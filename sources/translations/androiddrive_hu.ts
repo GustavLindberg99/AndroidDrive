@@ -331,12 +331,12 @@
         <translation>Frissítés érhető el.&lt;br/&gt;&lt;br/&gt;Szeretné most telepíteni?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="151"/>
+        <location filename="../androiddrive.cpp" line="155"/>
         <source>Internal storage</source>
         <translation>Belső tárhely</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="154"/>
+        <location filename="../androiddrive.cpp" line="158"/>
         <source>SD card %1</source>
         <translation>SD kártya %1</translation>
     </message>
@@ -346,27 +346,27 @@
         <translation>Eszköz</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="114"/>
+        <location filename="../devicelistmodel.cpp" line="119"/>
         <source>Status</source>
         <translation>Állapot</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="119"/>
+        <location filename="../devicelistmodel.cpp" line="124"/>
         <source>Mounting...</source>
         <translation>Felcsatolás...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="122"/>
+        <location filename="../devicelistmodel.cpp" line="127"/>
         <source>Unmounting...</source>
         <translation>Leválasztás...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="125"/>
+        <location filename="../devicelistmodel.cpp" line="130"/>
         <source>Mounted as %1</source>
         <translation>Felcsatolva, mint %1</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="129"/>
+        <location filename="../devicelistmodel.cpp" line="134"/>
         <source>Not mounted</source>
         <translation>Nincs felcsatolva</translation>
     </message>

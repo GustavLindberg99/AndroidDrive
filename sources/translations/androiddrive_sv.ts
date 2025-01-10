@@ -336,12 +336,12 @@
         <translation>En uppdatering är tillgänglig.&lt;br/&gt;&lt;br/&gt;Vill du installera den nu?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="151"/>
+        <location filename="../androiddrive.cpp" line="155"/>
         <source>Internal storage</source>
         <translation>Internt lagringsutrymme</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="154"/>
+        <location filename="../androiddrive.cpp" line="158"/>
         <source>SD card %1</source>
         <translation>SD-kort %1</translation>
     </message>
@@ -351,27 +351,27 @@
         <translation>Enhet</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="114"/>
+        <location filename="../devicelistmodel.cpp" line="119"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="119"/>
+        <location filename="../devicelistmodel.cpp" line="124"/>
         <source>Mounting...</source>
         <translation>Monterar...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="122"/>
+        <location filename="../devicelistmodel.cpp" line="127"/>
         <source>Unmounting...</source>
         <translation>Avmonterar...</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="125"/>
+        <location filename="../devicelistmodel.cpp" line="130"/>
         <source>Mounted as %1</source>
         <translation>Monterad som %1</translation>
     </message>
     <message>
-        <location filename="../devicelistmodel.cpp" line="129"/>
+        <location filename="../devicelistmodel.cpp" line="134"/>
         <source>Not mounted</source>
         <translation>Ej monterad</translation>
     </message>
