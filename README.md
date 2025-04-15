@@ -1,5 +1,5 @@
 # AndroidDrive
-AndroidDrive is a program that allows mounting Android smartphones as drives on Windows.
+AndroidDrive is a program that allows mounting Android smartphones as drives on Windows. It does not require rooting.
 
 <img width="394" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/f7e16581-2ab0-4353-ac31-b0fd722f9048">
 <img width="394" src="https://github.com/GustavLindberg99/AndroidDrive/assets/95423695/e6d81783-8c3c-4dd5-bf53-ca5d0bb87c05">
@@ -75,7 +75,13 @@ adb.exe devices
 
 If your device isn't listed in the command prompt after running this, that's a problem with ADB, not AndroidDrive. You may be able to find solutions [here](https://stackoverflow.com/q/21170392/4284627).
 
-If your device *is* listed in the command prompt when running the commands above but *not* in AndroidDrive, you can report that as a bug [here](https://github.com/GustavLindberg99/AndroidDrive/issues/new/choose).
+If your device *is* listed in the command prompt when running the commands above but *not* in AndroidDrive, you can report that as a bug [here](https://github.com/GustavLindberg99/AndroidDrive/issues/new/choose). If you do, please include the output that you got when running `adb.exe devices`.
+
+## Can I use AndroidDrive together with file recovery software to recover deleted files on my phone?
+
+No, unfortunately that won't work. File recovery software works by reading parts of the disk that aren't currently assigned to any file. AndroidDrive doesn't have direct access to a disk, instead it receives requests to read from files from Dokan which it forwards to ADB through specific commands that can only read files that currently exist. So there's no way for AndroidDrive to access parts of the disk that aren't written to.
+
+To recover permanently deleted files on your phone, you would probably need to root your phone and find a file recovery tool that uses the Linux command line (since Android is Linux-based). You can then access the Linux command line on your phone through ADB by running `adb.exe shell enter command here` in the Windows command line.
 
 
 # Credits
