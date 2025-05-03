@@ -4,6 +4,7 @@
 #include <QThread>
 
 #include "androiddevice.hpp"
+#include "debuglogger.hpp"
 #include "dokanoperations.hpp"
 
 QList<AndroidDrive*> AndroidDrive::_instances;
@@ -44,18 +45,23 @@ AndroidDrive::AndroidDrive(QString androidRootPath, QString model, QString seria
 
     QObject::connect(this, &AndroidDrive::driveMounted, this, [this](){
         this->_mounted = true;
+        DebugLogger::getInstance().log("Drive '{}' mounted", this);
         if(this->_shouldBeDisconnected){
+            DebugLogger::getInstance().log("Disconnecting drive '{}'", this);
             this->disconnectDrive();
         }
     });
     QObject::connect(this, &AndroidDrive::driveUnmounted, this, [this](){
         this->_mounted = false;
+        DebugLogger::getInstance().log("Drive '{}' unmounted", this);
     });
 
     //Do the cleanup after Dokan exit here to make sure that it's run on the main thread instead of the Dokan thread (otherwise the destructors will be called in the Dokan thread so the thread will try to join itself and crash).
     //Qt::ConnectionType::AutoConnection is the default so this will be run on the main thread since the connection is done on the main thread.
     QObject::connect(this, &AndroidDrive::driveDisconnected, this, [this](){
+        DebugLogger::getInstance().log("Disconnecting drive '{}', waiting for mutex", this);
         std::lock_guard<std::mutex> lockGuard(this->_mutex);
+        DebugLogger::getInstance().log("Disconnecting drive '{}', mutex locked", this);
         this->_temporaryFiles.clear();
         this->_temporaryDir = nullptr;
         this->_device = nullptr;
@@ -66,8 +72,10 @@ AndroidDrive::AndroidDrive(QString androidRootPath, QString model, QString seria
 AndroidDrive::~AndroidDrive(){
     this->disconnectDrive();
     if(this->_thread.joinable()){
+        DebugLogger::getInstance().log("Joining Dokan thread for drive '{}'", this);
         this->_thread.join();
     }
+    DebugLogger::getInstance().log("Deleting drive '{}'", this);
     AndroidDrive::_instances.removeAll(this);
 
     //Sometimes the mutex is already locked by the main thread when it gets destroyed. If that's the case, it must be unlocked otherwise it crashes. It can't be locked by another thread because the other thread was just joined.
@@ -89,9 +97,11 @@ AndroidDrive *AndroidDrive::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
 void AndroidDrive::connectDrive(char driveLetter, const std::shared_ptr<AndroidDevice> &device){
     if(!this->isConnected()){
         if(this->_thread.joinable()){
+            DebugLogger::getInstance().log("Joining Dokan thread for drive '{}'", this);
             this->_thread.join();
         }
 
+        DebugLogger::getInstance().log("Attempting to connect drive '{}' with drive letter '{}'", std::make_tuple(this, driveLetter));
         const DWORD driveLetters = GetLogicalDrives() | AndroidDrive::_internalLogicalDrives;    //Bitmask where 1 means the drive is occupied and 0 means the drive is available. The least significant bit corresponds to A:\, the second least significant bit corresponds to B:\, etc. For example, 14 = 0b1110 means that B:\, C:\ and D:\ are occupied and everything else is available.
         for(int i = 0; (driveLetters & (1 << (driveLetter - 'A'))) && i < 26; i++){
             driveLetter++;
@@ -99,10 +109,12 @@ void AndroidDrive::connectDrive(char driveLetter, const std::shared_ptr<AndroidD
                 driveLetter = 'A';
             }
         }
+        DebugLogger::getInstance().log("Connecting drive '{}' with drive letter '{}'", std::make_tuple(this, driveLetter));
 
         AndroidDrive::_internalLogicalDrives |= 1 << (driveLetter - 'A');
         this->_shouldBeDisconnected = false;
         this->_temporaryDir = std::make_unique<QTemporaryDir>();
+        DebugLogger::getInstance().log("Creating temporary folder '{}' for drive '{}'", std::make_tuple(this->_temporaryDir->path(), this));
         this->_device = device;
         this->_mountPoint[0] = driveLetter;    //We don't need to change dokanOptions.MountPoint because it points to the same memory address as this->_mountPoint
 
@@ -112,8 +124,10 @@ void AndroidDrive::connectDrive(char driveLetter, const std::shared_ptr<AndroidD
         this->_fileSystem = match.hasMatch() ? match.captured(1) : "";
 
         this->_thread = std::thread([this](){
+            DebugLogger::getInstance().log("Starting Dokan thread for drive '{}'", this);
             const int status = DokanMain(&this->_dokanOptions, &this->_dokanOperations);
             emit this->driveDisconnected(status);
+            DebugLogger::getInstance().log("Exiting Dokan thread for drive '{}'", this);
         });
         emit this->driveConnected();
     }
@@ -122,6 +136,7 @@ void AndroidDrive::connectDrive(char driveLetter, const std::shared_ptr<AndroidD
 void AndroidDrive::disconnectDrive(){
     if(this->isConnected()){
         this->_shouldBeDisconnected = true;
+        DebugLogger::getInstance().log("Removing Dokan mount point for drive '{}'", this);
         DokanRemoveMountPoint(this->_mountPoint);
     }
 }
@@ -196,8 +211,11 @@ QString AndroidDrive::mountPoint() const{
 }
 
 NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QString &remotePath, DWORD creationDisposition, ULONG shareAccess, ACCESS_MASK desiredAccess, ULONG fileAttributes, ULONG createOptions, ULONG createDisposition, bool exists, const QString &altStream){
+    DebugLogger::getInstance().log("Adding temporary file for '{}', waiting for mutex", remotePath);
     std::lock_guard<std::mutex> lockGuard(this->_mutex);
+    DebugLogger::getInstance().log("Adding temporary file for '{}', mutex locked", remotePath);
     if(this->_device == nullptr){
+        DebugLogger::getInstance().log("Not adding temporary file, device is disconnected");
         return STATUS_ALREADY_DISCONNECTED;
     }
     std::unique_ptr<TemporaryFile> temporaryFile = std::make_unique<TemporaryFile>(this, remotePath, creationDisposition, shareAccess, desiredAccess, fileAttributes, createOptions, createDisposition, exists, altStream);
@@ -205,19 +223,26 @@ NTSTATUS AndroidDrive::addTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo, const QS
 
     //If there's no error, move the unique_ptr to the list of temporary files to keep it in memory, otherwise do nothing and it will be deleted at the end of the scope.
     if(errorCode == STATUS_SUCCESS){
+        DebugLogger::getInstance().log("Temporary file for '{}' created successfully", remotePath);
         dokanFileInfo->Context = reinterpret_cast<ULONG64>(temporaryFile.get());
         this->_temporaryFiles.push_back(std::move(temporaryFile));
+    }
+    else{
+        DebugLogger::getInstance().log("Failed to create temporary file for '{}': error {}", std::make_tuple(remotePath, errorCode));
     }
 
     return errorCode;
 }
 
 void AndroidDrive::deleteTemporaryFile(PDOKAN_FILE_INFO dokanFileInfo){
+    DebugLogger::getInstance().log("Deleting temporary file on drive '{}', waiting for mutex", this);
     std::lock_guard<std::mutex> lockGuard(this->_mutex);
+    DebugLogger::getInstance().log("Deleting temporary file on drive '{}', mutex locked", this);
     TemporaryFile *temporaryFile = reinterpret_cast<TemporaryFile*>(dokanFileInfo->Context);
     dokanFileInfo->Context = 0;
     for(size_t i = 0; i < this->_temporaryFiles.size(); i++){
         if(this->_temporaryFiles[i].get() == temporaryFile){
+            DebugLogger::getInstance().log("Temporary file found in list of temporary files");
             this->_temporaryFiles.erase(this->_temporaryFiles.begin() + i);
             break;
         }

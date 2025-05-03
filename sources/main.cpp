@@ -5,6 +5,7 @@
 #include <QTranslator>
 
 #include "androiddevice.hpp"
+#include "debuglogger.hpp"
 #include "devicelistwindow.hpp"
 #include "settingswindow.hpp"
 #include "updates.hpp"
@@ -60,13 +61,31 @@ int main(int argc, char **argv){
     QAction *settingsAction = contextMenu.addAction(QObject::tr("&Settings"));
     QObject::connect(settingsAction, &QAction::triggered, settingsWindow.get(), &QWidget::show);
 
+    QAction *debugAction = contextMenu.addAction(QObject::tr("Record Debug &Logs"));
+    QObject::connect(debugAction, &QAction::triggered, [debugAction](){
+        DebugLogger &logger = DebugLogger::getInstance();
+        if(logger.isRecording()){
+            logger.stop();
+            debugAction->setText(QObject::tr("Record Debug &Logs"));
+        }
+        else{
+            if(logger.start()){
+                debugAction->setText(QObject::tr("Finish Recording Debug &Logs"));
+                QMessageBox::information(nullptr, "", QObject::tr("Recording of debug logs has started.<br/><br/>You will be able to find the log file in %1.<br/><br/>If you're planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don't contain any sensitive information (The debug logs will only contain the file names, they won't contain the contents of any file).").arg(DebugLogger::getInstance().logFilePath()));
+            }
+            else{
+                QMessageBox::critical(nullptr, "", QObject::tr("Failed to create log file."));
+            }
+        }
+    });
+
     QAction *aboutAction = contextMenu.addAction(QObject::tr("&About AndroidDrive"));
     QObject::connect(aboutAction, &QAction::triggered, aboutAction, [](){
         QMessageBox msg;
         msg.setIconPixmap(QPixmap(":/icon.svg"));
         msg.setWindowIcon(QIcon(":/icon.svg"));
         msg.setWindowTitle(QObject::tr("About AndroidDrive"));
-        msg.setText(QObject::tr("AndroidDrive version %1 by Gustav Lindberg.").arg(PROGRAMVERSION) + "<br><br>" + QObject::tr("Icons made by %3 and %4 from %1 are licensed by %2.").arg("<a href=\"https://www.iconfinder.com/\">www.iconfinder.com</a>", "<a href=\"http://creativecommons.org/licenses/by/3.0/\">CC 3.0 BY</a>", "<a href=\"https://www.iconfinder.com/pocike\">Alpár-Etele Méder</a>", "<a href=\"https://www.iconfinder.com/iconsets/tango-icon-library\">Tango</a>") + "<br><br>" + QObject::tr("This program uses %1 and %2.").arg("<a href=\"https://android.googlesource.com/platform/packages/modules/adb/\">ADB</a>", "<a href=\"https://dokan-dev.github.io/\">Dokan</a>"));
+        msg.setText(QObject::tr("AndroidDrive version %1 by Gustav Lindberg.").arg(PROGRAMVERSION) + "<br/><br/>" + QObject::tr("Icons made by %3 and %4 from %1 are licensed by %2.").arg("<a href=\"https://www.iconfinder.com/\">www.iconfinder.com</a>", "<a href=\"http://creativecommons.org/licenses/by/3.0/\">CC 3.0 BY</a>", "<a href=\"https://www.iconfinder.com/pocike\">Alpár-Etele Méder</a>", "<a href=\"https://www.iconfinder.com/iconsets/tango-icon-library\">Tango</a>") + "<br/><br/>" + QObject::tr("This program uses %1 and %2.").arg("<a href=\"https://android.googlesource.com/platform/packages/modules/adb/\">ADB</a>", "<a href=\"https://dokan-dev.github.io/\">Dokan</a>"));
         msg.exec();
     });
 

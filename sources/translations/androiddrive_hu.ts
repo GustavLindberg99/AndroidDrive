@@ -14,189 +14,210 @@
         <translation>&amp;Megnyitás az Intézőben</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="16"/>
+        <location filename="../devicelistwindow.cpp" line="18"/>
         <source>Opens the selected drive in Windows Explorer.</source>
         <translation>Megnyitja a kiválasztott meghajtót a Windows Intézőben.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="18"/>
+        <location filename="../devicelistwindow.cpp" line="20"/>
         <source>AndroidDrive - Devices</source>
         <translation>AndroidDrive - Eszközök</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="221"/>
+        <location filename="../devicelistwindow.cpp" line="226"/>
         <source>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
         <translation>%1 eszköz nem engedélyezett.&lt;/br&gt;&lt;/br&gt;Próbálja meg feloldani a készülékét. Ha megjelenik egy párbeszédpanel, amely megkérdezi, hogy engedélyezi-e a számítógépnek a telefon adataihoz való hozzáférést, koppintson az &quot;Engedélyezés&quot; lehetőségre. Ha nem jelenik meg ez a párbeszédpanel, akkor kapcsolja ki/be újra az USB hibakeresést a következők szerint &lt;a href=&quot;%2&quot;&gt;itt&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Ha még mindig nem működik, próbálja meg újra csatlakoztatni a készüléket.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="247"/>
+        <location filename="../devicelistwindow.cpp" line="253"/>
         <source>Could not create a drive with the given drive letter.</source>
         <translation>Nem sikerült meghajtót létrehozni a megadott betűjellel.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="258"/>
+        <location filename="../devicelistwindow.cpp" line="264"/>
         <source>Could not start the driver.</source>
         <translation>Nem sikerült elindítani az illesztőprogramot.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="175"/>
+        <location filename="../devicelistwindow.cpp" line="177"/>
         <location filename="../devicelistwindow.hpp" line="85"/>
         <source>&amp;Mount drive</source>
         <translation>Meghajtó &amp;felcsatolása</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="15"/>
+        <location filename="../devicelistwindow.cpp" line="17"/>
         <source>Allows you to change the settings for this device, for example select a new drive letter or choose whether it should be mounted automatically.</source>
         <translation>Lehetővé teszi az eszköz beállításainak módosítását, pl. új meghajtó betűjel kiválasztását, vagy annak megadását, automatikusan csatlakozzon-e.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="161"/>
+        <location filename="../devicelistwindow.cpp" line="163"/>
         <source>&amp;Unmount all drives</source>
         <translation>Összes Meghajtó &amp;leválasztása</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="162"/>
+        <location filename="../devicelistwindow.cpp" line="164"/>
         <source>Unmounts all drives corresponding to the selected Android device.&lt;br/&gt;&lt;br/&gt;This only unmounts the drives, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
         <translation>A kiválasztott Android eszközhöz tartozó összes meghajtó leválasztása.&lt;br/&gt;&lt;br/&gt;Ez csak a meghajtókat kapcsolja le, maga az Android-eszköz csatlakoztatva marad, így továbbra is hozzáférhet pl. ADB-n keresztül.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="165"/>
+        <location filename="../devicelistwindow.cpp" line="167"/>
         <source>&amp;Mount all drives</source>
         <translation>Csatlakoztasson &amp;minden meghajtót</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="14"/>
-        <location filename="../devicelistwindow.cpp" line="166"/>
+        <location filename="../devicelistwindow.cpp" line="16"/>
+        <location filename="../devicelistwindow.cpp" line="168"/>
         <source>Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any.</source>
         <translation>Csatlakoztat egy meghajtót a kiválasztott Android eszköz belső tárhelyével, valamint egy-egy meghajtót minden külső SD-kártyához, amellyel a kiválasztott eszköz rendelkezik.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="171"/>
+        <location filename="../devicelistwindow.cpp" line="173"/>
         <source>&amp;Unmount drive</source>
         <translation>Meghajtó &amp;leválasztása</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="172"/>
+        <location filename="../devicelistwindow.cpp" line="174"/>
         <source>Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
         <translation>A kiválasztott meghajtó leválasztása.&lt;br/&gt;&lt;br/&gt;Ez csak a meghajtót választja le, maga az Android eszköz továbbra is csatlakoztatva marad, így pl. ADB-n keresztül továbbra is hozzáférhet.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="176"/>
+        <location filename="../devicelistwindow.cpp" line="178"/>
         <source>Mounts a drive containing the selected internal storage or external SD card.</source>
         <translation>Csatlakoztatja a kiválasztott belső tárhelyet vagy külső SD-t tartalmazó meghajtót.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="186"/>
+        <location filename="../devicelistwindow.cpp" line="189"/>
         <source>Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</source>
         <translation>Végzetes hiba: Nem sikerült listázni az Android-eszközöket.&lt;br/&gt;&lt;br/&gt;az ADB kilépett a következő kóddal: %1.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="215"/>
+        <location filename="../devicelistwindow.cpp" line="220"/>
         <source>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
         <translation>%1 eszköz offline.&lt;br/&gt;&lt;br/&gt;Próbálja meg feloldani az eszköz zárolását, majd kihúzni és újra bedugni.&lt;br/&gt;&lt;br/&gt;Ha ez a hiba továbbra is fennáll, akkor &lt;a href=&quot;%2&quot;&gt;itt&lt;/a&gt; találhat megoldást (az ott említett adb parancsok a parancssorban futtathatók a &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt; futtatása után).</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="254"/>
+        <location filename="../devicelistwindow.cpp" line="260"/>
         <source>Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
         <translation>Úgy tűnik, hogy a Dokan nincs telepítve.&lt;br/&gt;&lt;br/&gt;Szeretné most telepíteni?</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="262"/>
+        <location filename="../devicelistwindow.cpp" line="268"/>
         <source>Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
         <translation>Nem sikerült meghajtó betűjelet hozzárendelni.&lt;br/&gt;&lt;br/&gt;Módosítsa a betűjelet az Eszközbeállításokban egy elérhető betűjelre.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="265"/>
+        <location filename="../devicelistwindow.cpp" line="271"/>
         <source>Dokan version error.</source>
         <translation>Dokan verzió hiba.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="268"/>
+        <location filename="../devicelistwindow.cpp" line="274"/>
         <source>An unknown error occurred.</source>
         <translation>Ismeretlen hiba történt.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="271"/>
+        <location filename="../devicelistwindow.cpp" line="277"/>
         <source>Could not mount drive %1: %2</source>
         <translation>Nem sikerült csatlakoztatni a meghajtót %1: %2</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="287"/>
+        <location filename="../devicelistwindow.cpp" line="293"/>
         <source>ADB timed out.</source>
         <translation>ADB időtúllépés.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="290"/>
+        <location filename="../devicelistwindow.cpp" line="296"/>
         <source>An error occurred when attempting to read from the ADB process.</source>
         <translation>Hiba történt, amikor olvasn próbálti az ADB folyamatból.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="293"/>
+        <location filename="../devicelistwindow.cpp" line="299"/>
         <source>An error occurred when attempting to write to the ADB process.</source>
         <translation>Hiba történt, amikor írni próbált az ADB folyamatba.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="296"/>
+        <location filename="../devicelistwindow.cpp" line="302"/>
         <source>ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>Az ADB nem indult el.&lt;br/&gt;&lt;br/&gt;Vagy hiányzik az adb.exe fájl, vagy nem rendelkezik megfelelő jogosultságokkal a program elindításához.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="299"/>
+        <location filename="../devicelistwindow.cpp" line="305"/>
         <source>ADB crashed.</source>
         <translation>Az ADB összeomlott.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="302"/>
+        <location filename="../devicelistwindow.cpp" line="308"/>
         <source>ADB encountered an unknown error.</source>
         <translation>Az ADB ismeretlen hibát észlelt.</translation>
     </message>
     <message>
-        <location filename="../devicelistwindow.cpp" line="305"/>
+        <location filename="../devicelistwindow.cpp" line="311"/>
         <source>Fatal error: Could not list Android devices: %1</source>
         <translation>Végzetes hiba: Nem sikerült felsorolni az Android-eszközöket: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="57"/>
+        <location filename="../main.cpp" line="58"/>
         <source>&amp;Devices</source>
         <translation>&amp;Eszközök</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="60"/>
+        <location filename="../main.cpp" line="61"/>
         <source>&amp;Settings</source>
         <translation>&amp;Beállítások</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="64"/>
+        <location filename="../main.cpp" line="69"/>
+        <source>Record Debug &amp;Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="73"/>
+        <source>Finish Recording Debug &amp;Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="74"/>
+        <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="77"/>
+        <source>Failed to create log file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="82"/>
         <source>&amp;About AndroidDrive</source>
         <translation>&amp;Az AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="68"/>
+        <location filename="../main.cpp" line="87"/>
         <source>About AndroidDrive</source>
         <translation>Az AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="88"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>Az AndroidDrive %1 verziója Gustav Lindbergtől.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="88"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>A(z) %3 és %4 által készített ikonok %1 licencét a %2 engedélyezi.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="88"/>
         <source>This program uses %1 and %2.</source>
         <translation>Ez a program a következőt használja: %1 és %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="92"/>
         <source>About &amp;Qt</source>
         <translation>A &amp;Qt-ról</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="97"/>
         <source>E&amp;xit</source>
         <translation>&amp;Kilép</translation>
     </message>
@@ -331,12 +352,12 @@
         <translation>Frissítés érhető el.&lt;br/&gt;&lt;br/&gt;Szeretné most telepíteni?</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="155"/>
+        <location filename="../androiddrive.cpp" line="170"/>
         <source>Internal storage</source>
         <translation>Belső tárhely</translation>
     </message>
     <message>
-        <location filename="../androiddrive.cpp" line="158"/>
+        <location filename="../androiddrive.cpp" line="173"/>
         <source>SD card %1</source>
         <translation>SD kártya %1</translation>
     </message>

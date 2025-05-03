@@ -7,6 +7,8 @@
 #include <QProcess>
 #include <QUrl>
 
+#include "debuglogger.hpp"
+
 DeviceListWindow::DeviceListWindow(){
     //Initialize the UI
     QGridLayout *layout = new QGridLayout(this);
@@ -182,6 +184,7 @@ void DeviceListWindow::updateButtons(){
 void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     //Check that it exited correctly
     if(exitCode != 0){
+        DebugLogger::getInstance().log("ADB failed.\nstdout: {}\nstderr: {}", std::make_tuple(this->_adb.readAllStandardOutput().toStdString(), this->_adb.readAllStandardError().toStdString()));
         if(this->_adbFailed){
             QMessageBox::critical(nullptr, "", QObject::tr("Fatal error: Could not list Android devices.<br/><br/>ADB exited with code %1.").arg(exitCode));
             emit this->encounteredFatalError();
@@ -201,6 +204,7 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
     static const QRegularExpression spaceRegex("\\s+");
     for(const QString &line: result){
         if(line == "List of devices attached" || line.isEmpty()){
+            DebugLogger::getInstance().log("Skipping line '{}'", line);
             continue;
         }
         const QStringList splittedLine = line.split(spaceRegex);
@@ -208,6 +212,7 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
         const bool offline = splittedLine[1] == "offline";
         const bool unauthorized = splittedLine[1] == "unauthorized";
         if(offline || unauthorized){
+            DebugLogger::getInstance().log("Offline/unauthorized device '{}'", serialNumber);
             offlineSerialNumbers.push_back(serialNumber);
             if(this->_model.timeSinceOffline(serialNumber) == 3){
                 if(offline){
@@ -225,6 +230,7 @@ void DeviceListWindow::updateDevices(int exitCode, QProcess::ExitStatus){
             }
         }
         else{
+            DebugLogger::getInstance().log("Adding device '{}'", serialNumber);
             serialNumbers.push_back(serialNumber);
         }
     }

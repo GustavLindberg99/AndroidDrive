@@ -240,4 +240,20 @@ private:
     SettingsWindow _settingsWindow;
 };
 
+template<>
+struct std::formatter<const AndroidDrive*>: public std::formatter<std::string> {
+    auto format(const AndroidDrive *drive, std::format_context &ctx) const {
+        const auto device = drive->device();
+        const std::string serialNumber = device == nullptr ? "nullptr" : device->serialNumber().toStdString();
+        return std::formatter<std::string>::format(serialNumber + ":" + drive->androidRootPath().toStdString(), ctx);
+    }
+};
+
+template<>
+struct std::formatter<AndroidDrive*>: public std::formatter<const AndroidDrive*> {
+    auto format(AndroidDrive *drive, std::format_context &ctx) const {
+        return std::formatter<const AndroidDrive*>::format(drive, ctx);
+    }
+};
+
 #endif // ANDROIDDRIVE_H

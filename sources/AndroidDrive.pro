@@ -6,6 +6,7 @@ CONFIG += c++20
 SOURCES += main.cpp \
     androiddevice.cpp \
     androiddrive.cpp \
+    debuglogger.cpp \
     devicelistmodel.cpp \
     devicelistwindow.cpp \
     dokanoperations.cpp \
@@ -18,6 +19,7 @@ SOURCES += main.cpp \
 HEADERS += \
     androiddevice.hpp \
     androiddrive.hpp \
+    debuglogger.hpp \
     devicelistmodel.hpp \
     devicelistwindow.hpp \
     dokanoperations.hpp \

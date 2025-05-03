@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QRegularExpression>
 
-#include "settingswindow.hpp"
+#include "settings.hpp"
 
 QString escapeSpecialCharactersForBash(QString filePath){
     //List of characters that need to be escaped from https://stackoverflow.com/a/27817504/4284627
