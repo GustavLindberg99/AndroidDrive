@@ -11,8 +11,58 @@
 #include "updates.hpp"
 #include "version.h"
 
+#include <windows.h>
+#include <psapi.h>
+#include <tchar.h>
+
+/**
+ * Checks if another instance of this process is already running.
+ *
+ * @return True if it is, false if it isn't.
+ */
+bool isAlreadyRunning(){
+    DWORD pids[1024], cbNeeded;
+    if(!EnumProcesses(pids, sizeof(pids), &cbNeeded)){
+        return false;
+    }
+
+    bool alreadyFound = false;
+    const DWORD numberOfProcesses = cbNeeded / sizeof(DWORD);
+    for(unsigned int i = 0; i < numberOfProcesses; i++){
+        const DWORD pid = pids[i];
+        if(pid == 0){
+            continue;
+        }
+        HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
+        if(handle == nullptr){
+            continue;
+        }
+        HMODULE hMod;
+        DWORD cbNeeded;
+        if(EnumProcessModules(handle, &hMod, sizeof(hMod), &cbNeeded)){
+            wchar_t currentProcessPath[MAX_PATH] = L"";
+            GetModuleFileName(hMod, currentProcessPath, MAX_PATH);
+            if(QDir::toNativeSeparators(QApplication::applicationFilePath()) == QString::fromWCharArray(currentProcessPath)){
+                //If another instance of the process is already running, there will be at least 2 instances listed (this one and the other one), in which case return true. Otherwise, there will still be one instance (the one currently doing the check), in which case return false.
+                if(alreadyFound){
+                    return true;
+                }
+                else{
+                    alreadyFound = true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 int main(int argc, char **argv){
     QApplication app(argc, argv);
+    if(isAlreadyRunning()){
+        QMessageBox::information(nullptr, "", QObject::tr("AndroidDrive is already running.<br/><br/>If you're trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit."));
+        return ERROR_SERVICE_ALREADY_RUNNING;
+    }
     app.setQuitOnLastWindowClosed(false);
     DokanInit();
 

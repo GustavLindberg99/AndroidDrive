@@ -158,68 +158,73 @@
         <translation>Erreur fatale: Impossible d&apos;énumérer les appareils Android: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
+        <location filename="../main.cpp" line="63"/>
+        <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <translation>AndroidDrive est déjà en cours d&apos;exécution.&lt;br/&gt;&lt;br/&gt;Si vous essayez de redémarrer AndroidDrive, vous pouvez quitter le processus existant en faisant un clic droit sur l&apos;icône AndroidDrive dans la bare de tâches et en sélectionnant Quitter.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="108"/>
         <source>&amp;Devices</source>
         <translation>&amp;Appareils</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="111"/>
         <source>&amp;Settings</source>
         <translation>&amp;Paramètres</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="64"/>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="114"/>
+        <location filename="../main.cpp" line="119"/>
         <source>Record Debug &amp;Logs</source>
         <translation>Enregistrer les &amp;journeaux de débogage</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>Terminer l&apos;enregistrement les &amp;journeaux de débogage</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="74"/>
+        <location filename="../main.cpp" line="124"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation>L&apos;enregistrement des journeaux de débogage a commencé.&lt;br/&gt;&lt;br/&gt;Vous pourrez trouver le fichier de journal dans %1.&lt;br/&gt;&lt;br/&gt;Si vous attachez le fichier de journal dans un rapport de bug, gardez à l&apos;esprit que les fichiers de journal vont contenir les noms des fichiers sur votre téléphone, donc faite attention que les noms de fichiers ne contiennent pas de données sensibles (Les fichiers de journal ne continendra que les noms de fichiers, ils ne contiendront le contenu d&apos;aucun fichier).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="127"/>
         <source>Failed to create log file.</source>
         <translation>Impossible de créer le fichier de journal.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="132"/>
         <source>&amp;About AndroidDrive</source>
         <translation>À propos d&apos;Android&amp;Drive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="137"/>
         <source>About AndroidDrive</source>
         <translation>À propos d&apos;AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive version %1 par Gustav Lindberg.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>Les icônes faites par %3 et %4 pour %1 sont sous license de %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>This program uses %1 and %2.</source>
         <translation>Ce programme utilise %1 et %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="142"/>
         <source>About &amp;Qt</source>
         <translation>À propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="147"/>
         <source>E&amp;xit</source>
         <translation>Qui&amp;tter</translation>
     </message>

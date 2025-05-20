@@ -158,68 +158,73 @@
         <translation>Oåterkalleligt fel: Kunde inte lista Android-enheter: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
+        <location filename="../main.cpp" line="63"/>
+        <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <translation>AndroidDrive körs redan.&lt;br/&gt;&lt;br/&gt;Om du försöker starta om AndroidDrive kan du stänga den befintliga processen genom att högerklicka på AndroidDrive-ikonen i aktivitetsfältet och välja Avsluta.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="108"/>
         <source>&amp;Devices</source>
         <translation>&amp;Enheter</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="111"/>
         <source>&amp;Settings</source>
         <translation>&amp;Inställningar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="64"/>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="114"/>
+        <location filename="../main.cpp" line="119"/>
         <source>Record Debug &amp;Logs</source>
         <translation>Spela in debug&amp;loggar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>Avsluta inspelning av debug&amp;loggar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="74"/>
+        <location filename="../main.cpp" line="124"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation>Inspelningen av debugloggar har börjat.&lt;br/&gt;&lt;br/&gt;Du kommer kunna hitta loggfilen i %1.&lt;br/&gt;&lt;br/&gt;Om du tänker bifoga loggfilen till en felrapport, kom ihåg att loggfilen kommer innehålla namnen av filer på din telefon, så se till att filnamnen inte innehåller känslig information (Loggarna kommer bara innehålla filnamnen, de kommer inte att innehålla innehållet av någon fil).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="127"/>
         <source>Failed to create log file.</source>
         <translation>Kunde inte skapa loggfilen.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="132"/>
         <source>&amp;About AndroidDrive</source>
         <translation>&amp;Om AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="137"/>
         <source>About AndroidDrive</source>
         <translation>Om AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive version %1 av Gustav Lindberg.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>Ikoner gjorda av %3 och %4 från %1 är licensierade enligt %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>This program uses %1 and %2.</source>
         <translation>Detta program använder %1 och %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="142"/>
         <source>About &amp;Qt</source>
         <translation>Om &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="147"/>
         <source>E&amp;xit</source>
         <translation>&amp;Avsluta</translation>
     </message>

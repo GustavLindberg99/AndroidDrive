@@ -196,68 +196,73 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
+        <location filename="../main.cpp" line="63"/>
+        <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="108"/>
         <source>&amp;Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="111"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="64"/>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="114"/>
+        <location filename="../main.cpp" line="119"/>
         <source>Record Debug &amp;Logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="74"/>
+        <location filename="../main.cpp" line="124"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="127"/>
         <source>Failed to create log file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="132"/>
         <source>&amp;About AndroidDrive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="137"/>
         <source>About AndroidDrive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>This program uses %1 and %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="142"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="147"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>

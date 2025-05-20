@@ -52,7 +52,7 @@
     <message>
         <location filename="../devicelistwindow.cpp" line="173"/>
         <source>&amp;Unmount drive</source>
-        <translation>Smona &amp;unità</translation>
+        <translation>Smonta &amp;unità</translation>
     </message>
     <message>
         <location filename="../devicelistwindow.cpp" line="16"/>
@@ -158,68 +158,73 @@
         <translation>Errore irreversibile: impossibile elencare i dispositivi Android: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
+        <location filename="../main.cpp" line="63"/>
+        <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <translation>AndroidDrive è già in esecuzione.&lt;br/&gt;&lt;br/&gt;Se stai cercando di riavviare AndroidDrive, puoi chiudere il processo esistente facendo clic con il tasto destro sull&apos;icona AndroidDrive nella barra delle attività e selezionando &apos;Esci&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="108"/>
         <source>&amp;Devices</source>
         <translation>&amp;Dispositivi</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="111"/>
         <source>&amp;Settings</source>
         <translation>&amp;Impostazioni</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="64"/>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="114"/>
+        <location filename="../main.cpp" line="119"/>
         <source>Record Debug &amp;Logs</source>
-        <translation>Inizia sa&amp;lva taggio registri debug</translation>
+        <translation>Inizia sa&amp;lvataggio registri debug</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>Ferma sa&amp;lvataggio registri &amp;debug</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="74"/>
+        <location filename="../main.cpp" line="124"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
-        <translation>È iniziata la registrazione dei registri debug. &lt;br/&gt; &lt;br/&gt; Sarai in grado di trovare il file di registro in %1.&lt;br/&gt;&lt;br/&gt;Se stai pianificando di allegare il file registro ad una segnalazione di bug, tieni presente che il file registro conterrà i nomi dei file nel dispositivo, quindi assicurati che i nomi file non contengono alcuna informazione sensibile (i registri debug ontengono solo i nomi dei file, non includono il contenuto dei file).</translation>
+        <translation>È iniziata la registrazione dei registri debug. &lt;br/&gt; &lt;br/&gt; Sarai in grado di trovare il file di registro in %1.&lt;br/&gt;&lt;br/&gt;Se stai pianificando di allegare il file registro ad una segnalazione di bug, tieni presente che il file registro conterrà i nomi dei file nel dispositivo, quindi assicurati che i nomi file non contengono alcuna informazione sensibile (i registri debug contengono solo i nomi dei file, non includono il contenuto dei file).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="127"/>
         <source>Failed to create log file.</source>
         <translation>Impossibile creare il file registro eventi.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="132"/>
         <source>&amp;About AndroidDrive</source>
         <translation>Info su &amp;AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="137"/>
         <source>About AndroidDrive</source>
         <translation>Info su AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive  v. %1 di Gustav Lindberg.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>Le icone sono state create da %3 e %4 di %1 e sono concesse in licenza da %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="138"/>
         <source>This program uses %1 and %2.</source>
         <translation>Questo programma usa %1 e %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="142"/>
         <source>About &amp;Qt</source>
         <translation>Info su &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="147"/>
         <source>E&amp;xit</source>
         <translation>&amp;Esci</translation>
     </message>
@@ -296,7 +301,7 @@
     <message>
         <location filename="../settingswindow.cpp" line="34"/>
         <source>Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</source>
-        <translation>Consente di selezionare una lettera di unità preferita per l&apos;unità Android selezionata.&lt;br/&gt;&lt;br/&gt;Se la lettera di unità preferita non è disponibile quando l&apos;unità è connessa, verrà utsata la lettera di unità successiva disponibile in ordine alfabetico.&lt;br/ &gt;&lt;br/&gt;Se si modifica la lettera dell&apos;unità mentre l&apos;unità è collegata, affinché le modifiche abbiano effetto sarà necessario smontarla e rimontarla nuovamente.</translation>
+        <translation>Consente di selezionare una lettera di unità preferita per l&apos;unità Android selezionata.&lt;br/&gt;&lt;br/&gt;Se la lettera di unità preferita non è disponibile quando l&apos;unità è connessa, verrà usata la lettera di unità successiva disponibile in ordine alfabetico.&lt;br/ &gt;&lt;br/&gt;Se si modifica la lettera dell&apos;unità mentre l&apos;unità è collegata, affinché le modifiche abbiano effetto sarà necessario smontarla e rimontarla nuovamente.</translation>
     </message>
     <message>
         <location filename="../settingswindow.cpp" line="51"/>
@@ -358,7 +363,7 @@
     <message>
         <location filename="../androiddrive.cpp" line="170"/>
         <source>Internal storage</source>
-        <translation>storage interno</translation>
+        <translation>Storage interno</translation>
     </message>
     <message>
         <location filename="../androiddrive.cpp" line="173"/>
