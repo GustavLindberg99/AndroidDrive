@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS []>
 <TS version="2.1" language="ja_JP" sourcelanguage="en_US">
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="174" />
       <source>Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
-      <translation>Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</translation>
+      <translation>選択したドライブをアンマウントします。&lt;br/&gt;&lt;br/&gt;これはドライブのアンマウントのみであり、Android デバイスの接続は継続されるため ADB などを通じた操作は引き続きアクセス可能です。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="178" />
@@ -73,18 +73,17 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="189" />
       <source>Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</source>
-      <oldsource>Fatal error: Could not list Android devices. ADB exited with code %1.</oldsource>
-      <translation>Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</translation>
+      <translation>致命的なエラー: Android デバイスを一覧表示できませんでした。&lt;br/&gt;&lt;br/&gt;ADB はコード %1 で終了しました。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="220" />
       <source>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href="%2"&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd "%3"&lt;/code&gt;).</source>
-      <translation>Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href="%2"&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd "%3"&lt;/code&gt;).</translation>
+      <translation>デバイス「%1」はオフラインです。&lt;br/&gt;&lt;br/&gt;デバイスのロックを解除し、プラグを抜いてから再度接続してみてください。&lt;br/&gt;&lt;br/&gt;このエラーが発生しない場合は、&lt;a href="%2"&gt;こちら&lt;/a&gt;で解決策が見つかるかもしれません (ここに記載されている ADB コマンドは、&lt;code&gt;cd "%3"&lt;/code&gt; を実行後にコマンドプロンプトで実行できます)。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="226" />
       <source>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap "Allow". If it doesn't show that dialog, disable and re-enable USB debugging as explained &lt;a href="%2"&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn't working, try unplugging and then re-plugging your device.</source>
-      <translation>Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap "Allow". If it doesn't show that dialog, disable and re-enable USB debugging as explained &lt;a href="%2"&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn't working, try unplugging and then re-plugging your device.</translation>
+      <translation>デバイス「%1」は認証されていません。&lt;br/&gt;&lt;br/&gt;デバイスのロックを解除してみてください。このコンピューターにデバイス内のデータへアクセスを許可するかどうかを確認するダイアログが表示された場合は、「許可」をタップしてください。ダイアログが表示されない場合は、&lt;a href="%2"&gt;こちら&lt;/a&gt;の説明に従って USB デバッグを無効化してから再度有効化してください。&lt;br/&gt;&lt;br/&gt;それでも問題が解決しない場合は、デバイスを一度取り外して再度接続してみてください。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="253" />
@@ -94,7 +93,7 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="260" />
       <source>Dokan doesn't seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
-      <translation>Dokan doesn't seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</translation>
+      <translation>Dokan がインストールされていないようです。&lt;br/&gt;&lt;br/&gt;今すぐインストールしますか？</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="264" />
@@ -104,8 +103,7 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="268" />
       <source>Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
-      <oldsource>Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.</oldsource>
-      <translation>Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</translation>
+      <translation>ドライブレターを割り当てられませんでした。&lt;br/&gt;&lt;br/&gt;デバイスの設定でドライブレターを使用可能なドライブレターに変更してみてください。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="271" />
@@ -120,7 +118,7 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="277" />
       <source>Could not mount drive %1: %2</source>
-      <translation>Could not mount drive %1: %2</translation>
+      <translation>ドライブ「%1」をマウントできませんでした: %2</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="293" />
@@ -140,7 +138,7 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="302" />
       <source>ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
-      <translation>ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</translation>
+      <translation>ADB の起動に失敗しました。&lt;br/&gt;&lt;br/&gt;adb.exe ファイルが見つからないか、プログラムを起動するための権限が不足している可能性があります。</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="305" />
@@ -155,12 +153,12 @@
     <message>
       <location filename="../devicelistwindow.cpp" line="311" />
       <source>Fatal error: Could not list Android devices: %1</source>
-      <translation>Fatal error: Could not list Android devices: %1</translation>
+      <translation>致命的なエラー: Android デバイスをリストできませんでした: %1</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="63" />
       <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you're trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
-      <translation>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you're trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</translation>
+      <translation>AndroidDrive は既に実行しています。&lt;br/&gt;&lt;br/&gt;AndroidDrive を再起動する場合は、タスクバーの AndroidDrive アイコンを右クリックして「終了」を選択すると既存のプロセスを終了できます。</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="108" />
@@ -186,7 +184,7 @@
     <message>
       <location filename="../main.cpp" line="124" />
       <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you're planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don't contain any sensitive information (The debug logs will only contain the file names, they won't contain the contents of any file).</source>
-      <translation>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you're planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don't contain any sensitive information (The debug logs will only contain the file names, they won't contain the contents of any file).</translation>
+      <translation>デバッグログの記録が開始されました。&lt;br/&gt;&lt;br/&gt;ログファイルは「%1」にあります。&lt;br/&gt;&lt;br/&gt;ログファイルをバグレポートに添付する場合は、デバイス上のファイル名が含まれるため、ファイル名に機密情報を含ませないようにご注意ください (デバッグログにはファイル名のみが含まれ、ファイルの内容は含まれません)。</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="127" />
@@ -206,7 +204,7 @@
     <message>
       <location filename="../main.cpp" line="138" />
       <source>AndroidDrive version %1 by Gustav Lindberg.</source>
-      <translation>AndroidDrive version %1 by Gustav Lindberg.</translation>
+      <translation>AndroidDrive バージョン: %1 - 開発者: Gustav Lindberg</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="138" />
@@ -286,7 +284,7 @@
     <message>
       <location filename="../settingswindow.cpp" line="29" />
       <source>Drive settings for %1</source>
-      <translation>Drive settings for %1</translation>
+      <translation>「%1」のドライブ設定</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="63" />
@@ -301,7 +299,7 @@
     <message>
       <location filename="../settingswindow.cpp" line="34" />
       <source>Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</source>
-      <translation>Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</translation>
+      <translation>選択した Android ドライブの優先ドライブレターを選択できます。&lt;br/&gt;&lt;br/&gt;このドライブが接続されたときに優先ドライブレターが使用できない場合は、アルファベット順で次に使用可能なドライブレターが使用されます。&lt;br/&gt;&lt;br/&gt;このドライブが接続されている間にドライブレターを変更した場合、変更を有効化するには、ドライブをアンマウント後に再度マウントする必要があります。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="51" />
@@ -311,17 +309,17 @@
     <message>
       <location filename="../settingswindow.cpp" line="60" />
       <source>If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to mount it manually by going into Devices &gt; Mount drive.</source>
-      <translation>If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to mount it manually by going into Devices &gt; Mount drive.</translation>
+      <translation>このチェックボックスをオンにすると、選択したドライブをコンピューターに接続するたびに、自動的にドライブとして接続します。&lt;br/&gt;&lt;br/&gt;チェックを入れない場合は、「デバイス」&gt;「ドライブをマウント」に移動して手動でマウントする必要があります。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="73" />
       <source>If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer.</source>
-      <translation>If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer.</translation>
+      <translation>このチェックボックスをオンにすると、AndroidDrive がドライブの接続を完了するたびに、そのドライブがエクスプローラーで開かれます。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="78" />
       <source>If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer's "Show hidden files" option is activated.</source>
-      <translation>If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer's "Show hidden files" option is activated.</translation>
+      <translation>このチェックボックスをオンにすると、ドットで始まるファイルは隠しファイルとして扱われ、「隠しファイルを表示する」のオプションが有効化されている場合のみ、エクスプローラー上に表示されます。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="86" />
@@ -331,8 +329,7 @@
     <message>
       <location filename="../settingswindow.cpp" line="92" />
       <source>Allows you to select which language AndroidDrive's GUI will be displayed in.&lt;br/&gt;&lt;br/&gt;If you select "Use system language" but AndroidDrive isn't availiable in your system language, English will be used.&lt;br/&gt;&lt;br/&gt;This setting has no effect on how the actual drive works.&lt;br/&gt;&lt;br/&gt;You must restart AndroidDrive for this change to take effect.</source>
-      <oldsource>Allows you to select which language AndroidDrive's GUI will be displayed in. If you select "Use system language" but AndroidDrive isn't availiable in your system language, English will be used. This setting has no effect on how the actual drive works. You must restart AndroidDrive for this change to take effect.</oldsource>
-      <translation>Allows you to select which language AndroidDrive's GUI will be displayed in.&lt;br/&gt;&lt;br/&gt;If you select "Use system language" but AndroidDrive isn't availiable in your system language, English will be used.&lt;br/&gt;&lt;br/&gt;This setting has no effect on how the actual drive works.&lt;br/&gt;&lt;br/&gt;You must restart AndroidDrive for this change to take effect.</translation>
+      <translation>AndroidDrive の GUI の表示言語を選択できます。&lt;br/&gt;&lt;br/&gt;「システム言語を使用する」を選択した場合でも、AndroidDrive でシステム言語を利用できない場合は、英語が使用されます。&lt;br/&gt;&lt;br/&gt;この設定は、実際のドライブの動作には影響しません。&lt;br/&gt;&lt;br/&gt;この変更を有効化するには、AndroidDrive を再起動する必要があります。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="93" />
@@ -342,13 +339,12 @@
     <message>
       <location filename="../settingswindow.cpp" line="96" />
       <source>AndroidDrive doesn't seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
-      <oldsource>AndroidDrive doesn't seem to be available in your system language. &lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</oldsource>
-      <translation>AndroidDrive doesn't seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</translation>
+      <translation>AndroidDrive は使用しているシステム言語ではご利用いただけないようです。&lt;br/&gt;&lt;br/&gt;翻訳にご協力いただける場合は、&lt;a %1&gt;こちら&lt;/a&gt;をクリックしてください。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="104" />
       <source>These settings affect all drives connected with AndroidDrive.</source>
-      <translation>These settings affect all drives connected with AndroidDrive.</translation>
+      <translation>これらの設定は、AndroidDrive に接続されているすべてのドライブに影響します。</translation>
     </message>
     <message>
       <location filename="../updates.cpp" line="28" />
@@ -358,7 +354,7 @@
     <message>
       <location filename="../updates.cpp" line="198" />
       <source>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
-      <translation>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</translation>
+      <translation>最新のバージョンが利用可能です。&lt;br/&gt;&lt;br/&gt;今すぐインストールしますか？</translation>
     </message>
     <message>
       <location filename="../androiddrive.cpp" line="170" />
@@ -393,7 +389,7 @@
     <message>
       <location filename="../devicelistmodel.cpp" line="130" />
       <source>Mounted as %1</source>
-      <translation>Mounted as %1</translation>
+      <translation>「%1」としてマウント</translation>
     </message>
     <message>
       <location filename="../devicelistmodel.cpp" line="134" />
