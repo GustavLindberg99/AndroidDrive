@@ -36,6 +36,7 @@ TRANSLATIONS = \
     translations/androiddrive_fr.ts\
     translations/androiddrive_hu.ts\
     translations/androiddrive_it.ts\
+    translations/androiddrive_ja.ts\
     translations/androiddrive_sv.ts
 
 INCLUDEPATH += "C:/Program Files/Dokan/Dokan Library-2.0.6/include"
