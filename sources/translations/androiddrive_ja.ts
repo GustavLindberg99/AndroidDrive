@@ -22,7 +22,7 @@
     <message>
       <location filename="../devicelistwindow.hpp" line="87" />
       <source>&amp;Open in Explorer</source>
-      <translation>エクスプローラーを開く(&amp;O)</translation>
+      <translation>エクスプローラーで開く(&amp;O)</translation>
     </message>
     <message>
       <location filename="../devicelistwindow.cpp" line="17" />
@@ -209,12 +209,12 @@
     <message>
       <location filename="../main.cpp" line="138" />
       <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
-      <translation>Icons made by %3 and %4 from %1 are licensed by %2.</translation>
+      <translation>%1 内の %3 と %4 によって作成されたアイコンは、%2 よってライセンスされています。</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="138" />
       <source>This program uses %1 and %2.</source>
-      <translation>This program uses %1 and %2.</translation>
+      <translation>このプログラムは %1 と %2 を使用しています。</translation>
     </message>
     <message>
       <location filename="../main.cpp" line="142" />
@@ -274,12 +274,12 @@
     <message>
       <location filename="../settingswindow.cpp" line="42" />
       <source>Allows you to select a name for the selected Android drive.</source>
-      <translation>選択した Android ドライブの名前を選択できます。</translation>
+      <translation>Android ドライブの名前を設定できます。</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="56" />
       <source>Drive &amp;name</source>
-      <translation>ドライブ名(&amp;N)</translation>
+      <translation>ドライブの名前(&amp;N)</translation>
     </message>
     <message>
       <location filename="../settingswindow.cpp" line="29" />
@@ -389,7 +389,7 @@
     <message>
       <location filename="../devicelistmodel.cpp" line="130" />
       <source>Mounted as %1</source>
-      <translation>「%1」としてマウント</translation>
+      <translation>「%1」としてマウント中</translation>
     </message>
     <message>
       <location filename="../devicelistmodel.cpp" line="134" />
