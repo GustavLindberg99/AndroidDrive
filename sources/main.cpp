@@ -16,6 +16,47 @@
 #include <tchar.h>
 
 /**
+ * Handles a crash.
+ *
+ * @param code  The error code.
+ * @param ep    Information about the error.
+ *
+ * @return EXCEPTION_EXECUTE_HANDLER.
+ */
+int filterException(unsigned int code, EXCEPTION_POINTERS* ep){
+    const QString exceptionAddress = "0x" + QString::number(reinterpret_cast<quint64>(ep->ExceptionRecord->ExceptionAddress), 16);
+    DebugLogger::getInstance().log("AndroidDrive crashed. Version: {}, error code: {}, exception address: {}", std::make_tuple(PROGRAMVERSION, code, exceptionAddress));
+    QMessageBox::critical(
+        nullptr,
+        QObject::tr("Fatal error"),
+        QObject::tr("AndroidDrive crashed. If this error persists, report a bug at <a href=\"%1\">%1</a> and include the following debug information:<br/><br/>AndroidDrive version: %2<br/>Error code: %3<br/>Exception address: %4")
+            .arg("https://github.com/GustavLindberg99/AndroidDrive/issues")
+            .arg(PROGRAMVERSION)
+            .arg(code)
+            .arg(exceptionAddress)
+    );
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
+/**
+ * Runs the program and catches any crashes.
+ *
+ * @param app   The QApplication to run the main loop on.
+ *
+ * @return The value that should be returned by the main function.
+ */
+int runMainLoop(QApplication& app){
+    __try{
+        const int status = app.exec();
+        DokanShutdown();
+        return status;
+    }
+    __except(filterException(GetExceptionCode(), GetExceptionInformation())){
+        return GetExceptionCode();
+    }
+}
+
+/**
  * Checks if another instance of this process is already running.
  *
  * @return True if it is, false if it isn't.
@@ -153,7 +194,5 @@ int main(int argc, char **argv){
 
 
     //Run the program
-    const int status = app.exec();
-    DokanShutdown();
-    return status;
+    return runMainLoop(app);
 }
