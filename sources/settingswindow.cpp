@@ -18,7 +18,7 @@ SettingsWindow::SettingsWindow(const AndroidDrive *drive):
     SettingsWindow::_instances.insert(this);
 
     this->setWindowTitle(QObject::tr("AndroidDrive - Settings"));
-    this->setWindowIcon(QIcon(":/icon.svg"));
+    this->setWindowIcon(QIcon(":/icons/icon.svg"));
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, true);
 
     QGridLayout *layout = new QGridLayout(this);
@@ -127,7 +127,7 @@ SettingsWindow::SettingsWindow(const AndroidDrive *drive):
     QObject::connect(this->_applyButton, &QPushButton::clicked, this, [this](){
         Settings settings;
         settings << this;
-        for(SettingsWindow *settingsWindow: qAsConst(SettingsWindow::_instances)){
+        for(SettingsWindow *settingsWindow: std::as_const(SettingsWindow::_instances)){
             settings >> settingsWindow;
         }
     });

@@ -8,14 +8,14 @@
         <file>translations/qtbase_hu.qm</file>
         <file>translations/qtbase_it.qm</file>
         <file>translations/qtbase_sv.qm</file>
-        <file>drive.svg</file>
-        <file>phone.svg</file>
-        <file>systemdrive.svg</file>
-        <file>icon.svg</file>
-        <file>icon.ico</file>
         <file>translations/androiddrive_de.qm</file>
         <file>translations/qtbase_de.qm</file>
         <file>translations/androiddrive_ja.qm</file>
         <file>translations/qtbase_ja.qm</file>
+        <file>icons/drive.svg</file>
+        <file>icons/icon.ico</file>
+        <file>icons/icon.svg</file>
+        <file>icons/phone.svg</file>
+        <file>icons/systemdrive.svg</file>
     </qresource>
 </RCC>

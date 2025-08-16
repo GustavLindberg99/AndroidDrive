@@ -8,7 +8,7 @@ AndroidDrive is a program that allows mounting Android smartphones as drives on 
 
 # Setup
 To be able to use AndroidDrive, you need to do three things (the order in which you do them doesn't matter):
-- **Install AndroidDrive on your Windows computer**: Either use the [installation program](https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-install.exe), or download and extract the [zip file](https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-portable.zip). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
+- **Install AndroidDrive on your Windows computer**: Download the latest version of AndroidDrive from the [releases page](https://github.com/GustavLindberg99/AndroidDrive/releases/). You can choose either an installer program (`AndroidDrive-install.exe`) or a portable version in a zip file (`AndroidDrive-portable.zip`). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
 
 - **Install Dokan on your Windows computer**: The easiest way is to use their [installation program](https://github.com/dokan-dev/dokany/releases/download/v2.0.6.1000/DokanSetup.exe) (this is the installation program for Dokan 2.0.6, which is the version AndroidDrive was tested on). If you prefer, you can find other ways to install Dokan in [their documentation](https://github.com/dokan-dev/dokany/wiki/Installation).
 
@@ -52,7 +52,7 @@ If your language is not listed above and you would like to help translate it, yo
 
 AndroidDrive works on any 64-bit computer with Windows 10 or later.
 
-Windows 7 is no longer supported since upgrading to Qt 6, but if you want it to work on Windows 7, you can download an older version of AndroidDrive (version 2.0.6) as an installer [here](https://github.com/GustavLindberg99/AndroidDrive/raw/a36e464a665bafd11866644507b5e900ef8c0e90/AndroidDrive-setup.exe) or a ZIP file [here](https://github.com/GustavLindberg99/AndroidDrive/raw/a36e464a665bafd11866644507b5e900ef8c0e90/AndroidDrive.zip). Note that this is an old version of AndroidDrive, so it doesn't have the latest features and won't be updated. If you have Windows 10 or later, it's highly recommended that you instead use the latest version as described in the Setup section above.
+Windows 7 is no longer supported since upgrading to Qt 6, but if you want it to work on Windows 7, you can download an older version of AndroidDrive (version 2.0.6) [here](https://github.com/GustavLindberg99/AndroidDrive/releases/tag/2.0.6). Note that this is an old version of AndroidDrive, so it doesn't have the latest features and won't be updated. If you have Windows 10 or later, it's highly recommended that you instead use the latest version as described in the Setup section above.
 
 
 # FAQ

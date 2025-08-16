@@ -18,7 +18,7 @@ DeviceListWindow::DeviceListWindow(){
     this->_openInExplorerButton->setWhatsThis(QObject::tr("Opens the selected drive in Windows Explorer."));
 
     this->setWindowTitle(QObject::tr("AndroidDrive - Devices"));
-    this->setWindowIcon(QIcon(":/icon.svg"));
+    this->setWindowIcon(QIcon(":/icons/icon.svg"));
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, true);
     this->setMinimumWidth(400);
 

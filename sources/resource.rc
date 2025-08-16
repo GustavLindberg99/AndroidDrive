@@ -1,6 +1,6 @@
 #include <windows.h>
 //Icons
-0 ICON "icon.ico"
+0 ICON "icons/icon.ico"
 
 #include "version.h"
 VS_VERSION_INFO VERSIONINFO

@@ -16,47 +16,6 @@
 #include <tchar.h>
 
 /**
- * Handles a crash.
- *
- * @param code  The error code.
- * @param ep    Information about the error.
- *
- * @return EXCEPTION_EXECUTE_HANDLER.
- */
-int filterException(unsigned int code, EXCEPTION_POINTERS* ep){
-    const QString exceptionAddress = "0x" + QString::number(reinterpret_cast<quint64>(ep->ExceptionRecord->ExceptionAddress), 16);
-    DebugLogger::getInstance().log("AndroidDrive crashed. Version: {}, error code: {}, exception address: {}", std::make_tuple(PROGRAMVERSION, code, exceptionAddress));
-    QMessageBox::critical(
-        nullptr,
-        QObject::tr("Fatal error"),
-        QObject::tr("AndroidDrive crashed. If this error persists, report a bug at <a href=\"%1\">%1</a> and include the following debug information:<br/><br/>AndroidDrive version: %2<br/>Error code: %3<br/>Exception address: %4")
-            .arg("https://github.com/GustavLindberg99/AndroidDrive/issues")
-            .arg(PROGRAMVERSION)
-            .arg(code)
-            .arg(exceptionAddress)
-    );
-    return EXCEPTION_EXECUTE_HANDLER;
-}
-
-/**
- * Runs the program and catches any crashes.
- *
- * @param app   The QApplication to run the main loop on.
- *
- * @return The value that should be returned by the main function.
- */
-int runMainLoop(QApplication& app){
-    __try{
-        const int status = app.exec();
-        DokanShutdown();
-        return status;
-    }
-    __except(filterException(GetExceptionCode(), GetExceptionInformation())){
-        return GetExceptionCode();
-    }
-}
-
-/**
  * Checks if another instance of this process is already running.
  *
  * @return True if it is, false if it isn't.
@@ -121,7 +80,7 @@ int main(int argc, char **argv){
 
 
     //Create the tray icon and the windows
-    auto trayIcon = std::make_unique<QSystemTrayIcon>(QIcon(":/icon.svg"));
+    auto trayIcon = std::make_unique<QSystemTrayIcon>(QIcon(":/icons/icon.svg"));
     auto deviceListWindow = std::make_unique<DeviceListWindow>();
     auto settingsWindow = std::make_unique<SettingsWindow>(nullptr);
     const auto quit = [&trayIcon, &deviceListWindow, &settingsWindow](){
@@ -173,8 +132,8 @@ int main(int argc, char **argv){
     QAction *aboutAction = contextMenu.addAction(QObject::tr("&About AndroidDrive"));
     QObject::connect(aboutAction, &QAction::triggered, aboutAction, [](){
         QMessageBox msg;
-        msg.setIconPixmap(QPixmap(":/icon.svg"));
-        msg.setWindowIcon(QIcon(":/icon.svg"));
+        msg.setIconPixmap(QPixmap(":/icons/icon.svg"));
+        msg.setWindowIcon(QIcon(":/icons/icon.svg"));
         msg.setWindowTitle(QObject::tr("About AndroidDrive"));
         msg.setText(QObject::tr("AndroidDrive version %1 by Gustav Lindberg.").arg(PROGRAMVERSION) + "<br/><br/>" + QObject::tr("Icons made by %3 and %4 from %1 are licensed by %2.").arg("<a href=\"https://www.iconfinder.com/\">www.iconfinder.com</a>", "<a href=\"http://creativecommons.org/licenses/by/3.0/\">CC 3.0 BY</a>", "<a href=\"https://www.iconfinder.com/pocike\">Alpár-Etele Méder</a>", "<a href=\"https://www.iconfinder.com/iconsets/tango-icon-library\">Tango</a>") + "<br/><br/>" + QObject::tr("This program uses %1 and %2.").arg("<a href=\"https://android.googlesource.com/platform/packages/modules/adb/\">ADB</a>", "<a href=\"https://dokan-dev.github.io/\">Dokan</a>"));
         msg.exec();
@@ -194,5 +153,7 @@ int main(int argc, char **argv){
 
 
     //Run the program
-    return runMainLoop(app);
+    const int status = app.exec();
+    DokanShutdown();
+    return status;
 }
