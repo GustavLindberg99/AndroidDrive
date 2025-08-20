@@ -97,6 +97,7 @@ qt_add_lupdate(TS_FILES
     translations/androiddrive_hu.ts
     translations/androiddrive_it.ts
     translations/androiddrive_ja.ts
+    translations/androiddrive_pt_BR.ts
     translations/androiddrive_sv.ts
     SOURCE_TARGETS AndroidDrive
 )
