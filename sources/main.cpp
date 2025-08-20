@@ -71,7 +71,13 @@ int main(int argc, char **argv){
     QTranslator translator, baseTranslator;
     QString language = Settings().language();
     if(language == "auto"){
-        language = QLocale::system().name().section('_', 0, 0);
+        language = QLocale::system().name();
+        if(QString::compare(language, "pt_BR", Qt::CaseInsensitive) == 0){
+            language = "pt_BR";
+        }
+        else{
+            language = language.section('_', 0, 0);
+        }
     }
     SettingsWindow::systemLanguageAvailable = translator.load(":/translations/androiddrive_" + language) || language == "en";
     (void) baseTranslator.load(":/translations/qtbase_" + language);

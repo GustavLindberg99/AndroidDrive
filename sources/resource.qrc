@@ -17,5 +17,7 @@
         <file>icons/icon.svg</file>
         <file>icons/phone.svg</file>
         <file>icons/systemdrive.svg</file>
+        <file>translations/androiddrive_pt_BR.qm</file>
+        <file>translations/qtbase_pt_BR.qm</file>
     </qresource>
 </RCC>
