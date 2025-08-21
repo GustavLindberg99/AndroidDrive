@@ -43,6 +43,7 @@ AndroidDrive is currently available in the following languages:
 * Hungarian (translation by [gidano](https://github.com/gidano))
 * Italian (translation by [bovirus](https://github.com/bovirus))
 * Japanese (translation by [reindex-ot](https://github.com/reindex-ot))
+* Korean (translation by [VenusGirl](https://github.com/VenusGirl))
 * Portuguese (Brazil) (translation by [igorruckert](https://github.com/igorruckert))
 * Swedish
 
