@@ -9,7 +9,7 @@
 
 QSet<SettingsWindow*> SettingsWindow::_instances;
 bool SettingsWindow::systemLanguageAvailable = true;
-const QStringList SettingsWindow::_languageNames{"", "Deutsch", "English", "Français", "Magyar", "Italiano", "日本語", "한국인", "Português Brasileiro", "Svenska"};
+const QStringList SettingsWindow::_languageNames{"", "Deutsch", "English", "Français", "Magyar", "Italiano", "日本語", "한국어", "Português Brasileiro", "Svenska"};
 const QStringList SettingsWindow::_languageAbbreviations{"auto", "de", "en", "fr", "hu", "it", "ja", "ko", "pt_BR", "sv"};
 
 SettingsWindow::SettingsWindow(const AndroidDrive *drive):
