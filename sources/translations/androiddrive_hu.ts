@@ -156,73 +156,73 @@
         <translation>Végzetes hiba: Nem sikerült felsorolni az Android-eszközöket: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="70"/>
         <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="138"/>
         <source>&amp;Devices</source>
         <translation>&amp;Eszközök</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="141"/>
         <source>&amp;Settings</source>
         <translation>&amp;Beállítások</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="114"/>
-        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="149"/>
         <source>Record Debug &amp;Logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="153"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="124"/>
+        <location filename="../main.cpp" line="154"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Failed to create log file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="132"/>
+        <location filename="../main.cpp" line="162"/>
         <source>&amp;About AndroidDrive</source>
         <translation>&amp;Az AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="167"/>
         <source>About AndroidDrive</source>
         <translation>Az AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>Az AndroidDrive %1 verziója Gustav Lindbergtől.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>A(z) %3 és %4 által készített ikonok %1 licencét a %2 engedélyezi.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>This program uses %1 and %2.</source>
         <translation>Ez a program a következőt használja: %1 és %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="142"/>
+        <location filename="../main.cpp" line="172"/>
         <source>About &amp;Qt</source>
         <translation>A &amp;Qt-ról</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="177"/>
         <source>E&amp;xit</source>
         <translation>&amp;Kilép</translation>
     </message>
@@ -347,12 +347,11 @@
         <translation>Ezek a beállítások az AndroidDrive-hoz csatlakoztatott összes meghajtót érintik.</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="28"/>
         <source>Installing updates...</source>
-        <translation>Frissítések telepítése...</translation>
+        <translation type="vanished">Frissítések telepítése...</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="198"/>
+        <location filename="../main.cpp" line="113"/>
         <source>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
         <translation>Frissítés érhető el.&lt;br/&gt;&lt;br/&gt;Szeretné most telepíteni?</translation>
     </message>

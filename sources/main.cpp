@@ -1,14 +1,21 @@
 #include <QApplication>
+#include <QDesktopServices>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMenu>
 #include <QMessageBox>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QRegularExpression>
 #include <QSystemTrayIcon>
+#include <QVersionNumber>
 #include <QTranslator>
 
 #include "androiddevice.hpp"
 #include "debuglogger.hpp"
 #include "devicelistwindow.hpp"
 #include "settingswindow.hpp"
-#include "updates.hpp"
 #include "version.h"
 
 #include <windows.h>
@@ -85,6 +92,30 @@ int main(int argc, char **argv){
     app.installTranslator(&baseTranslator);
 
 
+    //Check for updates
+    QNetworkAccessManager networkAccessManager;
+    QNetworkRequest request(QUrl("https://api.github.com/repos/GustavLindberg99/AndroidDrive/git/refs/tags"));
+    QNetworkReply* reply = networkAccessManager.get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [reply](){
+        const QJsonArray allRefs = QJsonDocument::fromJson(reply->readAll()).array();
+        const QVersionNumber currentVersion(MAJORVERSION, MINORVERSION, PATCHVERSION);
+        QVersionNumber latestVersion(0, 0, 0);
+        for(const QJsonValue& ref: allRefs){
+            static const QRegularExpression tagRegex(R"(^refs/tags/([0-9]+)\.([0-9]+)\.([0-9]+)$)");
+            const QJsonObject tagObject = ref.toObject();
+            const QString tagAsString = tagObject["ref"].toString();
+            const QRegularExpressionMatch match = tagRegex.match(tagAsString);
+            if(match.hasMatch()){
+                const QVersionNumber tagVersion(match.captured(1).toInt(), match.captured(2).toInt(), match.captured(3).toInt());
+                latestVersion = qMax(latestVersion, tagVersion);
+            }
+        }
+        if(latestVersion > currentVersion && QMessageBox::question(nullptr, "", QObject::tr("An update is available.<br/><br/>Do you want to install it now?")) == QMessageBox::Yes){
+            QDesktopServices::openUrl(QUrl("https://github.com/GustavLindberg99/AndroidDrive/releases/tag/" + latestVersion.toString()));
+        }
+    });
+
+
     //Create the tray icon and the windows
     auto trayIcon = std::make_unique<QSystemTrayIcon>(QIcon(":/icons/icon.svg"));
     auto deviceListWindow = std::make_unique<DeviceListWindow>();
@@ -95,13 +126,6 @@ int main(int argc, char **argv){
         deviceListWindow.reset();
         settingsWindow.reset();
     };
-    checkForUpdates(
-        QUrl("https://github.com/GustavLindberg99/AndroidDrive"),
-        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/sources/version.h"),
-        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-portable.zip"),
-        QUrl("https://raw.githubusercontent.com/GustavLindberg99/AndroidDrive/main/AndroidDrive-install.exe"),
-        quit
-    );
 
 
     //Initialize the device list window

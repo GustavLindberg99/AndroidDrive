@@ -196,73 +196,73 @@
         <translation>A&amp;brir no Explorer</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="70"/>
         <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
         <translation>O AndroidDrive já está em execução.&lt;br/&gt;&lt;br/&gt;Se estiver tentando reiniciar o AndroidDrive, você pode fechar o processo existente clicando com o botão direito do mouse no ícone do AndroidDrive na barra de tarefas e selecionar &apos;Sair&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="138"/>
         <source>&amp;Devices</source>
         <translation>&amp;Dispositivos</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="141"/>
         <source>&amp;Settings</source>
         <translation>&amp;Configurações</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="114"/>
-        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="149"/>
         <source>Record Debug &amp;Logs</source>
         <translation>Gravar registros de &amp;depuração</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="153"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>&amp;Parar gravação de registros de depuração</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="124"/>
+        <location filename="../main.cpp" line="154"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation>A gravação dos registros de depuração foi iniciada.&lt;br/&gt;&lt;br/&gt;Você poderá encontrar o arquivo de registro em %1.&lt;br/&gt;&lt;br/&gt;Se estiver planejando anexar o arquivo de registro a um relatório de erro, lembre-se de que o arquivo de registro conterá os nomes dos arquivos no seu telefone, portanto, certifique-se de que os nomes dos arquivos não contenham nenhuma informação sensível (os registros de depuração conterão apenas os nomes dos arquivos, eles não conterão o conteúdo de nenhum arquivo).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Failed to create log file.</source>
         <translation>Falha ao criar o arquivo de registro.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="132"/>
+        <location filename="../main.cpp" line="162"/>
         <source>&amp;About AndroidDrive</source>
         <translation>So&amp;bre o AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="167"/>
         <source>About AndroidDrive</source>
         <translation>Sobre o AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive versão %1 por Gustav Lindberg.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>Ícones feitos por %3 e %4 de %1 são licenciados por %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>This program uses %1 and %2.</source>
         <translation>Este programa usar %1 e %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="142"/>
+        <location filename="../main.cpp" line="172"/>
         <source>About &amp;Qt</source>
         <translation>Sobre &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="177"/>
         <source>E&amp;xit</source>
         <translation>&amp;Sair</translation>
     </message>
@@ -387,12 +387,11 @@
         <translation>&amp;Aplicar</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="28"/>
         <source>Installing updates...</source>
-        <translation>Instalando atualizações...</translation>
+        <translation type="vanished">Instalando atualizações...</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="198"/>
+        <location filename="../main.cpp" line="113"/>
         <source>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
         <translation>Atualização disponível.&lt;br/&gt;&lt;br/&gt;Gostaria de instalar agora?</translation>
     </message>

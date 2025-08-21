@@ -158,73 +158,73 @@
         <translation>Oåterkalleligt fel: Kunde inte lista Android-enheter: %1</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="70"/>
         <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
         <translation>AndroidDrive körs redan.&lt;br/&gt;&lt;br/&gt;Om du försöker starta om AndroidDrive kan du stänga den befintliga processen genom att högerklicka på AndroidDrive-ikonen i aktivitetsfältet och välja Avsluta.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="138"/>
         <source>&amp;Devices</source>
         <translation>&amp;Enheter</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="141"/>
         <source>&amp;Settings</source>
         <translation>&amp;Inställningar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="114"/>
-        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="149"/>
         <source>Record Debug &amp;Logs</source>
         <translation>Spela in debug&amp;loggar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="153"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>Avsluta inspelning av debug&amp;loggar</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="124"/>
+        <location filename="../main.cpp" line="154"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation>Inspelningen av debugloggar har börjat.&lt;br/&gt;&lt;br/&gt;Du kommer kunna hitta loggfilen i %1.&lt;br/&gt;&lt;br/&gt;Om du tänker bifoga loggfilen till en felrapport, kom ihåg att loggfilen kommer innehålla namnen av filer på din telefon, så se till att filnamnen inte innehåller känslig information (Loggarna kommer bara innehålla filnamnen, de kommer inte att innehålla innehållet av någon fil).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Failed to create log file.</source>
         <translation>Kunde inte skapa loggfilen.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="132"/>
+        <location filename="../main.cpp" line="162"/>
         <source>&amp;About AndroidDrive</source>
         <translation>&amp;Om AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="167"/>
         <source>About AndroidDrive</source>
         <translation>Om AndroidDrive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive version %1 av Gustav Lindberg.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>Ikoner gjorda av %3 och %4 från %1 är licensierade enligt %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>This program uses %1 and %2.</source>
         <translation>Detta program använder %1 och %2.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="142"/>
+        <location filename="../main.cpp" line="172"/>
         <source>About &amp;Qt</source>
         <translation>Om &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="177"/>
         <source>E&amp;xit</source>
         <translation>&amp;Avsluta</translation>
     </message>
@@ -352,12 +352,11 @@
         <translation>Dessa inställningar påverkar alla enheter kopplade upp med AndroidDrive.</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="28"/>
         <source>Installing updates...</source>
-        <translation>Installerar uppdateringar...</translation>
+        <translation type="vanished">Installerar uppdateringar...</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="198"/>
+        <location filename="../main.cpp" line="113"/>
         <source>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
         <translation>En uppdatering är tillgänglig.&lt;br/&gt;&lt;br/&gt;Vill du installera den nu?</translation>
     </message>

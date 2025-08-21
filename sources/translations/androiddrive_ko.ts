@@ -196,73 +196,73 @@
         <translation>탐색기에서 열기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="70"/>
         <source>AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
         <translation>AndroidDrive가 이미 실행 중입니다.&lt;br/&gt;&lt;br/&gt;AndroidDrive를 다시 시작하려면 작업 표시줄에서 AndroidDrive 아이콘을 마우스 오른쪽 버튼으로 클릭하고 종료를 선택하여 기존 프로세스를 닫으세요.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="138"/>
         <source>&amp;Devices</source>
         <translation>기기(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="141"/>
         <source>&amp;Settings</source>
         <translation>설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="114"/>
-        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="149"/>
         <source>Record Debug &amp;Logs</source>
         <translation>디버그 로그 기록(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="153"/>
         <source>Finish Recording Debug &amp;Logs</source>
         <translation>디버그 로그 기록 완료(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="124"/>
+        <location filename="../main.cpp" line="154"/>
         <source>Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
         <translation>디버그 로그 기록이 시작되었습니다.&lt;br/&gt;&lt;br/&gt;%1에서 로그 파일을 찾을 수 있습니다.&lt;br/&gt;&lt;br/&gt;버그 보고서에 로그 파일을 첨부하려는 경우 로그 파일에 휴대폰의 파일 이름이 포함되므로 파일 이름에 민감한 정보가 포함되지 않도록 주의해야 합니다 (디버그 로그에는 파일 이름만 포함되며 파일의 내용은 포함되지 않습니다).</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Failed to create log file.</source>
         <translation>로그 파일을 만들지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="132"/>
+        <location filename="../main.cpp" line="162"/>
         <source>&amp;About AndroidDrive</source>
         <translation>AndroidDrive 정보(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="167"/>
         <source>About AndroidDrive</source>
         <translation>AndroidDrive 정보</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>AndroidDrive version %1 by Gustav Lindberg.</source>
         <translation>AndroidDrive 버전 %1은 Gustav Lindberg가 개발했습니다.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>Icons made by %3 and %4 from %1 are licensed by %2.</source>
         <translation>%1의 %3 및 %4에서 만든 아이콘은 %2에서 라이선스를 받았습니다.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="138"/>
+        <location filename="../main.cpp" line="168"/>
         <source>This program uses %1 and %2.</source>
         <translation>이 프로그램은 %1과 %2를 사용합니다.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="142"/>
+        <location filename="../main.cpp" line="172"/>
         <source>About &amp;Qt</source>
         <translation>Qt 정보(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="177"/>
         <source>E&amp;xit</source>
         <translation>종료(&amp;X)</translation>
     </message>
@@ -387,12 +387,11 @@
         <translation>적용(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="28"/>
         <source>Installing updates...</source>
-        <translation>업데이트를 설치 중...</translation>
+        <translation type="vanished">업데이트를 설치 중...</translation>
     </message>
     <message>
-        <location filename="../updates.cpp" line="198"/>
+        <location filename="../main.cpp" line="113"/>
         <source>An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
         <translation>업데이트가 있습니다.&lt;br/&gt;&lt;br/&gt;지금 설치하시겠습니까?</translation>
     </message>
