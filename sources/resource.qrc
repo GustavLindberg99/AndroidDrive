@@ -19,5 +19,7 @@
         <file>icons/systemdrive.svg</file>
         <file>translations/androiddrive_pt_BR.qm</file>
         <file>translations/qtbase_pt_BR.qm</file>
+        <file>translations/androiddrive_ko.qm</file>
+        <file>translations/qtbase_ko.qm</file>
     </qresource>
 </RCC>
