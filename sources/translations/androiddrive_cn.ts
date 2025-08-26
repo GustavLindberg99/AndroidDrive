@@ -359,7 +359,7 @@
     <message>
         <location filename="../settingswindow.cpp" line="93"/>
         <source>&amp;Language</source>
-        <translation>预言(&amp;L)</translation>
+        <translation>语言(&amp;L)</translation>
     </message>
     <message>
         <location filename="../settingswindow.cpp" line="96"/>
