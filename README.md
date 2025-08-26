@@ -37,6 +37,7 @@ For example, you can change the icon of a folder in the app and the new icon wil
 
 AndroidDrive is currently available in the following languages:
 
+* Chinese (translation by [sr093906](https://github.com/sr093906))
 * English
 * French
 * German (translation by [flaviusgh](https://github.com/flaviusgh))

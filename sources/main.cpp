@@ -82,6 +82,9 @@ int main(int argc, char **argv){
         if(QString::compare(language, "pt_BR", Qt::CaseInsensitive) == 0){
             language = "pt_BR";
         }
+        else if(QString::compare(language, "zh_CN", Qt::CaseInsensitive) == 0){
+            language = "zh_CN";
+        }
         else{
             language = language.section('_', 0, 0);
         }
