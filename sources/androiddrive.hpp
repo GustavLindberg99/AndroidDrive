@@ -136,7 +136,9 @@ public:
     QString androidRootPath() const;
 
     /**
-     * Converts an Android path to a Windows path.
+     * Converts an Android path to a Windows temporary file path.
+     *
+     * Example: /sdcard/Folder/File.txt > C:\Users\name\AppData\Local\Temp\<temporary folder>\sdcard\Folder\File.txt
      *
      * @param remotePath - The Android path.
      *
@@ -146,6 +148,8 @@ public:
 
     /**
      * Converts a Windows path to an Android path.
+     *
+     * Example: \Folder\File.txt > /sdcard/Folder/File.txt
      *
      * @param windowsPath - The Windows path.
      *

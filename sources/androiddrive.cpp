@@ -1,5 +1,6 @@
 #include "androiddrive.hpp"
 
+#include <QCryptographicHash>
 #include <QRegularExpression>
 #include <QThread>
 
@@ -191,7 +192,9 @@ QString AndroidDrive::androidRootPath() const{
 QString AndroidDrive::localPath(const QString &remotePath) const{
     static const QRegularExpression leadingSlashes("^[/\\\\]+");
     const QString remoteRelativePath = QString(remotePath).replace(leadingSlashes, "");
-    const QString result = QDir::toNativeSeparators(this->_temporaryDir->filePath(remoteRelativePath));
+    //Hash the path to avoid problems with paths that are too long, see issue #54
+    const QString hashedRelativePath = QCryptographicHash::hash(remoteRelativePath.toUtf8(), QCryptographicHash::Md4).toHex();
+    const QString result = QDir::toNativeSeparators(this->_temporaryDir->filePath(hashedRelativePath));
     QFileInfo(result).dir().mkpath(".");
     return result;
 }
