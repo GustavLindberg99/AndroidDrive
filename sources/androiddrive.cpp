@@ -85,13 +85,16 @@ AndroidDrive::~AndroidDrive(){
 }
 
 AndroidDrive *AndroidDrive::fromDokanFileInfo(PDOKAN_FILE_INFO dokanFileInfo){
+    DebugLogger::getInstance().log("Fetching drive from Dokan file info");
     const QList<AndroidDrive*> instances = AndroidDrive::_instances;
     for(AndroidDrive *drive: instances){
         //device->_mountPoint and dokanOptions->MountPoint point to the same memory address if they belong to the same device, so comparing them by reference as below is a reliable way to tell which device goes with which DokanOptions object
         if(drive->_mountPoint == dokanFileInfo->DokanOptions->MountPoint){
+            DebugLogger::getInstance().log("Found drive with drive letter {}", QString::fromWCharArray(drive->_mountPoint));
             return drive;
         }
     }
+    DebugLogger::getInstance().log("No drive found, returning nullptr");
     return nullptr;
 }
 
