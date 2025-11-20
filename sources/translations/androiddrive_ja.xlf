@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:trolltech="urn:trolltech:names:ts:document:1.0">
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.cpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg390" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Devices</source>
+        <target xml:space="preserve">AndroidDrive - デバイス</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg391" approved="yes">
+        <source xml:space="preserve">&amp;Mount drive</source>
+        <target xml:space="preserve">ドライブをマウント(&amp;M)</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+        <context-group purpose="location"><context context-type="sourcefile">C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp</context><context context-type="linenumber">85</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg392" approved="yes">
+        <source xml:space="preserve">Allows you to change the settings for this device, for example select a new drive letter or choose whether it should be mounted automatically.</source>
+        <target xml:space="preserve">このデバイスの設定を変更できます。例えば、新しいドライブレターを選択したり、自動でマウントするかどうかを選択できます。</target>
+        <context-group purpose="location"><context context-type="linenumber">17</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg393" approved="yes">
+        <source xml:space="preserve">Opens the selected drive in Windows Explorer.</source>
+        <target xml:space="preserve">選択したドライブをエクスプローラーで開きます。</target>
+        <context-group purpose="location"><context context-type="linenumber">18</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg394" approved="yes">
+        <source xml:space="preserve">&amp;Unmount all drives</source>
+        <target xml:space="preserve">すべてのドライブをアンマウント(&amp;U)</target>
+        <context-group purpose="location"><context context-type="linenumber">163</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg395" approved="yes">
+        <source xml:space="preserve">Unmounts all drives corresponding to the selected Android device.&lt;br/&gt;&lt;br/&gt;This only unmounts the drives, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">選択した Android デバイスに対応する、すべてのドライブをアンマウントします。&lt;br/&gt;&lt;br/&gt;これはドライブのアンマウントのみであり、Android デバイスの接続は継続されるため ADB などを通じた操作は引き続きアクセス可能です。</target>
+        <context-group purpose="location"><context context-type="linenumber">164</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg396" approved="yes">
+        <source xml:space="preserve">&amp;Mount all drives</source>
+        <target xml:space="preserve">すべてのドライブをマウント(&amp;M)</target>
+        <context-group purpose="location"><context context-type="linenumber">167</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg397" approved="yes">
+        <source xml:space="preserve">&amp;Unmount drive</source>
+        <target xml:space="preserve">すべてのドライブをアンマウント(&amp;U)</target>
+        <context-group purpose="location"><context context-type="linenumber">173</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg398" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any.</source>
+        <target xml:space="preserve">選択した Android デバイスの内部ストレージを含むドライブと選択したデバイスにある外部 SD カード (存在する場合) のドライブをマウントします。</target>
+        <context-group purpose="location"><context context-type="linenumber">16</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">168</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg399" approved="yes">
+        <source xml:space="preserve">Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">選択したドライブをアンマウントします。&lt;br/&gt;&lt;br/&gt;これはドライブのアンマウントのみであり、Android デバイスの接続は継続されるため ADB などを通じた操作は引き続きアクセス可能です。</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg400" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the selected internal storage or external SD card.</source>
+        <target xml:space="preserve">選択した内部ストレージまたは外部 SD カードを含むドライブをマウントします。</target>
+        <context-group purpose="location"><context context-type="linenumber">178</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg401" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</source>
+        <target xml:space="preserve">致命的なエラー: Android デバイスを一覧表示できませんでした。&lt;br/&gt;&lt;br/&gt;ADB はコード %1 で終了しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">189</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg402" approved="yes">
+        <source xml:space="preserve">Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
+        <target xml:space="preserve">デバイス「%1」はオフラインです。&lt;br/&gt;&lt;br/&gt;デバイスのロックを解除し、プラグを抜いてから再度接続してみてください。&lt;br/&gt;&lt;br/&gt;このエラーが発生しない場合は、&lt;a href=&quot;%2&quot;&gt;こちら&lt;/a&gt;で解決策が見つかるかもしれません (ここに記載されている ADB コマンドは、&lt;code&gt;cd &quot;%3&quot;&lt;/code&gt; を実行後にコマンドプロンプトで実行できます)。</target>
+        <context-group purpose="location"><context context-type="linenumber">220</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg403" approved="yes">
+        <source xml:space="preserve">Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
+        <target xml:space="preserve">デバイス「%1」は認証されていません。&lt;br/&gt;&lt;br/&gt;デバイスのロックを解除してみてください。このコンピューターにデバイス内のデータへアクセスを許可するかどうかを確認するダイアログが表示された場合は、「許可」をタップしてください。ダイアログが表示されない場合は、&lt;a href=&quot;%2&quot;&gt;こちら&lt;/a&gt;の説明に従って USB デバッグを無効化してから再度有効化してください。&lt;br/&gt;&lt;br/&gt;それでも問題が解決しない場合は、デバイスを一度取り外して再度接続してみてください。</target>
+        <context-group purpose="location"><context context-type="linenumber">226</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg404" approved="yes">
+        <source xml:space="preserve">Could not create a drive with the given drive letter.</source>
+        <target xml:space="preserve">指定されたドライブレターでドライブを作成できません。</target>
+        <context-group purpose="location"><context context-type="linenumber">253</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg405" approved="yes">
+        <source xml:space="preserve">Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
+        <target xml:space="preserve">Dokan がインストールされていないようです。&lt;br/&gt;&lt;br/&gt;今すぐインストールしますか？</target>
+        <context-group purpose="location"><context context-type="linenumber">260</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg406" approved="yes">
+        <source xml:space="preserve">Could not start the driver.</source>
+        <target xml:space="preserve">ドライバーを起動できませんでした。</target>
+        <context-group purpose="location"><context context-type="linenumber">264</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg407" approved="yes">
+        <source xml:space="preserve">Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
+        <target xml:space="preserve">ドライブレターを割り当てられませんでした。&lt;br/&gt;&lt;br/&gt;デバイスの設定でドライブレターを使用可能なドライブレターに変更してみてください。</target>
+        <context-group purpose="location"><context context-type="linenumber">268</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg408" approved="yes">
+        <source xml:space="preserve">Dokan version error.</source>
+        <target xml:space="preserve">Dokan バージョンエラーです。</target>
+        <context-group purpose="location"><context context-type="linenumber">271</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg409" approved="yes">
+        <source xml:space="preserve">An unknown error occurred.</source>
+        <target xml:space="preserve">不明なエラーが発生しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">274</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg410" approved="yes">
+        <source xml:space="preserve">Could not mount drive %1: %2</source>
+        <target xml:space="preserve">ドライブ「%1」をマウントできませんでした: %2</target>
+        <context-group purpose="location"><context context-type="linenumber">277</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg411" approved="yes">
+        <source xml:space="preserve">ADB timed out.</source>
+        <target xml:space="preserve">ADB タイムアウトです。</target>
+        <context-group purpose="location"><context context-type="linenumber">293</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg412" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to read from the ADB process.</source>
+        <target xml:space="preserve">ADB プロセスからの読み取り時にエラーが発生しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">296</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg413" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to write to the ADB process.</source>
+        <target xml:space="preserve">ADB プロセスへの書き込みを試行中にエラーが発生しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">299</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg414" approved="yes">
+        <source xml:space="preserve">ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
+        <target xml:space="preserve">ADB の起動に失敗しました。&lt;br/&gt;&lt;br/&gt;adb.exe ファイルが見つからないか、プログラムを起動するための権限が不足している可能性があります。</target>
+        <context-group purpose="location"><context context-type="linenumber">302</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg415" approved="yes">
+        <source xml:space="preserve">ADB crashed.</source>
+        <target xml:space="preserve">ADB がクラッシュしました。</target>
+        <context-group purpose="location"><context context-type="linenumber">305</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg416" approved="yes">
+        <source xml:space="preserve">ADB encountered an unknown error.</source>
+        <target xml:space="preserve">ADB で不明なエラーが発生しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">308</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg417" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices: %1</source>
+        <target xml:space="preserve">致命的なエラー: Android デバイスをリストできませんでした: %1</target>
+        <context-group purpose="location"><context context-type="linenumber">311</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg418" approved="yes">
+        <source xml:space="preserve">Drive &amp;settings</source>
+        <target xml:space="preserve">ドライブの設定(&amp;S)</target>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg419" approved="yes">
+        <source xml:space="preserve">&amp;Open in Explorer</source>
+        <target xml:space="preserve">エクスプローラーで開く(&amp;O)</target>
+        <context-group purpose="location"><context context-type="linenumber">87</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/main.cpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg420" approved="yes">
+        <source xml:space="preserve">AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <target xml:space="preserve">AndroidDrive は既に実行しています。&lt;br/&gt;&lt;br/&gt;AndroidDrive を再起動する場合は、タスクバーの AndroidDrive アイコンを右クリックして「終了」を選択すると既存のプロセスを終了できます。</target>
+        <context-group purpose="location"><context context-type="linenumber">70</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg421" approved="yes">
+        <source xml:space="preserve">&amp;Devices</source>
+        <target xml:space="preserve">デバイス(&amp;D)</target>
+        <context-group purpose="location"><context context-type="linenumber">141</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg422" approved="yes">
+        <source xml:space="preserve">&amp;Settings</source>
+        <target xml:space="preserve">設定(&amp;S)</target>
+        <context-group purpose="location"><context context-type="linenumber">144</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg423" approved="yes">
+        <source xml:space="preserve">Record Debug &amp;Logs</source>
+        <target xml:space="preserve">デバッグログを記録(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">147</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">152</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg424" approved="yes">
+        <source xml:space="preserve">Finish Recording Debug &amp;Logs</source>
+        <target xml:space="preserve">デバッグログの記録を終了(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">156</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg425" approved="yes">
+        <source xml:space="preserve">Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
+        <target xml:space="preserve">デバッグログの記録が開始されました。&lt;br/&gt;&lt;br/&gt;ログファイルは「%1」にあります。&lt;br/&gt;&lt;br/&gt;ログファイルをバグレポートに添付する場合は、デバイス上のファイル名が含まれるため、ファイル名に機密情報を含ませないようにご注意ください (デバッグログにはファイル名のみが含まれ、ファイルの内容は含まれません)。</target>
+        <context-group purpose="location"><context context-type="linenumber">157</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg426" approved="yes">
+        <source xml:space="preserve">Failed to create log file.</source>
+        <target xml:space="preserve">ログファイルの作成に失敗しました。</target>
+        <context-group purpose="location"><context context-type="linenumber">160</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg427" approved="yes">
+        <source xml:space="preserve">&amp;About AndroidDrive</source>
+        <target xml:space="preserve">AndroidDrive について(&amp;A)</target>
+        <context-group purpose="location"><context context-type="linenumber">165</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg428" approved="yes">
+        <source xml:space="preserve">About AndroidDrive</source>
+        <target xml:space="preserve">AndroidDrive について</target>
+        <context-group purpose="location"><context context-type="linenumber">170</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg429" approved="yes">
+        <source xml:space="preserve">AndroidDrive version %1 by Gustav Lindberg.</source>
+        <target xml:space="preserve">AndroidDrive バージョン: %1 - 開発者: Gustav Lindberg</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg430" approved="yes">
+        <source xml:space="preserve">Icons made by %3 and %4 from %1 are licensed by %2.</source>
+        <target xml:space="preserve">%1 内の %3 と %4 によって作成されたアイコンは、%2 よってライセンスされています。</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg431" approved="yes">
+        <source xml:space="preserve">This program uses %1 and %2.</source>
+        <target xml:space="preserve">このプログラムは %1 と %2 を使用しています。</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg432" approved="yes">
+        <source xml:space="preserve">About &amp;Qt</source>
+        <target xml:space="preserve">Qt について(&amp;Q)</target>
+        <context-group purpose="location"><context context-type="linenumber">175</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg433" approved="yes">
+        <source xml:space="preserve">E&amp;xit</source>
+        <target xml:space="preserve">終了(&amp;X)</target>
+        <context-group purpose="location"><context context-type="linenumber">180</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg434" approved="yes">
+        <source xml:space="preserve">An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
+        <target xml:space="preserve">最新のバージョンが利用可能です。&lt;br/&gt;&lt;br/&gt;今すぐインストールしますか？</target>
+        <context-group purpose="location"><context context-type="linenumber">116</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.cpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg435" approved="yes">
+        <source xml:space="preserve">Global settings</source>
+        <target xml:space="preserve">一般設定</target>
+        <context-group purpose="location"><context context-type="linenumber">68</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg436" approved="yes">
+        <source xml:space="preserve">&amp;Reset</source>
+        <target xml:space="preserve">リセット(&amp;R)</target>
+        <context-group purpose="location"><context context-type="linenumber">45</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg437" approved="yes">
+        <source xml:space="preserve">Automatically mount &amp;drive</source>
+        <target xml:space="preserve">ドライブを自動でマウント(&amp;D)</target>
+        <context-group purpose="location"><context context-type="linenumber">58</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg438" approved="yes">
+        <source xml:space="preserve">Open newly connected drives in &amp;Explorer</source>
+        <target xml:space="preserve">新しく接続されたドライブをエクスプローラーで開く(&amp;E)</target>
+        <context-group purpose="location"><context context-type="linenumber">71</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg439" approved="yes">
+        <source xml:space="preserve">&amp;Hide files beginning with a dot</source>
+        <target xml:space="preserve">ドットで始まるファイルを非表示にする(&amp;H)</target>
+        <context-group purpose="location"><context context-type="linenumber">76</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg440" approved="yes">
+        <source xml:space="preserve">&amp;OK</source>
+        <target xml:space="preserve">OK(&amp;O)</target>
+        <context-group purpose="location"><context context-type="linenumber">108</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg441" approved="yes">
+        <source xml:space="preserve">&amp;Cancel</source>
+        <target xml:space="preserve">キャンセル(&amp;C)</target>
+        <context-group purpose="location"><context context-type="linenumber">109</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg442" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Settings</source>
+        <target xml:space="preserve">AndroidDrive - 設定</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg443" approved="yes">
+        <source xml:space="preserve">Allows you to select a name for the selected Android drive.</source>
+        <target xml:space="preserve">Android ドライブの名前を設定できます。</target>
+        <context-group purpose="location"><context context-type="linenumber">42</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg444" approved="yes">
+        <source xml:space="preserve">Drive &amp;name</source>
+        <target xml:space="preserve">ドライブの名前(&amp;N)</target>
+        <context-group purpose="location"><context context-type="linenumber">56</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg445" approved="yes">
+        <source xml:space="preserve">Drive settings for %1</source>
+        <target xml:space="preserve">「%1」のドライブ設定</target>
+        <context-group purpose="location"><context context-type="linenumber">29</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg446" approved="yes">
+        <source xml:space="preserve">These settings only affect the selected drive.</source>
+        <target xml:space="preserve">これらの設定は選択したドライブのみ影響します。</target>
+        <context-group purpose="location"><context context-type="linenumber">63</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg447" approved="yes">
+        <source xml:space="preserve">Drive &amp;letter</source>
+        <target xml:space="preserve">ドライブレター(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">35</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg448" approved="yes">
+        <source xml:space="preserve">Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</source>
+        <target xml:space="preserve">選択した Android ドライブの優先ドライブレターを選択できます。&lt;br/&gt;&lt;br/&gt;このドライブが接続されたときに優先ドライブレターが使用できない場合は、アルファベット順で次に使用可能なドライブレターが使用されます。&lt;br/&gt;&lt;br/&gt;このドライブが接続されている間にドライブレターを変更した場合、変更を有効化するには、ドライブをアンマウント後に再度マウントする必要があります。</target>
+        <context-group purpose="location"><context context-type="linenumber">34</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg449" approved="yes">
+        <source xml:space="preserve">Resets the name of the drive to the default value.</source>
+        <target xml:space="preserve">ドライブの名前を既定値にリセットします。</target>
+        <context-group purpose="location"><context context-type="linenumber">51</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg450" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to mount it manually by going into Devices &gt; Mount drive.</source>
+        <target xml:space="preserve">このチェックボックスをオンにすると、選択したドライブをコンピューターに接続するたびに、自動的にドライブとして接続します。&lt;br/&gt;&lt;br/&gt;チェックを入れない場合は、「デバイス」&gt;「ドライブをマウント」に移動して手動でマウントする必要があります。</target>
+        <context-group purpose="location"><context context-type="linenumber">60</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg451" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer.</source>
+        <target xml:space="preserve">このチェックボックスをオンにすると、AndroidDrive がドライブの接続を完了するたびに、そのドライブがエクスプローラーで開かれます。</target>
+        <context-group purpose="location"><context context-type="linenumber">73</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg452" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer&apos;s &quot;Show hidden files&quot; option is activated.</source>
+        <target xml:space="preserve">このチェックボックスをオンにすると、ドットで始まるファイルは隠しファイルとして扱われ、「隠しファイルを表示する」のオプションが有効化されている場合のみ、エクスプローラー上に表示されます。</target>
+        <context-group purpose="location"><context context-type="linenumber">78</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg453" approved="yes">
+        <source xml:space="preserve">Use system language</source>
+        <target xml:space="preserve">システム言語を使用する</target>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg454" approved="yes">
+        <source xml:space="preserve">Allows you to select which language AndroidDrive&apos;s GUI will be displayed in.&lt;br/&gt;&lt;br/&gt;If you select &quot;Use system language&quot; but AndroidDrive isn&apos;t availiable in your system language, English will be used.&lt;br/&gt;&lt;br/&gt;This setting has no effect on how the actual drive works.&lt;br/&gt;&lt;br/&gt;You must restart AndroidDrive for this change to take effect.</source>
+        <target xml:space="preserve">AndroidDrive の GUI の表示言語を選択できます。&lt;br/&gt;&lt;br/&gt;「システム言語を使用する」を選択した場合でも、AndroidDrive でシステム言語を利用できない場合は、英語が使用されます。&lt;br/&gt;&lt;br/&gt;この設定は、実際のドライブの動作には影響しません。&lt;br/&gt;&lt;br/&gt;この変更を有効化するには、AndroidDrive を再起動する必要があります。</target>
+        <context-group purpose="location"><context context-type="linenumber">92</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg455" approved="yes">
+        <source xml:space="preserve">&amp;Language</source>
+        <target xml:space="preserve">言語(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">93</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg456" approved="yes">
+        <source xml:space="preserve">AndroidDrive doesn&apos;t seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
+        <target xml:space="preserve">AndroidDrive は使用しているシステム言語ではご利用いただけないようです。&lt;br/&gt;&lt;br/&gt;翻訳にご協力いただける場合は、&lt;a %1&gt;こちら&lt;/a&gt;をクリックしてください。</target>
+        <context-group purpose="location"><context context-type="linenumber">96</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg457" approved="yes">
+        <source xml:space="preserve">These settings affect all drives connected with AndroidDrive.</source>
+        <target xml:space="preserve">これらの設定は、AndroidDrive に接続されているすべてのドライブに影響します。</target>
+        <context-group purpose="location"><context context-type="linenumber">104</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.hpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg458" approved="yes">
+        <source xml:space="preserve">&amp;Apply</source>
+        <target xml:space="preserve">適用(&amp;A)</target>
+        <context-group purpose="location"><context context-type="linenumber">66</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="" datatype="plaintext" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg459" translate="no" approved="yes">
+        <source xml:space="preserve">Installing updates...</source>
+        <target xml:space="preserve">更新をインストール中...</target>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/androiddrive.cpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg460" approved="yes">
+        <source xml:space="preserve">Internal storage</source>
+        <target xml:space="preserve">内部ストレージ</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg461" approved="yes">
+        <source xml:space="preserve">SD card %1</source>
+        <target xml:space="preserve">SD カード %1</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistmodel.cpp" datatype="cpp" source-language="en-US" target-language="ja-JP"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg462" approved="yes">
+        <source xml:space="preserve">Device</source>
+        <target xml:space="preserve">デバイス</target>
+        <context-group purpose="location"><context context-type="linenumber">90</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg463" approved="yes">
+        <source xml:space="preserve">Status</source>
+        <target xml:space="preserve">ステータス</target>
+        <context-group purpose="location"><context context-type="linenumber">119</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg464" approved="yes">
+        <source xml:space="preserve">Mounting...</source>
+        <target xml:space="preserve">マウント中...</target>
+        <context-group purpose="location"><context context-type="linenumber">124</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg465" approved="yes">
+        <source xml:space="preserve">Unmounting...</source>
+        <target xml:space="preserve">アンマウント中...</target>
+        <context-group purpose="location"><context context-type="linenumber">127</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg466" approved="yes">
+        <source xml:space="preserve">Mounted as %1</source>
+        <target xml:space="preserve">「%1」としてマウント中</target>
+        <context-group purpose="location"><context context-type="linenumber">130</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg467" approved="yes">
+        <source xml:space="preserve">Not mounted</source>
+        <target xml:space="preserve">マウントしていません</target>
+        <context-group purpose="location"><context context-type="linenumber">134</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+</xliff>

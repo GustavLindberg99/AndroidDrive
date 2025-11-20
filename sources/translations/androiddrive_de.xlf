@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:trolltech="urn:trolltech:names:ts:document:1.0">
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.cpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg1" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Devices</source>
+        <target xml:space="preserve">AndroidDrive - Geräte</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg2" approved="yes">
+        <source xml:space="preserve">&amp;Mount drive</source>
+        <target xml:space="preserve">&amp;Verbinde Laufwerk</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+        <context-group purpose="location"><context context-type="sourcefile">C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp</context><context context-type="linenumber">85</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg3" approved="yes">
+        <source xml:space="preserve">Allows you to change the settings for this device, for example select a new drive letter or choose whether it should be mounted automatically.</source>
+        <target xml:space="preserve">Du kannst die Einstellungen für dieses Gerät ändern, z. B. einen neuen Laufwerksbuchstaben auswählen oder bestimmen, ob das Gerät automatisch verbunden werden soll.</target>
+        <context-group purpose="location"><context context-type="linenumber">17</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg4" approved="yes">
+        <source xml:space="preserve">Opens the selected drive in Windows Explorer.</source>
+        <target xml:space="preserve">Öffnet das ausgewählte Laufwerk im WIndows Explorer.</target>
+        <context-group purpose="location"><context context-type="linenumber">18</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg5" approved="yes">
+        <source xml:space="preserve">&amp;Unmount all drives</source>
+        <target xml:space="preserve">&amp;Trenne alle Laufwerke</target>
+        <context-group purpose="location"><context context-type="linenumber">163</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg6" approved="yes">
+        <source xml:space="preserve">&amp;Mount all drives</source>
+        <target xml:space="preserve">&amp;Verbinde alle Laufwerke</target>
+        <context-group purpose="location"><context context-type="linenumber">167</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg7" approved="yes">
+        <source xml:space="preserve">&amp;Unmount drive</source>
+        <target xml:space="preserve">&amp;Trenne Laufwerk</target>
+        <context-group purpose="location"><context context-type="linenumber">173</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg8" approved="yes">
+        <source xml:space="preserve">Unmounts all drives corresponding to the selected Android device.&lt;br/&gt;&lt;br/&gt;This only unmounts the drives, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">Trennt alle Laufwerke, die zu dem ausgewählten Android-Gerät gehören.&lt;br/&gt;&lt;br/&gt;Dies trennt nur die Laufwerke, das Android-Gerät selbst bleibt verbunden, so dass du z. B. mit ADB weiter auf das Gerät zugreifen kannst.</target>
+        <context-group purpose="location"><context context-type="linenumber">164</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg9" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any.</source>
+        <target xml:space="preserve">Verbindet ein Laufwerk für den internen Speicher des ausgewählten Android-Geräts und, falls vorhanden, für jede externe SD-Karte des Geräts ein weiteres Laufwerk.</target>
+        <context-group purpose="location"><context context-type="linenumber">16</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">168</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg10" approved="yes">
+        <source xml:space="preserve">Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">Trennt das ausgewählte Laufwerk.&lt;br/&gt;&lt;br/&gt;Dies trennt nur das Laufwerk, das Android-Gerät selbst bleibt verbunden, so dass du z. B. mit ADB weiter auf das Gerät zugreifen kannst.</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg11" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the selected internal storage or external SD card.</source>
+        <target xml:space="preserve">Verbindet ein Laufwerk für den ausgewählten internen Speicher oder die ausgewählte SD-Karte.</target>
+        <context-group purpose="location"><context context-type="linenumber">178</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg12" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</source>
+        <alt-trans>
+          <source xml:space="preserve">Fatal error: Could not list Android devices. ADB exited with code %1.</source>
+          <target xml:space="preserve">Schwerwiegender Fehler: Android-Geräte können nicht gelistet werden.&lt;br/&gt;&lt;br/&gt;ADB hat sich beendet mit Fehlercode %1.</target>
+        </alt-trans>
+        <context-group purpose="location"><context context-type="linenumber">189</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg13" approved="yes">
+        <source xml:space="preserve">Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
+        <target xml:space="preserve">Gerät %1 ist offline.&lt;br/&gt;&lt;br/&gt;Versuche, das Gerät zu entsperren, es aus- und wieder einzustecken.&lt;br/&gt;&lt;br/&gt;Wenn dieser Fehler bestehen bleibt, kannst du hier nach Lösungen suchen: &lt;a href=&quot;%2&quot;&gt;hier&lt;/a&gt; (alle hier genannten ADB-Kommandos können nach dem Kommando-Prompt ausgeführt werden, nach Ausführen von &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</target>
+        <context-group purpose="location"><context context-type="linenumber">220</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg14" approved="yes">
+        <source xml:space="preserve">Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
+        <target xml:space="preserve">Gerät %1 ist nicht autorisiert.&lt;br/&gt;&lt;br/&gt;Versuchen Sie, Ihr Gerät zu entsperren. Wenn ein Dialog angezeigt wird, in dem Du gefragt wirst, ob Du diesem Computer den Zugriff auf Telefondaten gestatten möchten, tippe auf „Zulassen“. Wenn dieses Dialogfeld nicht angezeigt wird, deaktiviere und aktiviere das USB-Debugging wie hier beschrieben &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Wenn es immer noch nicht funktioniert, versuche, Dein Gerät aus- und wieder einzustecken.</target>
+        <context-group purpose="location"><context context-type="linenumber">226</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg15" approved="yes">
+        <source xml:space="preserve">Could not create a drive with the given drive letter.</source>
+        <target xml:space="preserve">Laufwerk mit dem angegebenen Laufwerksbuchstaben kann nicht erzeugt werden.</target>
+        <context-group purpose="location"><context context-type="linenumber">253</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg16" approved="yes">
+        <source xml:space="preserve">Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
+        <target xml:space="preserve">Dokan scheint nicht installiert zu sein.&lt;br/&gt;&lt;br/&gt;Möchtest du es jetzt installieren?</target>
+        <context-group purpose="location"><context context-type="linenumber">260</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg17" approved="yes">
+        <source xml:space="preserve">Could not start the driver.</source>
+        <target xml:space="preserve">Kann den Treiber nicht starten.</target>
+        <context-group purpose="location"><context context-type="linenumber">264</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg18" approved="yes">
+        <source xml:space="preserve">Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
+        <alt-trans>
+          <source xml:space="preserve">Could not assign a drive letter. Try changing the drive letter in Device Settings to an available drive letter.</source>
+          <target xml:space="preserve">Kann keinen Laufwerksbuchstaben zuweisen.&lt;br/&gt;&lt;br/&gt;Versuche, den Laufwerksbuchstaben in den Geräteeinstellungen in einen verfügbaren Laufwerksbuchstaben zu ändern.</target>
+        </alt-trans>
+        <context-group purpose="location"><context context-type="linenumber">268</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg19" approved="yes">
+        <source xml:space="preserve">Dokan version error.</source>
+        <target xml:space="preserve">Dokan Versionsfehler.</target>
+        <context-group purpose="location"><context context-type="linenumber">271</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg20" approved="yes">
+        <source xml:space="preserve">An unknown error occurred.</source>
+        <target xml:space="preserve">Ein unbekannter Fehler ist aufgetreten.</target>
+        <context-group purpose="location"><context context-type="linenumber">274</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg21" approved="yes">
+        <source xml:space="preserve">Could not mount drive %1: %2</source>
+        <target xml:space="preserve">Konnte Laufwerk %1: %2 nicht verbinden</target>
+        <context-group purpose="location"><context context-type="linenumber">277</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg22" approved="yes">
+        <source xml:space="preserve">ADB timed out.</source>
+        <target xml:space="preserve">ADB Timeout.</target>
+        <context-group purpose="location"><context context-type="linenumber">293</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg23" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to read from the ADB process.</source>
+        <target xml:space="preserve">Ein Fehler trat auf beim Versuch, vom ADB-Prozess zu lesen.</target>
+        <context-group purpose="location"><context context-type="linenumber">296</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg24" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to write to the ADB process.</source>
+        <target xml:space="preserve">Ein Fehler trat auf beim Versuch, zum ADB-Prozess zu schreiben.</target>
+        <context-group purpose="location"><context context-type="linenumber">299</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg25" approved="yes">
+        <source xml:space="preserve">ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
+        <target xml:space="preserve">ADB konnte nicht gestartet werden.&lt;br/&gt;&lt;br/&gt;Entweder fehlt die Datei adb.exe, oder du hast nicht die nötigen Rechte zum Start des Programms.</target>
+        <context-group purpose="location"><context context-type="linenumber">302</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg26" approved="yes">
+        <source xml:space="preserve">ADB crashed.</source>
+        <target xml:space="preserve">ADB ist abgestürzt.</target>
+        <context-group purpose="location"><context context-type="linenumber">305</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg27" approved="yes">
+        <source xml:space="preserve">ADB encountered an unknown error.</source>
+        <target xml:space="preserve">ADB hat einen unbekannten Fehler festgestellt.</target>
+        <context-group purpose="location"><context context-type="linenumber">308</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg28" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices: %1</source>
+        <target xml:space="preserve">Schwerwiegender Fehler: Android-Geräte können nicht gelistet werden: %1</target>
+        <context-group purpose="location"><context context-type="linenumber">311</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg29" approved="yes">
+        <source xml:space="preserve">Drive &amp;settings</source>
+        <target xml:space="preserve">Laufwerks&amp;einstellungen</target>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg30" approved="yes">
+        <source xml:space="preserve">&amp;Open in Explorer</source>
+        <target xml:space="preserve">&amp;Öffne im Explorer</target>
+        <context-group purpose="location"><context context-type="linenumber">87</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/main.cpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg31">
+        <source xml:space="preserve">AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <target xml:space="preserve"></target>
+        <context-group purpose="location"><context context-type="linenumber">70</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg32" approved="yes">
+        <source xml:space="preserve">&amp;Devices</source>
+        <target xml:space="preserve">&amp;Geräte</target>
+        <context-group purpose="location"><context context-type="linenumber">141</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg33" approved="yes">
+        <source xml:space="preserve">&amp;Settings</source>
+        <target xml:space="preserve">&amp;Einstellungen</target>
+        <context-group purpose="location"><context context-type="linenumber">144</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg34" approved="yes">
+        <source xml:space="preserve">Record Debug &amp;Logs</source>
+        <target xml:space="preserve">Zeichne Debug- und &amp;Log-Informationen auf</target>
+        <context-group purpose="location"><context context-type="linenumber">147</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">152</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg35" approved="yes">
+        <source xml:space="preserve">Finish Recording Debug &amp;Logs</source>
+        <target xml:space="preserve">Aufzeichnen von Debug- und &amp;Log-Informationen abgeschlossen</target>
+        <context-group purpose="location"><context context-type="linenumber">156</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg36" approved="yes">
+        <source xml:space="preserve">Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
+        <target xml:space="preserve">Aufzeichnen der Debug-Logs hat begonnen.&lt;br/&gt;&lt;br/&gt;Hier wird die Log-Datei abgespeichert: %1.&lt;br/&gt;&lt;br/&gt;Falls Du planst, diese Log-Datei an eine Fehlermeldung anzuhängen, denke daran, dass in den Log-Datei Dateinamen deines Telefons stehen. Stelle sicher, dass die Dateinamen keine sensiblen Informationen beinhalten. (Die Log-Dateien enthalten nur die Dateinamen, nicht aber den Inhalt der Dateien).</target>
+        <context-group purpose="location"><context context-type="linenumber">157</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg37" approved="yes">
+        <source xml:space="preserve">Failed to create log file.</source>
+        <target xml:space="preserve">Fehler beim Erzeugen der Log-Datei.</target>
+        <context-group purpose="location"><context context-type="linenumber">160</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg38" approved="yes">
+        <source xml:space="preserve">&amp;About AndroidDrive</source>
+        <target xml:space="preserve">&amp;Über AndroidDrive</target>
+        <context-group purpose="location"><context context-type="linenumber">165</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg39" approved="yes">
+        <source xml:space="preserve">About AndroidDrive</source>
+        <target xml:space="preserve">Über AndroidDrive</target>
+        <context-group purpose="location"><context context-type="linenumber">170</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg40" approved="yes">
+        <source xml:space="preserve">AndroidDrive version %1 by Gustav Lindberg.</source>
+        <target xml:space="preserve">AndroidDrive version %1 von Gustav Lindberg.</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg41" approved="yes">
+        <source xml:space="preserve">Icons made by %3 and %4 from %1 are licensed by %2.</source>
+        <target xml:space="preserve">Die von %3 und %4 erstellten Icons aus %1 sind von %2 lizenziert.</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg42" approved="yes">
+        <source xml:space="preserve">This program uses %1 and %2.</source>
+        <target xml:space="preserve">Dieses Programm nutzt %1 und %2.</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg43" approved="yes">
+        <source xml:space="preserve">About &amp;Qt</source>
+        <target xml:space="preserve">Über &amp;Qt</target>
+        <context-group purpose="location"><context context-type="linenumber">175</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg44" approved="yes">
+        <source xml:space="preserve">E&amp;xit</source>
+        <target xml:space="preserve">E&amp;xit</target>
+        <context-group purpose="location"><context context-type="linenumber">180</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg45" approved="yes">
+        <source xml:space="preserve">An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
+        <target xml:space="preserve">Ein Update ist verfügbar..&lt;br/&gt;&lt;br/&gt;Möchtest Du es jetzt installieren?</target>
+        <context-group purpose="location"><context context-type="linenumber">116</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.cpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg46" approved="yes">
+        <source xml:space="preserve">Global settings</source>
+        <target xml:space="preserve">Globale Einstellungen</target>
+        <context-group purpose="location"><context context-type="linenumber">68</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg47" approved="yes">
+        <source xml:space="preserve">Open newly connected drives in &amp;Explorer</source>
+        <target xml:space="preserve">Öffne neu verbunde Laufwerke im &amp;Explorer</target>
+        <context-group purpose="location"><context context-type="linenumber">71</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg48" approved="yes">
+        <source xml:space="preserve">&amp;Hide files beginning with a dot</source>
+        <target xml:space="preserve">Blende Dateien &amp;aus, die mit einem Punkt beginnen</target>
+        <context-group purpose="location"><context context-type="linenumber">76</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg49" approved="yes">
+        <source xml:space="preserve">&amp;OK</source>
+        <target xml:space="preserve">&amp;OK</target>
+        <context-group purpose="location"><context context-type="linenumber">108</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg50" approved="yes">
+        <source xml:space="preserve">&amp;Cancel</source>
+        <target xml:space="preserve">&amp;Abbrechen</target>
+        <context-group purpose="location"><context context-type="linenumber">109</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg51" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Settings</source>
+        <target xml:space="preserve">Android-Gerät - Einstellungen</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg52" approved="yes">
+        <source xml:space="preserve">Drive &amp;letter</source>
+        <target xml:space="preserve">&amp;Laufwerksbuchstabe</target>
+        <context-group purpose="location"><context context-type="linenumber">35</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg53" approved="yes">
+        <source xml:space="preserve">&amp;Reset</source>
+        <target xml:space="preserve">&amp;Reset</target>
+        <context-group purpose="location"><context context-type="linenumber">45</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg54" approved="yes">
+        <source xml:space="preserve">Automatically mount &amp;drive</source>
+        <target xml:space="preserve">Verbinde &amp;Laufwerk automatisch</target>
+        <context-group purpose="location"><context context-type="linenumber">58</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg55" approved="yes">
+        <source xml:space="preserve">Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</source>
+        <target xml:space="preserve">Erlaubt, einen bevorzugten Laufwerksbuchstaben für das Android-Gerät auszuwählen.&lt;br/&gt;&lt;br/&gt;Falls der bevorzugte Laufwerksbuchstabe nicht verfügbar ist, wenn das Gerät verbunden wird, wird der nächste verfügbare Laufwerksbuchstabe in alphabetischer Reihenfolge genutzt.&lt;br/&gt;&lt;br/&gt;Wenn du den Laufwerksbuchstaben änderst, während das Gerät verbunden ist, musst du das Gerät trennen und erneut verbinden, um die Änderung anzuwenden.</target>
+        <context-group purpose="location"><context context-type="linenumber">34</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg56" approved="yes">
+        <source xml:space="preserve">Allows you to select a name for the selected Android drive.</source>
+        <target xml:space="preserve">Erlaubt, einen Namen für das ausgewählte Android-Gerät zu wählen.</target>
+        <context-group purpose="location"><context context-type="linenumber">42</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg57" approved="yes">
+        <source xml:space="preserve">Drive &amp;name</source>
+        <target xml:space="preserve">Geräte&amp;name</target>
+        <context-group purpose="location"><context context-type="linenumber">56</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg58" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to mount it manually by going into Devices &gt; Mount drive.</source>
+        <target xml:space="preserve">Wenn dieses Kontrollkästchen aktiviert ist, wird das ausgewählte Laufwerk automatisch als Laufwerk verbunden, sobald Sie es an Ihren Computer anschließen.&lt;br/&gt;&lt;br/&gt;Andernfalls müssen Sie es manuell verbinden, indem Sie auf Geräte &gt; Laufwerk verbinden gehen.</target>
+        <context-group purpose="location"><context context-type="linenumber">60</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg59" approved="yes">
+        <source xml:space="preserve">Drive settings for %1</source>
+        <target xml:space="preserve">Laufwerkseinstellungen für %1</target>
+        <context-group purpose="location"><context context-type="linenumber">29</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg60" approved="yes">
+        <source xml:space="preserve">Resets the name of the drive to the default value.</source>
+        <target xml:space="preserve">Setzt den Namen des Laufwerks auf den Standardwert zurück.</target>
+        <context-group purpose="location"><context context-type="linenumber">51</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg61" approved="yes">
+        <source xml:space="preserve">These settings only affect the selected drive.</source>
+        <target xml:space="preserve">Diese Einstellungen betreffen nur das ausgwählte Laufwerk.</target>
+        <context-group purpose="location"><context context-type="linenumber">63</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg62" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer.</source>
+        <target xml:space="preserve">Wenn dieses Kontrollkästchen aktiviert ist, wird AndroidDrive nach dem Verbinden eines Laufwerks dieses im Windows Explorer öffnen.</target>
+        <context-group purpose="location"><context context-type="linenumber">73</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg63" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer&apos;s &quot;Show hidden files&quot; option is activated.</source>
+        <target xml:space="preserve">Wenn dieses Kontrollkästchen aktiviert ist, werden Dateien, die mit einem Punkt beginnen, als versteckte Dateien behandelt und sind nur dann im Windows Explorer sichtbar, wenn die Option „Versteckte Dateien &gt; Ausgeblendete Dateien anzeigen“ im Windows Explorer aktiviert ist.</target>
+        <context-group purpose="location"><context context-type="linenumber">78</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg64" approved="yes">
+        <source xml:space="preserve">Use system language</source>
+        <alt-trans>
+          <source xml:space="preserve">Same as system language</source>
+          <target xml:space="preserve">Benutze die Systemsprache</target>
+        </alt-trans>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg65" approved="yes">
+        <source xml:space="preserve">Allows you to select which language AndroidDrive&apos;s GUI will be displayed in.&lt;br/&gt;&lt;br/&gt;If you select &quot;Use system language&quot; but AndroidDrive isn&apos;t availiable in your system language, English will be used.&lt;br/&gt;&lt;br/&gt;This setting has no effect on how the actual drive works.&lt;br/&gt;&lt;br/&gt;You must restart AndroidDrive for this change to take effect.</source>
+        <alt-trans>
+          <source xml:space="preserve">Allows you to select which language AndroidDrive&apos;s GUI will be displayed in. If you select &quot;Use system language&quot; but AndroidDrive isn&apos;t availiable in your system language, English will be used. This setting has no effect on how the actual drive works. You must restart AndroidDrive for this change to take effect.</source>
+          <target xml:space="preserve">Hier kannst Du auswählen, in welcher Sprache die Benutzeroberfläche von AndroidDrive angezeigt werden soll.&lt;br/&gt;&lt;br/&gt;Wenn Du „Systemsprache verwenden“ auswählst, AndroidDrive aber nicht in der Systemsprache verfügbar ist, wird Englisch verwendet.&lt;br/&gt;&lt;br/&gt;Du must AndroidDrive neu starten, um diese Änderung anzuwenden.</target>
+        </alt-trans>
+        <context-group purpose="location"><context context-type="linenumber">92</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg66" approved="yes">
+        <source xml:space="preserve">&amp;Language</source>
+        <target xml:space="preserve">&amp;Sprache</target>
+        <context-group purpose="location"><context context-type="linenumber">93</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg67" approved="yes">
+        <source xml:space="preserve">AndroidDrive doesn&apos;t seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
+        <alt-trans>
+          <source xml:space="preserve">AndroidDrive doesn&apos;t seem to be available in your system language. &lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
+          <target xml:space="preserve">AndroidDrive scheint in Deiner Systemsprache nicht verfügbar zu sein.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Klicke hier&lt;/a&gt;, wenn Du bei der Übersetzung helfen möchtest.</target>
+        </alt-trans>
+        <context-group purpose="location"><context context-type="linenumber">96</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg68" approved="yes">
+        <source xml:space="preserve">These settings affect all drives connected with AndroidDrive.</source>
+        <target xml:space="preserve">Diese Einstellungen betreffen alle mit AndroidDrive verbundenen Laufwerke.</target>
+        <context-group purpose="location"><context context-type="linenumber">104</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.hpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg69" approved="yes">
+        <source xml:space="preserve">&amp;Apply</source>
+        <target xml:space="preserve">&amp;Übernehmen</target>
+        <context-group purpose="location"><context context-type="linenumber">66</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="" datatype="plaintext" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg70" translate="no" approved="yes">
+        <source xml:space="preserve">Installing updates...</source>
+        <target xml:space="preserve">Updates werden installiert...</target>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/androiddrive.cpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg71" approved="yes">
+        <source xml:space="preserve">Internal storage</source>
+        <target xml:space="preserve">Interner Speicher</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg72" approved="yes">
+        <source xml:space="preserve">SD card %1</source>
+        <target xml:space="preserve">SD-Karte %1</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistmodel.cpp" datatype="cpp" source-language="en-US" target-language="de-DE"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg73" approved="yes">
+        <source xml:space="preserve">Device</source>
+        <target xml:space="preserve">Gerät</target>
+        <context-group purpose="location"><context context-type="linenumber">90</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg74" approved="yes">
+        <source xml:space="preserve">Status</source>
+        <target xml:space="preserve">Status</target>
+        <context-group purpose="location"><context context-type="linenumber">119</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg75" approved="yes">
+        <source xml:space="preserve">Mounting...</source>
+        <target xml:space="preserve">Verbinden...</target>
+        <context-group purpose="location"><context context-type="linenumber">124</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg76" approved="yes">
+        <source xml:space="preserve">Unmounting...</source>
+        <target xml:space="preserve">Trennen...</target>
+        <context-group purpose="location"><context context-type="linenumber">127</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg77" approved="yes">
+        <source xml:space="preserve">Mounted as %1</source>
+        <target xml:space="preserve">Verbunden als %1</target>
+        <context-group purpose="location"><context context-type="linenumber">130</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg78" approved="yes">
+        <source xml:space="preserve">Not mounted</source>
+        <target xml:space="preserve">Nicht verbunden</target>
+        <context-group purpose="location"><context context-type="linenumber">134</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+</xliff>

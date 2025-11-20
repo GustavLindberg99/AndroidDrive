@@ -72,6 +72,11 @@ add_custom_command(TARGET AndroidDrive
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
     COMMAND Qt6::windeployqt --dir "${CMAKE_CURRENT_BINARY_DIR}/windeployqt" "$<TARGET_FILE_DIR:AndroidDrive>/$<TARGET_FILE_NAME:AndroidDrive>"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/msvcp140.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/msvcp140_1.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/msvcp140_2.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/vcruntime140.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/vcruntime140_1.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/windeployqt/translations"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_CURRENT_BINARY_DIR}/windeployqt/vc_redist.x64.exe"
 )
@@ -89,16 +94,16 @@ FetchContent_MakeAvailable(adb)
 
 # Define lupdate files
 qt_add_lupdate(TS_FILES
-    translations/androiddrive_de.ts
-    translations/androiddrive_empty.ts
-    translations/androiddrive_fr.ts
-    translations/androiddrive_hu.ts
-    translations/androiddrive_it.ts
-    translations/androiddrive_ja.ts
-    translations/androiddrive_ko.ts
-    translations/androiddrive_pt_BR.ts
-    translations/androiddrive_sv.ts
-    translations/androiddrive_zh_CN.ts
+    translations/androiddrive_de.xlf
+    translations/androiddrive_empty.xlf
+    translations/androiddrive_fr.xlf
+    translations/androiddrive_hu.xlf
+    translations/androiddrive_it.xlf
+    translations/androiddrive_ja.xlf
+    translations/androiddrive_ko.xlf
+    translations/androiddrive_pt_BR.xlf
+    translations/androiddrive_sv.xlf
+    translations/androiddrive_zh_CN.xlf
     SOURCE_TARGETS AndroidDrive
 )
 

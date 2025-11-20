@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:trolltech="urn:trolltech:names:ts:document:1.0">
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/androiddrive.cpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg702" approved="yes">
+        <source xml:space="preserve">Internal storage</source>
+        <target xml:space="preserve">内部存储</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg703" approved="yes">
+        <source xml:space="preserve">SD card %1</source>
+        <target xml:space="preserve">SD 卡 %1</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistmodel.cpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg704" approved="yes">
+        <source xml:space="preserve">Device</source>
+        <target xml:space="preserve">设备</target>
+        <context-group purpose="location"><context context-type="linenumber">90</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg705" approved="yes">
+        <source xml:space="preserve">Status</source>
+        <target xml:space="preserve">状态</target>
+        <context-group purpose="location"><context context-type="linenumber">119</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg706" approved="yes">
+        <source xml:space="preserve">Mounting...</source>
+        <target xml:space="preserve">挂载中...</target>
+        <context-group purpose="location"><context context-type="linenumber">124</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg707" approved="yes">
+        <source xml:space="preserve">Unmounting...</source>
+        <target xml:space="preserve">卸载中...</target>
+        <context-group purpose="location"><context context-type="linenumber">127</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg708" approved="yes">
+        <source xml:space="preserve">Mounted as %1</source>
+        <target xml:space="preserve">挂载为 %1</target>
+        <context-group purpose="location"><context context-type="linenumber">130</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg709" approved="yes">
+        <source xml:space="preserve">Not mounted</source>
+        <target xml:space="preserve">未挂载</target>
+        <context-group purpose="location"><context context-type="linenumber">134</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.cpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg710" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the internal storage of the selected Android device, as well as a drive for each external SD card that the selected device has, if any.</source>
+        <target xml:space="preserve">挂载一个包含所选安卓设备内部存储的驱动器，并为所选安卓设备拥有的每一张外部 SD 卡挂载一个驱动器（如果有的话）。</target>
+        <context-group purpose="location"><context context-type="linenumber">16</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">168</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg711" approved="yes">
+        <source xml:space="preserve">Allows you to change the settings for this device, for example select a new drive letter or choose whether it should be mounted automatically.</source>
+        <target xml:space="preserve">允许你更改这台设备的设置，比如选择新的驱动器代号或选择它是否应自动挂载。</target>
+        <context-group purpose="location"><context context-type="linenumber">17</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg712" approved="yes">
+        <source xml:space="preserve">Opens the selected drive in Windows Explorer.</source>
+        <target xml:space="preserve">在 Windows 资源管理器中打开所选驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">18</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg713" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Devices</source>
+        <target xml:space="preserve">AndroidDrive - 设备</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg714" approved="yes">
+        <source xml:space="preserve">&amp;Unmount all drives</source>
+        <target xml:space="preserve">卸载全部驱动器(&amp;U)</target>
+        <context-group purpose="location"><context context-type="linenumber">163</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg715" approved="yes">
+        <source xml:space="preserve">Unmounts all drives corresponding to the selected Android device.&lt;br/&gt;&lt;br/&gt;This only unmounts the drives, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">卸载对应所选安卓设备的全部驱动器。&lt;br/&gt;&lt;br/&gt;这只会卸载驱动器，安卓设备本身仍保持连接，因此你仍能通过 adb 等方式访问它。</target>
+        <context-group purpose="location"><context context-type="linenumber">164</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg716" approved="yes">
+        <source xml:space="preserve">&amp;Mount all drives</source>
+        <target xml:space="preserve">挂载全部驱动器(&amp;M)</target>
+        <context-group purpose="location"><context context-type="linenumber">167</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg717" approved="yes">
+        <source xml:space="preserve">&amp;Unmount drive</source>
+        <target xml:space="preserve">卸载驱动器(&amp;U)</target>
+        <context-group purpose="location"><context context-type="linenumber">173</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg718" approved="yes">
+        <source xml:space="preserve">Unmounts the selected drive.&lt;br/&gt;&lt;br/&gt;This only unmounts the drive, the Android device itself will remain connected, so you will still be able to access it for example through ADB.</source>
+        <target xml:space="preserve">卸载所选驱动器。&lt;br/&gt;&lt;br/&gt;这只会卸载驱动器，安卓设备仍保持连接，因此你仍可以通过 adb 等方式访问它。</target>
+        <context-group purpose="location"><context context-type="linenumber">174</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg719" approved="yes">
+        <source xml:space="preserve">&amp;Mount drive</source>
+        <target xml:space="preserve">挂载驱动器(&amp;M)</target>
+        <context-group purpose="location"><context context-type="linenumber">177</context></context-group>
+        <context-group purpose="location"><context context-type="sourcefile">C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp</context><context context-type="linenumber">85</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg720" approved="yes">
+        <source xml:space="preserve">Mounts a drive containing the selected internal storage or external SD card.</source>
+        <target xml:space="preserve">挂载包含所选内部存储或外部 SD 卡的驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">178</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg721" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices.&lt;br/&gt;&lt;br/&gt;ADB exited with code %1.</source>
+        <target xml:space="preserve">致命错误：无法列举安卓设备。&lt;br/&gt;&lt;br/&gt;ADB 退出，代码 %1。</target>
+        <context-group purpose="location"><context context-type="linenumber">189</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg722" approved="yes">
+        <source xml:space="preserve">Device %1 is offline.&lt;br/&gt;&lt;br/&gt;Try unlocking the device, then unplugging it and re-plugging it.&lt;br/&gt;&lt;br/&gt;If this error persists, you may be able to find solutions &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt; (any adb commands mentioned there can be run in the command prompt after running &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt;).</source>
+        <target xml:space="preserve">%1 设备处于离线状态。&lt;br/&gt;&lt;br/&gt;试着解锁设备，然后断开和计算机连接，之后重新连接。&lt;br/&gt;&lt;br/&gt;若这个错误持续，你也许能在 &lt;a href=&quot;%2&quot;&gt;此处&lt;/a&gt; 找到解决方法。（任何这里提到的 adb 命令都可以在运行 &lt;code&gt;cd &quot;%3&quot;&lt;/code&gt; 后在命令提示符中运行）。</target>
+        <context-group purpose="location"><context context-type="linenumber">220</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg723" approved="yes">
+        <source xml:space="preserve">Device %1 is unauthorized.&lt;br/&gt;&lt;br/&gt;Try unlocking your device. If it shows you a dialog asking if you want to allow this computer to access phone data, tap &quot;Allow&quot;. If it doesn&apos;t show that dialog, disable and re-enable USB debugging as explained &lt;a href=&quot;%2&quot;&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;If it still isn&apos;t working, try unplugging and then re-plugging your device.</source>
+        <target xml:space="preserve">%1 设备未获授权。&lt;br/&gt;&lt;br/&gt;试着解锁你的设备。如果设备显示对话框，询问是否允许这台计算机访问手机数据，请轻按“允许”。如果手机未显示这个对话框，请按照 &lt;a href=&quot;%2&quot;&gt;此处&lt;/a&gt; 的解释停用并重新启用 USB 调试。.&lt;br/&gt;&lt;br/&gt;如果仍无法正常工作，请试着断开和计算机的连接并重新连接。</target>
+        <context-group purpose="location"><context context-type="linenumber">226</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg724" approved="yes">
+        <source xml:space="preserve">Could not create a drive with the given drive letter.</source>
+        <target xml:space="preserve">无法创建给定代号的驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">253</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg725" approved="yes">
+        <source xml:space="preserve">Dokan doesn&apos;t seem to be installed.&lt;br/&gt;&lt;br/&gt;Would you like to install it now?</source>
+        <target xml:space="preserve">似乎未安装 Dokan。&lt;br/&gt;&lt;br/&gt;要立即安装它吗？</target>
+        <context-group purpose="location"><context context-type="linenumber">260</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg726" approved="yes">
+        <source xml:space="preserve">Could not start the driver.</source>
+        <target xml:space="preserve">无法启动驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">264</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg727" approved="yes">
+        <source xml:space="preserve">Could not assign a drive letter.&lt;br/&gt;&lt;br/&gt;Try changing the drive letter in Device Settings to an available drive letter.</source>
+        <target xml:space="preserve">无法分配驱动器代号。&lt;br/&gt;&lt;br/&gt;试着在设备设置中将驱动器代号更改为可用的代号。</target>
+        <context-group purpose="location"><context context-type="linenumber">268</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg728" approved="yes">
+        <source xml:space="preserve">Dokan version error.</source>
+        <target xml:space="preserve">Dokan 版本错误。</target>
+        <context-group purpose="location"><context context-type="linenumber">271</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg729" approved="yes">
+        <source xml:space="preserve">An unknown error occurred.</source>
+        <target xml:space="preserve">发生了未知错误。</target>
+        <context-group purpose="location"><context context-type="linenumber">274</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg730" approved="yes">
+        <source xml:space="preserve">Could not mount drive %1: %2</source>
+        <target xml:space="preserve">无法挂载驱动 %1：%2</target>
+        <context-group purpose="location"><context context-type="linenumber">277</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg731" approved="yes">
+        <source xml:space="preserve">ADB timed out.</source>
+        <target xml:space="preserve">ADB 超时。</target>
+        <context-group purpose="location"><context context-type="linenumber">293</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg732" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to read from the ADB process.</source>
+        <target xml:space="preserve">尝试从 ADB 进程读取时发生了错误。</target>
+        <context-group purpose="location"><context context-type="linenumber">296</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg733" approved="yes">
+        <source xml:space="preserve">An error occurred when attempting to write to the ADB process.</source>
+        <target xml:space="preserve">尝试写入 ADB 进程时出错。</target>
+        <context-group purpose="location"><context context-type="linenumber">299</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg734" approved="yes">
+        <source xml:space="preserve">ADB failed to start.&lt;br/&gt;&lt;br/&gt;Either the adb.exe file is missing, or you may have insufficient permissions to invoke the program.</source>
+        <target xml:space="preserve">ADB 启动失败。&lt;br/&gt;&lt;br/&gt;要么缺少 adb.exe 文件，要么你没有足够权限来调用程序。</target>
+        <context-group purpose="location"><context context-type="linenumber">302</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg735" approved="yes">
+        <source xml:space="preserve">ADB crashed.</source>
+        <target xml:space="preserve">ADB 崩溃。</target>
+        <context-group purpose="location"><context context-type="linenumber">305</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg736" approved="yes">
+        <source xml:space="preserve">ADB encountered an unknown error.</source>
+        <target xml:space="preserve">ADB 遇到了未知错误。</target>
+        <context-group purpose="location"><context context-type="linenumber">308</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg737" approved="yes">
+        <source xml:space="preserve">Fatal error: Could not list Android devices: %1</source>
+        <target xml:space="preserve">致命错误：无法列出安卓设备：%1</target>
+        <context-group purpose="location"><context context-type="linenumber">311</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/devicelistwindow.hpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg738" approved="yes">
+        <source xml:space="preserve">Drive &amp;settings</source>
+        <target xml:space="preserve">驱动器设置(&amp;s)</target>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg739" approved="yes">
+        <source xml:space="preserve">&amp;Open in Explorer</source>
+        <target xml:space="preserve">在资源管理器中打开(&amp;O)</target>
+        <context-group purpose="location"><context context-type="linenumber">87</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/main.cpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg740" approved="yes">
+        <source xml:space="preserve">AndroidDrive is already running.&lt;br/&gt;&lt;br/&gt;If you&apos;re trying to restart AndroidDrive, you can close the existing process by right clicking on the AndroidDrive icon in the task bar and selecting Exit.</source>
+        <target xml:space="preserve">AndroidDrive 已经在运行。&lt;br/&gt;&lt;br/&gt;如果你正尝试重启它，可以右键单击任务栏的 AndroidDrive 图标并选择退出来关闭现有进程。</target>
+        <context-group purpose="location"><context context-type="linenumber">70</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg741" approved="yes">
+        <source xml:space="preserve">&amp;Devices</source>
+        <target xml:space="preserve">设备(&amp;D)</target>
+        <context-group purpose="location"><context context-type="linenumber">141</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg742" approved="yes">
+        <source xml:space="preserve">&amp;Settings</source>
+        <target xml:space="preserve">设置(&amp;S)</target>
+        <context-group purpose="location"><context context-type="linenumber">144</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg743" approved="yes">
+        <source xml:space="preserve">Record Debug &amp;Logs</source>
+        <target xml:space="preserve">记录调试日志(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">147</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">152</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg744" approved="yes">
+        <source xml:space="preserve">Finish Recording Debug &amp;Logs</source>
+        <target xml:space="preserve">完成记录调试日志(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">156</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg745" approved="yes">
+        <source xml:space="preserve">Recording of debug logs has started.&lt;br/&gt;&lt;br/&gt;You will be able to find the log file in %1.&lt;br/&gt;&lt;br/&gt;If you&apos;re planning on attaching the log file to a bug report, keep in mind that the log file will contain the names of the files on your phone, so make sure that the filenames don&apos;t contain any sensitive information (The debug logs will only contain the file names, they won&apos;t contain the contents of any file).</source>
+        <target xml:space="preserve">调试日志记录已开始。&lt;br/&gt;&lt;br/&gt;你将能在 %1 找到日志文件。&lt;br/&gt;&lt;br/&gt;如果你正计划将日志文件附加到故障报告中，请记得日志文件包含手机上文件的名称，因此请确保文件名不包含任何敏感信息。（调试日志仅包含文件名，不含有任何文件的内容）。</target>
+        <context-group purpose="location"><context context-type="linenumber">157</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg746" approved="yes">
+        <source xml:space="preserve">Failed to create log file.</source>
+        <target xml:space="preserve">创建日志文件失败。</target>
+        <context-group purpose="location"><context context-type="linenumber">160</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg747" approved="yes">
+        <source xml:space="preserve">&amp;About AndroidDrive</source>
+        <target xml:space="preserve">关于 AndroidDrive(&amp;A)</target>
+        <context-group purpose="location"><context context-type="linenumber">165</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg748" approved="yes">
+        <source xml:space="preserve">About AndroidDrive</source>
+        <target xml:space="preserve">关于 AndroidDrive</target>
+        <context-group purpose="location"><context context-type="linenumber">170</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg749" approved="yes">
+        <source xml:space="preserve">AndroidDrive version %1 by Gustav Lindberg.</source>
+        <target xml:space="preserve">Gustav Lindberg 开发的 AndroidDrive %1。</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg750" approved="yes">
+        <source xml:space="preserve">Icons made by %3 and %4 from %1 are licensed by %2.</source>
+        <target xml:space="preserve">图标由来自 %1 的 %3 和 %4 创作，许可证为 %2。</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg751" approved="yes">
+        <source xml:space="preserve">This program uses %1 and %2.</source>
+        <target xml:space="preserve">本程序使用 %1 和 %2。</target>
+        <context-group purpose="location"><context context-type="linenumber">171</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg752" approved="yes">
+        <source xml:space="preserve">About &amp;Qt</source>
+        <target xml:space="preserve">关于 Qt(&amp;Q)</target>
+        <context-group purpose="location"><context context-type="linenumber">175</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg753" approved="yes">
+        <source xml:space="preserve">E&amp;xit</source>
+        <target xml:space="preserve">退出(&amp;X)</target>
+        <context-group purpose="location"><context context-type="linenumber">180</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg754" approved="yes">
+        <source xml:space="preserve">An update is available.&lt;br/&gt;&lt;br/&gt;Do you want to install it now?</source>
+        <target xml:space="preserve">有更新可用。&lt;br/&gt;&lt;br/&gt;要立即安装吗？</target>
+        <context-group purpose="location"><context context-type="linenumber">116</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.cpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg755" approved="yes">
+        <source xml:space="preserve">AndroidDrive - Settings</source>
+        <target xml:space="preserve">AndroidDrive - 设置</target>
+        <context-group purpose="location"><context context-type="linenumber">20</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg756" approved="yes">
+        <source xml:space="preserve">Drive settings for %1</source>
+        <target xml:space="preserve">%1 的驱动器设置</target>
+        <context-group purpose="location"><context context-type="linenumber">29</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg757" approved="yes">
+        <source xml:space="preserve">Allows you to select a preferred drive letter for the selected Android drive.&lt;br/&gt;&lt;br/&gt;If the preferred drive letter is unavailable when this drive is connected, it will use the next available drive letter in alphabetical order.&lt;br/&gt;&lt;br/&gt;If you change the drive letter while this drive is connected, you will have to unmount it and re-mount it again for the changes to take effect.</source>
+        <target xml:space="preserve">允许你选择所选安卓驱动器的首选驱动器代号。&lt;br/&gt;&lt;br/&gt;如果这个驱动器连接时，首选的驱动器代号不可用，那么它会使用字母表中下一个可用的字母作为驱动器代号。&lt;br/&gt;&lt;br/&gt;如果在这个驱动器连接时更改驱动器代号，你必须卸载它并重新挂载才能让更改生效。</target>
+        <context-group purpose="location"><context context-type="linenumber">34</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg758" approved="yes">
+        <source xml:space="preserve">Drive &amp;letter</source>
+        <target xml:space="preserve">驱动器代号(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">35</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg759" approved="yes">
+        <source xml:space="preserve">Allows you to select a name for the selected Android drive.</source>
+        <target xml:space="preserve">允许你选择所选安卓设备的名称。</target>
+        <context-group purpose="location"><context context-type="linenumber">42</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg760" approved="yes">
+        <source xml:space="preserve">&amp;Reset</source>
+        <target xml:space="preserve">重置(&amp;R)</target>
+        <context-group purpose="location"><context context-type="linenumber">45</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg761" approved="yes">
+        <source xml:space="preserve">Resets the name of the drive to the default value.</source>
+        <target xml:space="preserve">重置驱动器名称为默认值。</target>
+        <context-group purpose="location"><context context-type="linenumber">51</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg762" approved="yes">
+        <source xml:space="preserve">Drive &amp;name</source>
+        <target xml:space="preserve">驱动器名(&amp;N)</target>
+        <context-group purpose="location"><context context-type="linenumber">56</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg763" approved="yes">
+        <source xml:space="preserve">Automatically mount &amp;drive</source>
+        <target xml:space="preserve">自动挂载驱动器(&amp;D)</target>
+        <context-group purpose="location"><context context-type="linenumber">58</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg764" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, the selected drive will be automatically connected as a drive whenever you plug it into your computer.&lt;br/&gt;&lt;br/&gt;Otherwise, you will have to mount it manually by going into Devices &gt; Mount drive.</source>
+        <target xml:space="preserve">如果勾选了这个单选框，那么无论何时你将所选驱动器插入计算机，它都会自动连接为驱动器。&lt;br/&gt;&lt;br/&gt;否则，你必须转到设备&gt;挂载驱动器来手动挂载。</target>
+        <context-group purpose="location"><context context-type="linenumber">60</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg765" approved="yes">
+        <source xml:space="preserve">These settings only affect the selected drive.</source>
+        <target xml:space="preserve">这些设置只影响所选驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">63</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg766" approved="yes">
+        <source xml:space="preserve">Global settings</source>
+        <target xml:space="preserve">全局设置</target>
+        <context-group purpose="location"><context context-type="linenumber">68</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg767" approved="yes">
+        <source xml:space="preserve">Open newly connected drives in &amp;Explorer</source>
+        <target xml:space="preserve">在资源管理器中打开新连接的驱动器(&amp;E)</target>
+        <context-group purpose="location"><context context-type="linenumber">71</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg768" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, whenever AndroidDrive is finished connecting a drive, it will open that drive in Windows Explorer.</source>
+        <target xml:space="preserve">如果勾选了这个单选框，无论何时 AndroidDrive 完成连接驱动器都会在 Windows 资源管理器中打开那个驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">73</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg769" approved="yes">
+        <source xml:space="preserve">&amp;Hide files beginning with a dot</source>
+        <target xml:space="preserve">隐藏以英文.开头的文件(&amp;H)</target>
+        <context-group purpose="location"><context context-type="linenumber">76</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg770" approved="yes">
+        <source xml:space="preserve">If this checkbox is checked, files that begin with a dot will be treated as hidden files, and will only be visible in Windows Explorer if Windows Explorer&apos;s &quot;Show hidden files&quot; option is activated.</source>
+        <target xml:space="preserve">如果勾选了这个驱动器，那么以英文.开头的文件将被视作隐藏文件，且只有激活 Windows 资源管理器的“显示隐藏文件”选项才能看到这些文件。</target>
+        <context-group purpose="location"><context context-type="linenumber">78</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg771" approved="yes">
+        <source xml:space="preserve">Use system language</source>
+        <target xml:space="preserve">使用系统语言</target>
+        <context-group purpose="location"><context context-type="linenumber">86</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg772" approved="yes">
+        <source xml:space="preserve">Allows you to select which language AndroidDrive&apos;s GUI will be displayed in.&lt;br/&gt;&lt;br/&gt;If you select &quot;Use system language&quot; but AndroidDrive isn&apos;t availiable in your system language, English will be used.&lt;br/&gt;&lt;br/&gt;This setting has no effect on how the actual drive works.&lt;br/&gt;&lt;br/&gt;You must restart AndroidDrive for this change to take effect.</source>
+        <target xml:space="preserve">允许选择用什么语言显示 AndroidDrive 的用户界面。&lt;br/&gt;&lt;br/&gt;如果你选择“使用系统语言”，但 AndroidDrive 没有你的系统语言，那么程序界面会以英语显示。&lt;br/&gt;&lt;br/&gt;此设置对实际驱动器如何工作没有影响。&lt;br/&gt;&lt;br/&gt;要让这个更改生效，你必须重启 AndroidDrive。</target>
+        <context-group purpose="location"><context context-type="linenumber">92</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg773" approved="yes">
+        <source xml:space="preserve">&amp;Language</source>
+        <target xml:space="preserve">语言(&amp;L)</target>
+        <context-group purpose="location"><context context-type="linenumber">93</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg774" approved="yes">
+        <source xml:space="preserve">AndroidDrive doesn&apos;t seem to be available in your system language.&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;Click here&lt;/a&gt; if you would like to help translate it.</source>
+        <target xml:space="preserve">AndroidDrive 似乎无法用你的系统语言显示。&lt;br/&gt;&lt;br/&gt;&lt;a %1&gt;单击此处&lt;/a&gt;如果你想帮忙翻译它。</target>
+        <context-group purpose="location"><context context-type="linenumber">96</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg775" approved="yes">
+        <source xml:space="preserve">These settings affect all drives connected with AndroidDrive.</source>
+        <target xml:space="preserve">这些设置影响所有和 AndroidDrive 连接的驱动器。</target>
+        <context-group purpose="location"><context context-type="linenumber">104</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg776" approved="yes">
+        <source xml:space="preserve">&amp;OK</source>
+        <target xml:space="preserve">好(&amp;O)</target>
+        <context-group purpose="location"><context context-type="linenumber">108</context></context-group>
+      </trans-unit>
+      <trans-unit id="_msg777" approved="yes">
+        <source xml:space="preserve">&amp;Cancel</source>
+        <target xml:space="preserve">取消(&amp;C)</target>
+        <context-group purpose="location"><context context-type="linenumber">109</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+  <file original="C:/Users/glind/Documents/AndroidDrive/sources/settingswindow.hpp" datatype="cpp" source-language="en-US" target-language="zh-CN"><body>
+    <group restype="x-trolltech-linguist-context" resname="QObject">
+      <trans-unit id="_msg778" approved="yes">
+        <source xml:space="preserve">&amp;Apply</source>
+        <target xml:space="preserve">应用(&amp;A)</target>
+        <context-group purpose="location"><context context-type="linenumber">66</context></context-group>
+      </trans-unit>
+    </group>
+  </body></file>
+</xliff>
