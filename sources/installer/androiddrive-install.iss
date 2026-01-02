@@ -46,7 +46,7 @@ LanguageDetectionMethod=uilanguage
 
 WizardStyle=modern
 
-DefaultDirName={commonpf64}\{#MyAppName}
+DefaultDirName={commonappdata}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir={#MyAppOutputDir}
 OutputBaseFilename={#MyAppOutputExe}
@@ -69,3 +69,4 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
