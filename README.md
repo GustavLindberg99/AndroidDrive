@@ -7,10 +7,7 @@ AndroidDrive is a program that allows mounting Android smartphones as drives on 
 
 
 # Setup
-To be able to use AndroidDrive, you need to do three things (the order in which you do them doesn't matter):
-- **Install AndroidDrive on your Windows computer**: Download the latest version of AndroidDrive from the [releases page](https://github.com/GustavLindberg99/AndroidDrive/releases/). You can choose either an installer program (`AndroidDrive-install.exe`) or a portable version in a zip file (`AndroidDrive-portable.zip`). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
-
-- **Install Dokan on your Windows computer**: The easiest way is to use their [installation program](https://github.com/dokan-dev/dokany/releases/download/v2.0.6.1000/DokanSetup.exe) (this is the installation program for Dokan 2.0.6, which is the version AndroidDrive was tested on). If you prefer, you can find other ways to install Dokan in [their documentation](https://github.com/dokan-dev/dokany/wiki/Installation).
+To be able to use AndroidDrive, you need to do three things:
 
 - **Enable USB debugging on your Android device**: For AndroidDrive to be able to detect and interact with your Android device, you need to enable USB debugging. To do so, follow these steps:
 
@@ -18,6 +15,10 @@ To be able to use AndroidDrive, you need to do three things (the order in which 
   2. Go to "About phone".
   3. Scroll down to the bottom and tap "Build Number" seven times until you get a message saying that you're a developer (on some phones, "Build Number" might be under "Software Information").
   4. Go back to the main settings screen, then go to System > Advanced > Developer Settings and enable USB debugging.
+
+- **Install Dokan on your Windows computer**: The easiest way is to use their [installation program](https://github.com/dokan-dev/dokany/releases/download/v2.0.6.1000/DokanSetup.exe) (this is the installation program for Dokan 2.0.6, which is the version AndroidDrive was tested on). If you prefer, you can find other ways to install Dokan in [their documentation](https://github.com/dokan-dev/dokany/wiki/Installation).
+
+- **Install AndroidDrive on your Windows computer**: Download the latest version of AndroidDrive from the [releases page](https://github.com/GustavLindberg99/AndroidDrive/releases/). You can choose either an installer program (`AndroidDrive-install.exe`) or a portable version in a zip file (`AndroidDrive-portable.zip`). If you want to start AndroidDrive when Windows starts, create a shortcut to AndroidDrive in `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
 
 # Usage
 When AndroidDrive is running and you connect an Android device, AndroidDrive will automatically mount a drive containing that device's internal storage.

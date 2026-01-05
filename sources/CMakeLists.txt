@@ -77,6 +77,7 @@ add_custom_command(TARGET AndroidDrive
     COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/msvcp140_2.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
     COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/vcruntime140.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
     COMMAND ${CMAKE_COMMAND} -E copy "C:/Windows/System32/vcruntime140_1.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+    COMMAND ${CMAKE_COMMAND} -E copy "C:/Program Files/Dokan/Dokan Library-2.0.6/dokan2.dll" "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/windeployqt/translations"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_CURRENT_BINARY_DIR}/windeployqt/vc_redist.x64.exe"
 )
